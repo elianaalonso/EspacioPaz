@@ -487,16 +487,6 @@ body.modal-open .auth-modal{ opacity:1; transform: translate(-50%,-50%) scale(1)
 /* =========================
    CTA flotante (FAB)
 ========================= */
-.fab-cta{
-  position:fixed; left:50%; transform:translateX(-50%);
-  bottom: max(var(--fab-gap), env(safe-area-inset-bottom)); z-index:999;
-  display:inline-flex; align-items:center; justify-content:center;
-  padding:0.75rem 1.125rem; border-radius:62.4375rem;
-  background: linear-gradient(90deg,#b69bd6,#cfacff,#dbb3c7);
-  color:#fff; font-weight:800; text-decoration:none;
-  box-shadow:0 0.75rem 1.75rem rgba(182,155,214,.35);
-}
-@media (min-width: 51.25rem){ .fab-cta{ display:none; } }
 
 /* =========================
    Gift / Regalar curso
