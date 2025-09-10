@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Checkout — Espacio Paz</title>
+  <link rel="stylesheet" href="../css/estilo.css">
+  <style>
+    .co-wrap{max-width: 60rem; margin: 2rem auto; padding: 0 1.25rem;}
+    .co-card{background:#fff; border:1px solid #eee; border-radius:1rem; padding:1.25rem; box-shadow:0 .5rem 1.5rem #00000010;}
+    .co-grid{display:grid; grid-template-columns: 1.5fr .9fr; gap:1rem;}
+    @media (max-width: 56rem){ .co-grid{ grid-template-columns:1fr; } }
+    .co-title{font-size:1.5rem; margin:0 0 .75rem;}
+    .co-summary{background: #f8f5ff; border:1px solid #efe9fb; border-radius:.75rem; padding:1rem;}
+    .co-row{display:flex; justify-content:space-between; margin:.35rem 0;}
+    .co-total{font-weight:800;}
+    .btn-pay{display:inline-flex; align-items:center; justify-content:center; padding:.75rem 1.25rem; border-radius:.75rem; font-weight:800; color:#fff; background:linear-gradient(90deg,#b69bd6,#cfacff,#dbb3c7); text-decoration:none;}
+    .co-note{color:var(--texto-claro); font-size:.9rem;}
+  </style>
+</head>
+<body>
+  <header class="nav-wrap">
+    <nav class="nav">
+      <div class="brand"><img src="../img/logo.png" alt="Espacio Paz" class="logo"><span>Espacio Paz</span></div>
+      <div class="nav-links"><a href="../index.html">Inicio</a><a href="./membresia.html" aria-current="page">Membresía</a></div>
+    </nav>
+  </header>
+
+  <main class="co-wrap">
+    <h1 class="co-title">Finalizá tu membresía</h1>
+    <div class="co-grid">
+      <section class="co-card">
+        <h2 style="margin-top:0">Datos de facturación</h2>
+        <form id="coForm">
+          <div class="auth-field"><span>Nombre</span><input type="text" id="coName" required></div>
+          <div class="auth-field"><span>Email</span><input type="email" id="coEmail" required></div>
+          <div class="auth-field"><span>País</span><input type="text" id="coCountry" required></div>
+          <p class="co-note">Luego te redirigimos al medio de pago seguro.</p>
+          <button class="btn-pay" type="submit">Ir a pagar</button>
+        </form>
+      </section>
+      <aside class="co-card co-summary">
+        <h3 style="margin-top:0">Resumen</h3>
+        <div class="co-row"><span>Membresía Anual</span><strong>USD 99</strong></div>
+        <div class="co-row co-total"><span>Total</span><strong>USD 99</strong></div>
+        <p class="co-note">Cancelás cuando quieras. Acceso a biblioteca completa, vivos y comunidad.</p>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-bottom"><small>© 2025 Espacio Paz</small></div>
+  </footer>
+
+  <script>
+    // Prefill con “usuario” simulado
+    (function(){
+      try {
+        const u = JSON.parse(localStorage.getItem("pazUser")||"null");
+        if (u && u.email) document.getElementById("coEmail").value = u.email;
+        if (u && u.name)  document.getElementById("coName").value  = u.name;
+      } catch {}
+      document.getElementById("coForm").addEventListener("submit", function(e){
+        e.preventDefault();
+        // TODO: aquí vas a redirigir a tu checkout real (MercadoPago/PayPal/Stripe)
+        // Simulación:
+        alert("Ahora te llevamos al pago seguro…");
+        window.location.href = "https://tu-checkout.anual"; // reemplazar
+      });
+    })();
+  </script>
+</body>
+</html>

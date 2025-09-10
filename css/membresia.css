@@ -1,0 +1,186 @@
+/* =========================
+   Membresía (CSS aislado)
+   — Navbar/footer/btns vienen de estilo.css —
+========================= */
+
+/* Contenedor interno consistente */
+.m-wrap{
+  max-width: 75rem;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* === HERO === */
+.membresia-hero{
+  background: linear-gradient(180deg, var(--lavanda), var(--marfil));
+  border-radius: 1.5rem;
+  padding: 3rem 1.25rem;
+  text-align: center;
+  margin: 2rem 0 2.5rem;
+  box-shadow: 0 0.75rem 2.25rem #00000012;
+}
+.membresia-hero .pill{
+  display:inline-block;
+  background:#fff;
+  border: 0.0625rem solid #efe9fb;
+  border-radius: 62.5rem;
+  padding: .375rem .625rem;
+  font-weight: 700;
+  color:#4b3b66;
+  margin-bottom:.875rem;
+}
+.membresia-hero h1{
+  font-size: 2rem;
+  margin: .5rem 0 .75rem;
+  color: var(--texto);
+}
+.membresia-hero .hl{ color: var(--lila); }
+.membresia-hero p{
+  max-width: 40rem;
+  margin: 0 auto 1.25rem;
+  color: var(--texto-claro);
+}
+
+/* Beneficios rápidos (USPs) */
+.m-usp{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: .5rem .75rem;
+  list-style:none;
+  padding:0; margin:0 auto 1rem;
+  max-width: 48rem;
+}
+.m-usp li{
+  background:#fff;
+  border: 1px solid #efe9fb;
+  border-radius:.75rem;
+  padding:.625rem .75rem;
+  box-shadow:0 .25rem .75rem #0000000a;
+  font-weight:600;
+  color: var(--texto);
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* Franja de confianza */
+.m-trust{
+  display:flex; flex-wrap:wrap; gap:.5rem .75rem;
+  align-items:center; justify-content:center;
+  margin:.5rem auto 1.25rem;
+  color: var(--texto-claro);
+  font-size:.9rem;
+}
+.m-trust span{
+  background:#ffffffcc;
+  border:1px solid #efe9fb;
+  border-radius:999px;
+  padding:.3rem .6rem;
+}
+
+/* CTA del hero (usa .btn del base) */
+.membresia-hero .m-cta{
+  display:flex; gap:.875rem; justify-content:center; flex-wrap:wrap;
+}
+
+/* === PLANES === */
+.membresia-planes{ margin: 2rem 0; }
+.planes-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 1.5rem;
+}
+.plan-card{
+  background:#fff;
+  border: 0.0625rem solid #eee;
+  border-radius: 1.25rem;
+  padding: 1.5rem 1.25rem;
+  box-shadow: 0 0.5rem 1.5rem #0000000a;
+  display:flex; flex-direction:column; justify-content:space-between;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.plan-card:hover{
+  transform: translateY(-0.125rem);
+  box-shadow: 0 0.875rem 2.25rem #00000018;
+}
+.plan-card header h3{
+  margin:0 0 .25rem;
+  font-size:1.25rem;
+  color: var(--texto);
+}
+.plan-card .sub{
+  margin:0 0 .5rem;
+  color: var(--texto-claro);
+}
+.plan-price{
+  font-size:1.5rem;
+  font-weight:700;
+  color: var(--lila);
+  margin:.5rem 0 1rem;
+}
+.plan-price small{
+  font-size:.875rem;
+  color: var(--texto-claro);
+}
+.plan-list{
+  list-style:none; padding:0; margin:0 0 1rem;
+  display:flex; flex-direction:column; gap:.375rem;
+  color: var(--texto);
+  font-size:.875rem;
+}
+.plan-cta{ margin-top:auto; }
+.plan-card .legal{
+  display:block; margin-top:.75rem;
+  font-size:.75rem; color: var(--texto-claro);
+}
+/* destacado */
+.plan-card .tag{
+  background: var(--rosa);
+  color: var(--texto);
+  font-size: .75rem; font-weight: 600;
+  border-radius: 999px;
+  padding: .25rem .5rem;
+  display:inline-block; margin-bottom:.5rem;
+}
+.plan-card.featured{
+  border: 0.125rem solid var(--lila);
+  box-shadow: 0 1rem 2.5rem #b69bd620;
+}
+
+/* === BENEFICIOS (reusa .beneficios/.benefit del base) === */
+.membresia-beneficios{
+  margin: 2.5rem 0;
+}
+.membresia-beneficios .m-subtitle{
+  text-align:center;
+  font-size:1.5rem;
+  margin-bottom:1rem;
+}
+
+/* === FAQ === */
+.membresia-faq{ margin: 3rem 0; }
+.membresia-faq .m-subtitle{
+  text-align:center;
+  font-size:1.5rem;
+  margin-bottom:1rem;
+}
+.faq{
+  border: 0.0625rem solid #eee;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.75rem;
+  background:#fff;
+  box-shadow: 0 0.25rem 0.75rem #0000000a;
+}
+.faq summary{
+  font-weight:700; cursor:pointer; color: var(--texto);
+}
+.faq p{
+  margin:.5rem 0 0; font-size:.875rem; color: var(--texto-claro);
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 40rem){
+  .membresia-hero{ padding: 2rem 1rem; }
+  .membresia-hero h1{ font-size: 1.6rem; }
+  .m-usp{ grid-template-columns: 1fr 1fr; }
+  .plan-price{ font-size: 1.25rem; }
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tu carrito — Espacio Paz</title>
+  <link rel="stylesheet" href="../css/carrito.css">
+  <link rel="stylesheet" href="../css/estilo.css">
+  <meta name="description" content="Revisá tus cursos antes de realizar el pago.">
+</head>
+<body>
+
+<header class="nav-wrap">
+  <nav class="nav" aria-label="Navegación principal">
+    <div class="brand">
+      <img src="../img/logo.png" alt="Espacio Paz" class="logo">
+      <span>Espacio Paz</span>
+    </div>
+    <button class="icon-btn hamburger" aria-label="Abrir menú" aria-expanded="false" id="hamburgerBtn">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="../index.html">Inicio</a>
+      <a href="cursos.html">Cursos</a>
+      <a href="membresia.html" class="cta">Unirme a la membresía</a>
+      <a href="sobre.html">Sobre Paz</a>
+      <a href="testimonios.html">Testimonios</a>
+      <a href="blog.html">Blog</a>
+      <a href="contacto.html">Contacto</a>
+
+      <div class="auth">
+        <a href="#" data-open="login">Iniciar sesión</a>
+        <a href="#" data-open="register">Registrarse</a>
+      </div>
+
+      <a class="icon-btn cart-btn" href="carrito.html" aria-label="Carrito" id="cartButton">
+        <svg viewBox="0 0 24 24" fill="none" width="20" height="20" stroke="currentColor" aria-hidden="true">
+          <path d="M6 6h15l-1.5 9h-12L6 6z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="9" cy="20" r="1.8"></circle>
+          <circle cx="17" cy="20" r="1.8"></circle>
+        </svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<main style="max-width:1000px;margin:30px auto;padding:0 20px">
+  <h1 style="margin:8px 0 16px">Tu carrito</h1>
+
+  <section class="cart">
+    <ul class="cart-list" id="cartList"></ul>
+
+    <div class="cart-summary">
+      <div class="cart-row">
+        <span>Total</span>
+        <strong id="cartTotal">$0.00 USD</strong>
+      </div>
+      <div class="cart-actions">
+        <button class="btn-ghost" id="clearCart" type="button">Vaciar carrito</button>
+        <button class="btn btn-primary" id="checkoutBtn" type="button">Ir a pagar</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="f-brand">
+      <img src="../img/logo.png" alt="Espacio Paz" class="f-logo">
+      <div>
+        <strong>Espacio Paz</strong>
+        <small>Terapias · Reiki · Biodecodificación · Meditaciones</small>
+      </div>
+    </div>
+    <nav class="f-links">
+      <a href="../index.html">Inicio</a>
+      <a href="cursos.html">Cursos</a>
+      <a href="membresia.html">Membresías</a>
+      <a href="sobre.html">Sobre mí</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+    <div class="f-contact">
+      <a href="mailto:hola@espaciopaz.com">hola@espaciopaz.com</a>
+      <div class="f-social">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="YouTube">YT</a>
+        <a href="#" aria-label="TikTok">TT</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <small>© 2025 Espacio Paz — Todos los derechos reservados.</small>
+  </div>
+</footer>
+
+<!-- Modal Auth (reutilizamos el de index si querés, lo omití aquí por brevedad) -->
+
+<script src="../js/script.js"></script>
+</body>
+</html>

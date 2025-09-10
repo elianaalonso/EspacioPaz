@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Espacio Paz — Cursos de bienestar</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/estilo.css">
+
+  <!-- SEO base -->
+  <meta name="description" content="Cursos de Reiki, Meditaciones, Biodecodificación y Rituales. Aprendé a tu ritmo con Paz.">
+
+  <!-- Open Graph / compartir -->
+  <meta property="og:title" content="Espacio Paz — Cursos de bienestar">
+  <meta property="og:description" content="Formaciones y prácticas para cuidar tu energía, a tu ritmo.">
+  <meta property="og:image" content="img/og-cover.jpg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://espaciopaz.com/">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Espacio Paz — Cursos de bienestar">
+  <meta name="twitter:description" content="Formaciones y prácticas para cuidar tu energía, a tu ritmo.">
+  <meta name="twitter:image" content="img/og-cover.jpg">
+
+  <!-- Favicons / PWA icons -->
+  <link rel="icon" href="img/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/icon-32.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="img/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="img/icon-180.png">
+
+  <!-- Preload hero -->
+  <link rel="preload" as="image" href="img/hero 3.png">
+</head>
+<body>
+
+<header class="nav-wrap">
+  <nav class="nav" aria-label="Navegación principal">
+    <!-- Marca -->
+    <div class="brand">
+      <img src="img/logo.png" alt="Espacio Paz" class="logo">
+      <span>Espacio Paz</span>
+    </div>
+
+    <!-- Hamburguesa -->
+    <button class="icon-btn hamburger" type="button" aria-label="Abrir menú" aria-expanded="false" id="hamburgerBtn">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+
+    <div class="nav-links" id="navLinks">
+      <a href="index.html" aria-current="page">Inicio</a>
+
+      <div class="dropdown" id="ddCursos">
+        <button class="dropdown-toggle" type="button">Cursos
+          <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px">
+            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <div class="dropdown-menu">
+          <a href="html/cursos/reiki.html">🔆 Reiki</a>
+          <a href="html/cursos/meditaciones.html">🧘 Meditaciones</a>
+          <a href="html/cursos/biodecodificacion.html">🌿 Biodecodificación</a>
+          <a href="html/cursos/rituales.html">🔮 Rituales</a>
+        </div>
+      </div>
+
+      <a href="html/membresia.html" class="cta">Unirme a la membresía</a>
+      <a href="html/sobre.html">Sobre Paz</a>
+
+      <a href="html/blog.html">Blog</a>
+      <a href="html/contacto.html">Contacto</a>
+
+      <!-- BUSCADOR -->
+      <div class="search-wrap" id="searchWrap">
+        <input id="searchInput" type="search" placeholder="Buscar cursos… (ej: reiki, luna, chakras)" aria-label="Buscar cursos">
+        <button class="icon-btn" type="button" id="searchToggle" aria-label="Abrir buscador">
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor">
+            <circle cx="11" cy="11" r="7" stroke-width="2"/>
+            <path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <div id="searchResults" class="search-results" aria-live="polite"></div>
+      </div>
+
+      <!-- Auth area (lo rellena el JS) -->
+       <div class="auth" id="authArea"></div>
+
+
+      <!-- Carrito -->
+<a class="icon-btn cart-btn" href="html/carrito.html" aria-label="Carrito" id="cartButton">
+  <svg viewBox="0 0 24 24" fill="none" width="20" height="20" stroke="currentColor" aria-hidden="true">
+    <path d="M6 6h15l-1.5 9h-12L6 6z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="9" cy="20" r="1.8"></circle>
+    <circle cx="17" cy="20" r="1.8"></circle>
+  </svg>
+  <span class="cart-badge" id="cartBadge" aria-live="polite">0</span>
+</a>
+
+    </div>
+  </nav>
+</header>
+
+<main style="max-width:1200px;margin:40px auto;padding:0 20px">
+
+  <!-- HERO -->
+  <section class="hero">
+    <img src="img/hero 3.png" alt="Espacio Paz" class="hero-img"
+         loading="eager" fetchpriority="high" >
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <div class="badges">
+        <span class="pill">Reiki · Biodecodificación · Meditaciones · Rituales </span>
+      </div>
+      <h1>Bienvenida a <strong>Espacio Paz</strong></h1>
+      <p>Formaciones y prácticas para cuidar tu energía, a tu ritmo, desde casa.</p>
+      <div class="hero-cta">
+        <a href="html/cursos.html" class="btn btn-primary">Ver cursos</a>
+        <a href="html/membresia.html" class="btn btn-ghost">Unirme a la membresía</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CURSOS DESTACADOS -->
+  <section class="cursos-wrap">
+  <h2 class="section-title">Cursos destacados</h2>
+  <div class="cursos-grid">
+
+    <!-- 1 -->
+    <article class="curso-card" data-href="html/curso-reiki1.html" tabindex="0" role="link" aria-label="Abrir curso Reiki Usui Nivel 1">
+      <div class="curso-media">
+        <img src="img/reiki1.jpg" alt="Reiki Usui Nivel 1"  width="640" height="360">
+      </div>
+      <div class="curso-body">
+        <h3>Reiki Usui Nivel 1</h3>
+        <p>Aprendé a canalizar energía sanadora desde casa.</p>
+        <div class="curso-foot">
+          <div class="curso-meta"><span class="price">$49 USD</span></div>
+          <button class="btn-cart" type="button" data-add="reiki1">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 3h2l2 12h10l2-8H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Agregar al carrito
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- 2 -->
+    <article class="curso-card" data-href="html/curso-reiki2.html" tabindex="0" role="link" aria-label="Abrir curso Reiki Usui Nivel 2">
+      <div class="curso-media">
+        <img src="img/reiki2.png" alt="Reiki Usui Nivel 2"  width="640" height="360">
+      </div>
+      <div class="curso-body">
+        <h3>Reiki Usui Nivel 2</h3>
+        <p>Símbolos y envío a distancia para profundizar tu práctica.</p>
+        <div class="curso-foot">
+          <div class="curso-meta"><span class="price">$69 USD</span></div>
+          <button class="btn-cart" type="button" data-add="reiki2">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 3h2l2 12h10l2-8H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Agregar al carrito
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3 -->
+    <article class="curso-card" data-href="html/curso-ebook-reiki.html" tabindex="0" role="link" aria-label="Abrir curso Reiki Usui Nivel 3">
+      <div class="curso-media">
+        <img src="img/reiki3.png" alt="Reiki Usui Nivel 3"  width="640" height="360">
+      </div>
+      <div class="curso-body">
+        <h3>Reiki Usui Nivel 3</h3>
+        <p>Profundiza en la maestría del Reiki, conecta con la energía universal y eleva tu práctica hacia un nivel espiritual más consciente.</p>
+        <div class="curso-foot">
+          <div class="curso-meta"><span class="price">$99 USD</span></div>
+          <button class="btn-cart" type="button" data-add="reiki3">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 3h2l2 12h10l2-8H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Agregar al carrito
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- 4 -->
+    <article class="curso-card" data-href="html/curso-meditaciones.html" tabindex="0" role="link" aria-label="Abrir curso Meditaciones guiadas">
+      <div class="curso-media">
+        <img src="img/meditaciones.png" alt="Meditaciones guiadas"  width="640" height="360">
+      </div>
+      <div class="curso-body">
+        <h3>Meditaciones guiadas</h3>
+        <p>Audios para integrar calma y foco en tu día a día.</p>
+        <div class="curso-foot">
+          <div class="curso-meta"><span class="price">$19 USD</span></div>
+          <button class="btn-cart" type="button" data-add="meditaciones">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 3h2l2 12h10l2-8H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Agregar al carrito
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- 5 -->
+    <article class="curso-card" data-href="html/curso-biodeco.html" tabindex="0" role="link" aria-label="Abrir curso Biodecodificación básica">
+      <div class="curso-media">
+        <img src="img/bio.png" alt="Biodecodificación básica"  width="640" height="360">
+      </div>
+      <div class="curso-body">
+        <h3>Biodecodificación básica</h3>
+        <p>Herramientas para comprender el mensaje de tus síntomas.</p>
+        <div class="curso-foot">
+          <div class="curso-meta"><span class="price">$59 USD</span></div>
+          <button class="btn-cart" type="button" data-add="biodeco">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 3h2l2 12h10l2-8H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Agregar al carrito
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- 6 -->
+    <article class="curso-card" data-href="html/curso-rituales.html" tabindex="0" role="link" aria-label="Abrir curso Rituales de Luna">
+      <div class="curso-media">
+        <img src="img/rituales.png" alt="Rituales de Luna"  width="640" height="360">
+      </div>
+      <div class="curso-body">
+        <h3>Rituales de Luna</h3>
+        <p>Prácticas mensuales para limpiar y manifestar.</p>
+        <div class="curso-foot">
+          <div class="curso-meta"><span class="price">$29 USD</span></div>
+          <button class="btn-cart" type="button" data-add="rituales">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 3h2l2 12h10l2-8H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Agregar al carrito
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- 7 -->
+    <article class="curso-card" data-href="html/curso-limpieza-hogar.html" tabindex="0" role="link" aria-label="Abrir curso Limpieza energética del hogar">
+      <div class="curso-media">
+        <img src="img/limpieza.png" alt="Limpieza energética del hogar"  width="640" height="360">
+      </div>
+      <div class="curso-body">
+        <h3>Limpieza energética del hogar</h3>
+        <p>Rituales, hierbas y prácticas para armonizar tus espacios.</p>
+        <div class="curso-foot">
+          <div class="curso-meta"><span class="price">$39 USD</span></div>
+          <button class="btn-cart" type="button" data-add="limpieza">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 3h2l2 12h10l2-8H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Agregar al carrito
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- 8 -->
+    <article class="curso-card" data-href="html/curso-chakras.html" tabindex="0" role="link" aria-label="Abrir curso Chakras en equilibrio">
+      <div class="curso-media">
+        <img src="img/chakras.png" alt="Chakras en equilibrio"  width="640" height="360">
+      </div>
+      <div class="curso-body">
+        <h3>Chakras en equilibrio</h3>
+        <p>Meditaciones y prácticas para armonizar tus centros energéticos.</p>
+        <div class="curso-foot">
+          <div class="curso-meta"><span class="price">$35 USD</span></div>
+          <button class="btn-cart" type="button" data-add="chakras">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 3h2l2 12h10l2-8H6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Agregar al carrito
+          </button>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+  <!-- BENEFICIOS -->
+  <section class="beneficios">
+    <div class="benefit">
+      <h4>Contenido a tu ritmo</h4>
+      <p>Accedé 24/7 desde cualquier dispositivo.</p>
+    </div>
+    <div class="benefit">
+      <h4>Práctico y amoroso</h4>
+      <p>Meditaciones y ejercicios simples para cada día.</p>
+    </div>
+    <div class="benefit">
+      <h4>Acompañamiento</h4>
+      <p>Opciones de membresía y sesiones limitadas.</p>
+    </div>
+  </section>
+
+  <!-- Carrusel de opiniones + Newsletter + Regalar un curso -->
+<section class="cta-news">
+  <!-- Carrusel de opiniones -->
+  <div class="opiniones-carrusel">
+    <h4>Lo que dicen quienes ya se sumaron</h4>
+    <div id="carruselOpiniones" class="carrusel-opinion">
+      <blockquote>
+        <p>“Las meditaciones me ayudaron muchísimo a encontrar calma en mi día a día. ¡Gracias Paz!”</p>
+        <footer>— Lucía G.</footer>
+      </blockquote>
+    </div>
+    <div class="carrusel-controles">
+      <button type="button" id="prevOpinion" aria-label="Opinión anterior">‹</button>
+      <button type="button" id="nextOpinion" aria-label="Opinión siguiente">›</button>
+    </div>
+  </div>
+  <!-- Newsletter + Regalar curso -->
+  <div class="cta-news-row">
+    <div class="cta-news-col">
+      <h3 class="newsletter-title">Recibí una meditación gratuita</h3>
+      <p class="newsletter-desc">Suscribite para recibir prácticas y novedades.</p>
+      <form id="newsletterForm" class="newsletter" novalidate>
+        <label for="nlEmail" class="visually-hidden">Email</label>
+        <input type="email" id="nlEmail" placeholder="Tu email..." autocomplete="email" required>
+        <button type="submit" class="btn-nl">Quiero recibirla</button>
+        <p id="nlMsg" class="nl-msg" aria-live="polite"></p>
+      </form>
+    </div>
+    <div class="cta-news-col cta-regalo">
+      <h3>¿Querés regalar un curso?</h3>
+      <p>¡Regalá bienestar a alguien especial! Elegí el curso, escribinos y te ayudamos con el proceso de regalo personalizado.</p>
+      <div class="gift-actions">
+  <button class="btn btn-primary" id="openGift">Regalar un curso</button>
+  <a class="btn btn-ghost" href="html/tarjetas-regalo.html">Ver tarjetas regalo</a>
+</div>
+    </div>
+  </div>
+</section>
+
+  
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="f-brand">
+      <img src="img/logo.png" alt="Espacio Paz" class="f-logo">
+      <div>
+        <strong>Espacio Paz</strong>
+        <small>Terapias · Reiki · Biodecodificación · Meditaciones</small>
+      </div>
+    </div>
+
+    <nav class="f-links">
+      <a href="index.html">Inicio</a>
+      <a href="html/cursos.html">Cursos</a>
+      <a href="html/membresia.html">Membresías</a>
+      <a href="html/sobre.html">Sobre mí</a>
+      <a href="html/contacto.html">Contacto</a>
+    </nav>
+
+    <div class="f-contact">
+      <a href="mailto:hola@espaciopaz.com">hola@espaciopaz.com</a>
+      <div class="f-social">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="YouTube">YT</a>
+        <a href="#" aria-label="TikTok">TT</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <small>© 2025 Espacio Paz — Todos los derechos reservados.</small>
+  </div>
+</footer>
+
+<!-- ===== MODAL AUTH ===== -->
+<div class="auth-backdrop" id="authBackdrop" aria-hidden="true"></div>
+<section class="auth-modal" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle" hidden>
+  <button class="auth-close" id="authClose" aria-label="Cerrar" type="button">×</button>
+
+  <header class="auth-tabs">
+    <button class="auth-tab" data-tab="login" id="tabLogin" aria-controls="panelLogin" aria-selected="true" type="button">Iniciar sesión</button>
+    <button class="auth-tab" data-tab="register" id="tabRegister" aria-controls="panelRegister" aria-selected="false" type="button">Registrarse</button>
+  </header>
+
+  <!-- Login -->
+  <form class="auth-panel" id="panelLogin">
+    <h3 id="authTitle" class="auth-title">¡Hola de nuevo!</h3>
+    <label class="auth-field">
+      <span>Email</span>
+      <input type="email" id="loginEmail" autocomplete="email" required>
+    </label>
+    <label class="auth-field">
+      <span>Contraseña</span>
+      <input type="password" id="loginPass" autocomplete="current-password" required>
+    </label>
+    <div class="auth-actions">
+      <label class="auth-remember"><input type="checkbox"> Recordarme</label>
+      <a href="#" class="auth-link">Olvidé mi contraseña</a>
+    </div>
+    <button class="auth-btn" type="submit">Entrar</button>
+    <p class="auth-msg" id="loginMsg" aria-live="polite"></p>
+  </form>
+
+  <!-- Register -->
+  <form class="auth-panel" id="panelRegister" hidden>
+    <h3 class="auth-title">Crear cuenta</h3>
+    <label class="auth-field">
+      <span>Nombre</span>
+      <input type="text" id="regName" autocomplete="name" required>
+    </label>
+    <label class="auth-field">
+      <span>Email</span>
+      <input type="email" id="regEmail" autocomplete="email" required>
+    </label>
+    <label class="auth-field">
+      <span>Contraseña</span>
+      <input type="password" id="regPass" autocomplete="new-password" minlength="6" required>
+    </label>
+    <button class="auth-btn" type="submit">Crear cuenta</button>
+    <p class="auth-msg" id="regMsg" aria-live="polite"></p>
+  </form>
+</section>
+
+<!-- CTA flotante solo mobile -->
+<a class="fab-cta" href="html/cursos.html" aria-label="Ver cursos">Ver cursos</a>
+
+<!-- JSON-LD cursos -->
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"ItemList",
+  "itemListElement":[
+    {
+      "@type":"ListItem","position":1,
+      "item":{
+        "@type":"Course",
+        "name":"Reiki Usui Nivel 1",
+        "description":"Aprendé a canalizar energía sanadora desde casa.",
+        "provider":{"@type":"Organization","name":"Espacio Paz","url":"https://espaciopaz.com"},
+        "offers":{"@type":"Offer","price":"49.00","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://espaciopaz.com/html/curso-reiki1.html"}
+      }
+    },
+    {
+      "@type":"ListItem","position":2,
+      "item":{
+        "@type":"Course",
+        "name":"Reiki Usui Nivel 2",
+        "description":"Símbolos y envío a distancia para profundizar tu práctica.",
+        "provider":{"@type":"Organization","name":"Espacio Paz","url":"https://espaciopaz.com"},
+        "offers":{"@type":"Offer","price":"69.00","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://espaciopaz.com/html/curso-reiki2.html"}
+      }
+    },
+    {
+      "@type":"ListItem","position":3,
+      "item":{
+        "@type":"Course",
+        "name":"Reiki Usui Nivel 3",
+        "description":"Maestría del Reiki y conexión con la energía universal.",
+        "provider":{"@type":"Organization","name":"Espacio Paz","url":"https://espaciopaz.com"},
+        "offers":{"@type":"Offer","price":"99.00","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://espaciopaz.com/html/curso-ebook-reiki.html"}
+      }
+    }
+  ]
+}
+</script>
+
+<!-- JS -->
+<script src="js/script.js"></script>
+</body>
+</html>
