@@ -2,7 +2,7 @@
   const $  = (s, c=document) => c.querySelector(s);
   const $$ = (s, c=document) => Array.from(c.querySelectorAll(s));
   const CHECKOUT_PATH = "checkout.html";
-  const KEY = "pazUser";
+  const KEY = "espaciopaz_user_v1";
 
   // Helpers auth
   function isAuth() {
@@ -86,9 +86,13 @@
         return;
       }
       saveUser({ email });
-      if (msg) msg.textContent = "¡Listo! Redirigiendo…";
+      if (msg) msg.textContent = "¡Listo!";
       closeAuth();
-      window.location.href = CHECKOUT_PATH;
+      // Solo redirigir si venía de 'Unirme ahora'
+      if (localStorage.getItem("pazJoinIntent")) {
+        localStorage.removeItem("pazJoinIntent");
+        window.location.href = CHECKOUT_PATH;
+      }
     });
 
     // Submit REGISTER
@@ -108,22 +112,40 @@
         return;
       }
       saveUser({ name, email });
-      if (msg) msg.textContent = "¡Cuenta creada! Redirigiendo…";
+      if (msg) msg.textContent = "¡Cuenta creada!";
       closeAuth();
-      window.location.href = CHECKOUT_PATH;
+      // Solo redirigir si venía de 'Unirme ahora'
+      if (localStorage.getItem("pazJoinIntent")) {
+        localStorage.removeItem("pazJoinIntent");
+        window.location.href = CHECKOUT_PATH;
+      }
     });
   });
+
 
   // Unirme ahora: si logueada va a checkout, si no abre modal
   document.addEventListener("click", (e) => {
     const join = e.target.closest("[data-join]");
-    if (!join) return;
-    e.preventDefault();
-    if (isAuth()) {
-      window.location.href = CHECKOUT_PATH;
+    if (join) {
+      e.preventDefault();
+      if (isAuth()) {
+        window.location.href = CHECKOUT_PATH;
+        return;
+      }
+      // Marcar intención de unirse
+      localStorage.setItem("pazJoinIntent", "1");
+      openAuth("register");
       return;
     }
-    openAuth("register");
+    // Logout: elimina la sesión y recarga
+    const logout = e.target.closest("#logoutBtn, .logout-btn");
+    if (logout) {
+      e.preventDefault();
+      localStorage.removeItem("pazUser");
+      localStorage.removeItem("pazJoinIntent");
+      location.reload();
+      return;
+    }
   });
 
   // Smooth scroll para anchors internos (#planes, etc.)
