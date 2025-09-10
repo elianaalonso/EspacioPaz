@@ -1,81 +1,147 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Espacio Paz – Navbar</title>
-  <link rel="stylesheet" href="../css/estilo.css">
-</head>
-<body>
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>Espacio Paz — Contacto</title>
+      <meta name="description" content="Contactate con Espacio Paz para consultas sobre cursos, terapias o colaboraciones.">
+      <link rel="stylesheet" href="../css/estilo.css">
+      <link rel="stylesheet" href="../css/contacto.css">
+    </head>
+    <body>
 
-<header class="nav-wrap">
-  <nav class="nav" aria-label="Navegación principal">
-    <a class="brand" href="/">
-      <img src="../img/logo.png" alt="Espacio Paz" class="logo">
-      <span>Espacio Paz</span>
-    </a>
-
-    <!-- Botón hamburguesa -->
-    <button class="icon-btn hamburger" aria-label="Abrir menú" aria-expanded="false" id="hamburgerBtn">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke-width="2" stroke-linecap="round"/></svg>
-    </button>
-
-    <div class="nav-links" id="navLinks">
-      <a href="../index.html">Inicio</a>
-
-      <div class="dropdown" id="ddCursos">
-        <button class="dropdown-toggle">Cursos
-          <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px">
-            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          </svg>
+    <header class="nav-wrap">
+      <nav class="nav" aria-label="Navegación principal">
+        <div class="brand">
+          <img src="../img/logo.png" alt="Espacio Paz" class="logo">
+          <span>Espacio Paz</span>
+        </div>
+        <button class="icon-btn hamburger" type="button" aria-label="Abrir menú" aria-expanded="false" id="hamburgerBtn">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
-        <div class="dropdown-menu">
-          <a href="/cursos/reiki">🔆 Reiki</a>
-          <a href="/cursos/meditaciones">🧘 Meditaciones</a>
-          <a href="/cursos/biodecodificacion">🌿 Biodecodificación</a>
-          <a href="/cursos/rituales">🔮 Rituales</a>
+        <div class="nav-links" id="navLinks">
+          <a href="../index.html">Inicio</a>
+          <div class="dropdown" id="ddCursos">
+            <button class="dropdown-toggle" type="button">Cursos
+              <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <div class="dropdown-menu">
+              <a href="../html/cursos/reiki.html">🔆 Reiki</a>
+              <a href="../html/cursos/meditaciones.html">🧘 Meditaciones</a>
+              <a href="../html/cursos/biodecodificacion.html">🌿 Biodecodificación</a>
+              <a href="../html/cursos/rituales.html">🔮 Rituales</a>
+            </div>
+          </div>
+          <a href="../html/membresia.html" class="cta">Unirme a la membresía</a>
+          <a href="../html/sobre-paz.html">Sobre Paz</a>
+          <a href="../html/blog.html">Blog</a>
+          <a href="contacto.html" aria-current="page">Contacto</a>
+          <div class="search-wrap" id="searchWrap">
+            <input id="searchInput" type="search" placeholder="Buscar cursos… (ej: reiki, luna, chakras)" aria-label="Buscar cursos">
+            <button class="icon-btn" type="button" id="searchToggle" aria-label="Abrir buscador">
+              <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor">
+                <circle cx="11" cy="11" r="7" stroke-width="2"/>
+                <path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <div id="searchResults" class="search-results" aria-live="polite"></div>
+          </div>
+          <div class="auth" id="authArea"></div>
+          <a class="icon-btn cart-btn" href="../html/carrito.html" aria-label="Carrito" id="cartButton">
+            <svg viewBox="0 0 24 24" fill="none" width="20" height="20" stroke="currentColor" aria-hidden="true">
+              <path d="M6 6h15l-1.5 9h-12L6 6z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="9" cy="20" r="1.8"></circle>
+              <circle cx="17" cy="20" r="1.8"></circle>
+            </svg>
+            <span class="cart-badge" id="cartBadge" aria-live="polite">0</span>
+          </a>
+        </div>
+      </nav>
+    </header>
+
+
+    <main class="contacto magic">
+      <h1 class="title">
+        <span class="sparkle" aria-hidden="true">✦</span>
+        Contacto
+        <span class="sparkle" aria-hidden="true">✦</span>
+      </h1>
+
+      <p class="intro">Escribime si querés info sobre cursos, terapias o colaboraciones.</p>
+
+      <form class="form-contacto" action="#" method="post" novalidate>
+        <label class="sr-only" for="nombre">Nombre</label>
+        <input id="nombre" type="text" name="nombre" placeholder="Tu nombre" required>
+
+        <label class="sr-only" for="email">Correo electrónico</label>
+        <input id="email" type="email" name="email" placeholder="Tu correo electrónico" required>
+
+        <label class="sr-only" for="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribí tu mensaje..." required></textarea>
+
+        <button type="submit" class="btn-enviar">
+          Enviar
+          <span class="btn-glow" aria-hidden="true"></span>
+        </button>
+        <p id="formMsg" class="form-msg" aria-live="polite"></p>
+      </form>
+
+      <div class="divider" role="presentation">
+        <span class="divider-spark">✧</span>
+      </div>
+
+      <div class="datos-contacto">
+        <a href="mailto:hola@espaciopaz.com" class="data">📧 hola@espaciopaz.com</a>
+        <a href="https://wa.me/598000000000" class="data">📱 +598 000 000 000</a>
+        <span class="data">📍 Montevideo, Uruguay</span>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="f-brand">
+          <img src="../img/logo.png" alt="Espacio Paz" class="f-logo">
+          <div>
+            <strong>Espacio Paz</strong>
+            <small>Terapias · Reiki · Biodecodificación · Meditaciones</small>
+          </div>
+        </div>
+        <nav class="f-links">
+          <a href="../index.html">Inicio</a>
+          <a href="../html/cursos.html">Cursos</a>
+          <a href="../html/membresia.html">Membresías</a>
+          <a href="../html/sobre-paz.html">Sobre mí</a>
+          <a href="contacto.html">Contacto</a>
+        </nav>
+        <div class="f-contact">
+          <a href="mailto:hola@espaciopaz.com">hola@espaciopaz.com</a>
+          <div class="f-social">
+            <a href="#" aria-label="Instagram">IG</a>
+            <a href="#" aria-label="YouTube">YT</a>
+            <a href="#" aria-label="TikTok">TT</a>
+          </div>
         </div>
       </div>
-
-      <a href="membresia.html" class="cta">Unirme a la membresía</a>
-      <a href="sobre-paz.html">Sobre Paz</a>
-      <a href="blog.html">Blog</a>
-      <a href="contacto.html">Contacto</a>
-
-       <!-- BUSCADOR -->
-      <div class="search-wrap" id="searchWrap">
-        <input id="searchInput" type="search" placeholder="Buscar cursos… (ej: reiki, luna, chakras)" aria-label="Buscar cursos">
-        <button class="icon-btn" type="button" id="searchToggle" aria-label="Abrir buscador">
-          <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor">
-            <circle cx="11" cy="11" r="7" stroke-width="2"/>
-            <path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"/>
-          </svg>
-        </button>
-        <div id="searchResults" class="search-results" aria-live="polite"></div>
+      <div class="footer-bottom">
+        <small>© 2025 Espacio Paz — Todos los derechos reservados.</small>
       </div>
+    </footer>
 
-      <div class="auth">
-        <a href="#" data-open="login">Iniciar sesión</a>
-        <a href="#" data-open="register">Registrarse</a>
-      </div>
-
-  <!-- Carrito -->
-<a class="icon-btn cart-btn" href="carrito.html" aria-label="Carrito" id="cartButton">
-  <svg viewBox="0 0 24 24" fill="none" width="20" height="20" stroke="currentColor" aria-hidden="true">
-    <path d="M6 6h15l-1.5 9h-12L6 6z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="9" cy="20" r="1.8"></circle>
-    <circle cx="17" cy="20" r="1.8"></circle>
-  </svg>
-  <span class="cart-badge" id="cartBadge" aria-live="polite">0</span>
-</a>
-
-    </div>
-  </nav>
-</header>
-<main style="max-width:1200px;margin:40px auto;padding:0 20px">
-  <h1>Bienvenida</h1>
-  <p>Acá iría el contenido de la página. La navbar ya está separada en HTML + CSS + JS.</p>
-</main>
+    <script src="../js/script.js"></script>
+    <script>
+    // Feedback inmediato en el formulario de contacto (simulado)
+    document.querySelector('.form-contacto')?.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const msg = document.getElementById('formMsg');
+      msg.textContent = '¡Gracias por tu mensaje! Te responderé pronto.';
+      msg.className = 'form-msg ok';
+      this.reset();
+    });
+    </script>
+    </body>
+    </html>
 
 <script src="js/script.js"></script>
 </body>
