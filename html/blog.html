@@ -3,81 +3,68 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Unirme a la Membresía — Espacio Paz</title>
-
-  <!-- CSS -->
+  <title>Espacio Paz — Blog</title>
+  <meta name="description" content="Reflexiones, aprendizajes y herramientas para tu camino de sanación.">
   <link rel="stylesheet" href="../css/estilo.css">
-
-  <!-- SEO base -->
-  <meta name="description" content="Acceso total a cursos, clases nuevas cada mes, comunidad y encuentros en vivo. Cancelás cuando quieras.">
-
-  <!-- Open Graph / compartir -->
-  <meta property="og:title" content="Unirme a la Membresía — Espacio Paz">
-  <meta property="og:description" content="Acceso total a cursos, comunidad y talleres en vivo.">
-  <meta property="og:image" content="../img/og-cover.jpg">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://espaciopaz.com/html/membresia.html">
-
-  <!-- Favicons -->
-  <link rel="icon" href="../img/favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="../img/icon-32.png">
-  <link rel="icon" type="image/png" sizes="192x192" href="../img/icon-192.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="../img/icon-180.png">
+  <link rel="stylesheet" href="../css/blog.css">
+  <style>
+    /* Placeholder de color para reemplazar imágenes */
+    .img-color {
+      width: 100%;
+      height: 14rem;          /* igual que las imágenes originales */
+      background: var(--c, #d9c9ef);
+      display: block;
+    }
+    /* Opcionales: algunos gradientes suaves dentro de tu paleta */
+    .img-lila    { --c: linear-gradient(135deg, #d9c9ef, #b69bd6); }
+    .img-rosa    { --c: linear-gradient(135deg, #f4d9e6, #d9c9ef); }
+    .img-marfil  { --c: linear-gradient(135deg, #f8f5f0, #f4d9e6); }
+    .img-lavanda { --c: linear-gradient(135deg, #b69bd6, #d9c9ef); }
+    .img-dorado  { --c: linear-gradient(135deg, #f3e6c5, #c8a553); }
+  </style>
 </head>
 <body>
 
 <header class="nav-wrap">
   <nav class="nav" aria-label="Navegación principal">
-    <!-- Marca -->
     <div class="brand">
       <img src="../img/logo.png" alt="Espacio Paz" class="logo">
       <span>Espacio Paz</span>
     </div>
-
-    <!-- Hamburguesa -->
     <button class="icon-btn hamburger" type="button" aria-label="Abrir menú" aria-expanded="false" id="hamburgerBtn">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke-width="2" stroke-linecap="round"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke-width="2" stroke-linecap="round"/></svg>
     </button>
-
     <div class="nav-links" id="navLinks">
       <a href="../index.html">Inicio</a>
-
       <div class="dropdown" id="ddCursos">
         <button class="dropdown-toggle" type="button">Cursos
-          <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px">
+          <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px" aria-hidden="true">
             <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </button>
         <div class="dropdown-menu">
-          <a href="./cursos/reiki.html">🔆 Reiki</a>
-          <a href="./cursos/meditaciones.html">🧘 Meditaciones</a>
-          <a href="./cursos/biodecodificacion.html">🌿 Biodecodificación</a>
-          <a href="./cursos/rituales.html">🔮 Rituales</a>
+          <a href="../html/cursos/reiki.html">🔆 Reiki</a>
+          <a href="../html/cursos/meditaciones.html">🧘 Meditaciones</a>
+          <a href="../html/cursos/biodecodificacion.html">🌿 Biodecodificación</a>
+          <a href="../html/cursos/rituales.html">🔮 Rituales</a>
         </div>
       </div>
-
-      <a href="./membresia.html" class="cta" aria-current="page">Unirme a la membresía</a>
-  <a href="./sobre-paz.html">Sobre Paz</a>
-      <a href="./blog.html">Blog</a>
-      <a href="./contacto.html">Contacto</a>
-
-      <!-- BUSCADOR -->
+      <a href="../html/membresia.html" class="cta">Unirme a la membresía</a>
+      <a href="../html/sobre-paz.html">Sobre Paz</a>
+      <a href="blog.html" aria-current="page">Blog</a>
+      <a href="../html/contacto.html">Contacto</a>
       <div class="search-wrap" id="searchWrap">
         <input id="searchInput" type="search" placeholder="Buscar cursos… (ej: reiki, luna, chakras)" aria-label="Buscar cursos">
         <button class="icon-btn" type="button" id="searchToggle" aria-label="Abrir buscador">
-          <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor">
+          <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor" aria-hidden="true">
             <circle cx="11" cy="11" r="7" stroke-width="2"/>
             <path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"/>
           </svg>
         </button>
         <div id="searchResults" class="search-results" aria-live="polite"></div>
       </div>
-
-      <!-- Auth area -->
       <div class="auth" id="authArea"></div>
-
-      <!-- Carrito -->
-      <a class="icon-btn cart-btn" href="./carrito.html" aria-label="Carrito" id="cartButton">
+      <a class="icon-btn cart-btn" href="../html/carrito.html" aria-label="Carrito" id="cartButton">
         <svg viewBox="0 0 24 24" fill="none" width="20" height="20" stroke="currentColor" aria-hidden="true">
           <path d="M6 6h15l-1.5 9h-12L6 6z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           <circle cx="9" cy="20" r="1.8"></circle>
@@ -90,102 +77,83 @@
 </header>
 
 <main style="max-width:1200px;margin:40px auto;padding:0 20px">
-
-  <!-- === HERO MEMBRESÍA === -->
-  <section class="membresia-hero" aria-labelledby="m-title">
-    <div class="m-wrap">
-      <span class="pill">Acceso total · Comunidad · Talleres</span>
-      <h1 id="m-title">Unite a la <span class="hl">Membresía</span></h1>
-      <p>Clases nuevas cada mes, biblioteca completa, comunidad y encuentros en vivo. Cancelás cuando quieras.</p>
-
-      <div class="m-toggle" role="tablist" aria-label="Planes de membresía">
-        <button class="m-toggle-btn is-active" role="tab" aria-selected="true" data-plan="mensual">Mensual</button>
-        <button class="m-toggle-btn" role="tab" aria-selected="false" data-plan="anual">Anual <small class="badge">-20%</small></button>
-      </div>
-
-      <div class="m-cta">
-        <a class="btn btn-primary" id="m-join-primary" href="#planes">Ver planes</a>
-        <a class="btn btn-ghost" href="#m-faq">Dudas frecuentes</a>
-      </div>
+  <!-- HERO -->
+  <section class="hero hero-blog">
+    <div class="hero-content">
+      <h1>Blog de bienestar</h1>
+      <p>Reflexiones, aprendizajes y herramientas para tu camino de sanación.</p>
     </div>
   </section>
 
-  <!-- === PLANES === -->
-  <section class="membresia-planes" id="planes" aria-label="Planes">
-    <div class="m-wrap">
-      <div class="planes-grid">
-        <!-- Mensual -->
-        <article class="plan-card" data-plan-card="mensual" tabindex="0">
-          <header>
-            <h3>Plan Mensual</h3>
-            <p class="sub">Acceso total, mes a mes</p>
-            <div class="plan-price"><span class="amount" data-price="mensual">USD 19</span><small>/ mes</small></div>
-          </header>
-          <ul class="plan-list">
-            <li>Biblioteca completa de cursos</li>
-            <li>Clases nuevas todos los meses</li>
-            <li>Encuentros en vivo (Q&A / talleres)</li>
-            <li>Plantillas y recursos descargables</li>
-            <li>Acceso a comunidad privada</li>
-            <li>Cancelás cuando quieras</li>
-          </ul>
-          <a class="btn btn-primary plan-cta" data-checkout="mensual" href="#" rel="nofollow">Unirme ahora</a>
-          <small class="legal">Se renueva automáticamente. Podés cancelar cuando quieras.</small>
-        </article>
-
-        <!-- Anual -->
-        <article class="plan-card featured" data-plan-card="anual" tabindex="0" aria-label="Plan Anual recomendado">
-          <header>
-            <span class="tag">Recomendado</span>
-            <h3>Plan Anual</h3>
-            <p class="sub">12 meses al mejor precio</p>
-            <div class="plan-price"><span class="amount" data-price="anual">USD 182</span><small>/ año</small></div>
-            <p class="save">Ahorrás 20% vs mensual</p>
-          </header>
-          <ul class="plan-list">
-            <li>Todo lo del Mensual</li>
-            <li>2 pases a workshops premium</li>
-            <li>Prioridad en soporte</li>
-            <li>Certificados especiales</li>
-          </ul>
-          <a class="btn btn-primary plan-cta" data-checkout="anual" href="#" rel="nofollow">Unirme ahora</a>
-          <small class="legal">Pago único anual. Renovación opcional.</small>
-        </article>
+  <!-- GRID BLOG -->
+  <section class="blog-grid container" id="blogGrid">
+    <!-- Visibles al inicio -->
+    <article class="blog-card reveal">
+      <div class="img-color img-lila" aria-hidden="true"></div>
+      <div class="card-body">
+        <span class="post-date">10 septiembre 2025</span>
+        <h2 class="post-title">El poder de vivir el presente</h2>
+        <p class="post-excerpt">Aprendé a soltar la ansiedad del futuro y el peso del pasado para habitar plenamente tu ahora.</p>
+        <a href="#" class="btn-link">Leer más</a>
       </div>
-    </div>
-  </section>
+    </article>
 
-  <!-- === BENEFICIOS === -->
-  <section class="membresia-beneficios" aria-label="Qué incluye">
-    <div class="m-wrap">
-      <h3 class="m-subtitle">¿Qué incluye?</h3>
-      <div class="beneficios">
-        <div class="benefit"><h4>Contenido actualizado</h4><p>Sumamos clases y guías cada mes.</p></div>
-        <div class="benefit"><h4>Comunidad</h4><p>Espacio para feedback y networking.</p></div>
-        <div class="benefit"><h4>En vivo</h4><p>Q&A, revisiones y talleres prácticos.</p></div>
+    <article class="blog-card reveal">
+      <div class="img-color img-rosa" aria-hidden="true"></div>
+      <div class="card-body">
+        <span class="post-date">2 septiembre 2025</span>
+        <h2 class="post-title">Sanación con baños de gong</h2>
+        <p class="post-excerpt">Descubrí cómo el sonido puede transformar tus emociones y liberar memorias profundas.</p>
+        <a href="#" class="btn-link">Leer más</a>
       </div>
-    </div>
+    </article>
+
+    <article class="blog-card reveal">
+      <div class="img-color img-marfil" aria-hidden="true"></div>
+      <div class="card-body">
+        <span class="post-date">28 agosto 2025</span>
+        <h2 class="post-title">Flores de Bach para el equilibrio emocional</h2>
+        <p class="post-excerpt">Una guía práctica para conocer las esencias y cómo aplicarlas en tu vida cotidiana.</p>
+        <a href="#" class="btn-link">Leer más</a>
+      </div>
+    </article>
+
+    <!-- Ocultos / Lazy (se muestran con "Cargar más") -->
+    <article class="blog-card reveal" data-lazy="true">
+      <div class="img-color img-lavanda" aria-hidden="true"></div>
+      <div class="card-body">
+        <span class="post-date">20 agosto 2025</span>
+        <h2 class="post-title">Respirar para calmar el sistema nervioso</h2>
+        <p class="post-excerpt">Ejercicios simples para regular tu energía y volver al eje en minutos.</p>
+        <a href="#" class="btn-link">Leer más</a>
+      </div>
+    </article>
+
+    <article class="blog-card reveal" data-lazy="true">
+      <div class="img-color img-dorado" aria-hidden="true"></div>
+      <div class="card-body">
+        <span class="post-date">12 agosto 2025</span>
+        <h2 class="post-title">Rituales de cierre: 7 días para soltar</h2>
+        <p class="post-excerpt">Un paso a paso simbólico para despedirte de lo que ya cumplió su ciclo.</p>
+        <a href="#" class="btn-link">Leer más</a>
+      </div>
+    </article>
+
+    <article class="blog-card reveal" data-lazy="true">
+      <div class="img-color img-rosa" aria-hidden="true"></div>
+      <div class="card-body">
+        <span class="post-date">5 agosto 2025</span>
+        <h2 class="post-title">Primeros pasos con Reiki</h2>
+        <p class="post-excerpt">Cómo iniciar tu práctica y sostenerla de un modo simple y amoroso.</p>
+        <a href="#" class="btn-link">Leer más</a>
+      </div>
+    </article>
   </section>
 
-  <!-- === FAQ === -->
-  <section class="membresia-faq" id="m-faq" aria-label="Preguntas frecuentes">
-    <div class="m-wrap">
-      <h3 class="m-subtitle">Preguntas frecuentes</h3>
-      <details class="faq" open>
-        <summary>¿Puedo cancelar cuando quiera?</summary>
-        <p>Sí. El plan mensual se renueva automáticamente pero podés cancelarlo antes del próximo ciclo.</p>
-      </details>
-      <details class="faq">
-        <summary>¿Cómo funciona el plan anual?</summary>
-        <p>Es un pago único por 12 meses con un 20% de descuento vs pagar mes a mes.</p>
-      </details>
-      <details class="faq">
-        <summary>¿Cómo accedo al contenido?</summary>
-        <p>Recibís un email con tu acceso. Desde tu cuenta podés ver todo el catálogo y sumarte a los vivos.</p>
-      </details>
-    </div>
-  </section>
-
+  <!-- Botón Cargar más -->
+  <div class="load-more-wrap">
+    <button id="loadMoreBtn" class="btn-load-more" type="button">Cargar más</button>
+  </div>
 </main>
 
 <footer class="site-footer">
@@ -197,15 +165,13 @@
         <small>Terapias · Reiki · Biodecodificación · Meditaciones</small>
       </div>
     </div>
-
     <nav class="f-links">
       <a href="../index.html">Inicio</a>
-      <a href="./cursos.html">Cursos</a>
-      <a href="./membresia.html" aria-current="page">Membresías</a>
-      <a href="./sobre-paz.html">Sobre mí</a>
-      <a href="./contacto.html">Contacto</a>
+      <a href="../html/cursos.html">Cursos</a>
+      <a href="../html/membresia.html">Membresías</a>
+      <a href="../html/sobre-paz.html">Sobre mí</a>
+      <a href="../html/contacto.html">Contacto</a>
     </nav>
-
     <div class="f-contact">
       <a href="mailto:hola@espaciopaz.com">hola@espaciopaz.com</a>
       <div class="f-social">
@@ -215,63 +181,13 @@
       </div>
     </div>
   </div>
-
   <div class="footer-bottom">
     <small>© 2025 Espacio Paz — Todos los derechos reservados.</small>
   </div>
 </footer>
 
-<!-- ===== MODAL AUTH ===== (idéntico al index) -->
-<div class="auth-backdrop" id="authBackdrop" aria-hidden="true"></div>
-<section class="auth-modal" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle" hidden>
-  <button class="auth-close" id="authClose" aria-label="Cerrar" type="button">×</button>
-
-  <header class="auth-tabs">
-    <button class="auth-tab" data-tab="login" id="tabLogin" aria-controls="panelLogin" aria-selected="true" type="button">Iniciar sesión</button>
-    <button class="auth-tab" data-tab="register" id="tabRegister" aria-controls="panelRegister" aria-selected="false" type="button">Registrarse</button>
-  </header>
-
-  <form class="auth-panel" id="panelLogin">
-    <h3 id="authTitle" class="auth-title">¡Hola de nuevo!</h3>
-    <label class="auth-field">
-      <span>Email</span>
-      <input type="email" id="loginEmail" autocomplete="email" required>
-    </label>
-    <label class="auth-field">
-      <span>Contraseña</span>
-      <input type="password" id="loginPass" autocomplete="current-password" required>
-    </label>
-    <div class="auth-actions">
-      <label class="auth-remember"><input type="checkbox"> Recordarme</label>
-      <a href="#" class="auth-link">Olvidé mi contraseña</a>
-    </div>
-    <button class="auth-btn" type="submit">Entrar</button>
-    <p class="auth-msg" id="loginMsg" aria-live="polite"></p>
-  </form>
-
-  <form class="auth-panel" id="panelRegister" hidden>
-    <h3 class="auth-title">Crear cuenta</h3>
-    <label class="auth-field">
-      <span>Nombre</span>
-      <input type="text" id="regName" autocomplete="name" required>
-    </label>
-    <label class="auth-field">
-      <span>Email</span>
-      <input type="email" id="regEmail" autocomplete="email" required>
-    </label>
-    <label class="auth-field">
-      <span>Contraseña</span>
-      <input type="password" id="regPass" autocomplete="new-password" minlength="6" required>
-    </label>
-    <button class="auth-btn" type="submit">Crear cuenta</button>
-    <p class="auth-msg" id="regMsg" aria-live="polite"></p>
-  </form>
-</section>
-
-<!-- CTA flotante (la dejamos igual que en index; si preferís, podemos ocultarla acá) -->
-
-<!-- JS -->
+<!-- Scripts -->
 <script src="../js/script.js"></script>
-<script src="../js/membresia.js" type="module"></script>
+<script src="../js/blog.js" defer></script>
 </body>
 </html>

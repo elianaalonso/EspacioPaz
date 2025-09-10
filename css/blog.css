@@ -1,0 +1,135 @@
+/* === Blog grid y cards === */
+.blog-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  padding: 1rem 0 2rem;
+}
+
+.blog-card {
+  background: #fff;
+  border-radius: 1.5rem; /* 24px */
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(0,0,0,0.1);
+}
+
+.blog-card img {
+  width: 100%;
+  height: 14rem;
+  object-fit: cover;
+  display: block;
+}
+
+.blog-card .card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.post-date {
+  font-size: 0.875rem;
+  color: #b69bd6; /* lila */
+  font-weight: 500;
+}
+
+.post-title {
+  font-size: 1.25rem;
+  line-height: 1.35;
+  color: #333;
+}
+
+.post-excerpt {
+  font-size: 1rem;
+  color: #555;
+  flex-grow: 1;
+}
+
+.btn-link {
+  align-self: flex-start;
+  font-size: 0.95rem;
+  color: #c8a553; /* dorado */
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.btn-link:hover,
+.btn-link:focus-visible {
+  color: #a88634;
+  border-color: #a88634;
+  outline: none;
+}
+
+/* === Animación de aparición === */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* === Lazy (ocultos hasta "cargar más") === */
+.blog-card[data-lazy="true"] {
+  display: none;
+}
+
+/* === Botón "Cargar más" === */
+.load-more-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 0 0 2.5rem;
+}
+.btn-load-more {
+  padding: 0.8rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid #e5e5e5;
+  background: #f8f5f0; /* marfil */
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-load-more:hover,
+.btn-load-more:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  outline: none;
+}
+.btn-load-more[disabled] {
+  opacity: 0.6;
+  cursor: default;
+  transform: none;
+  box-shadow: none;
+}
+.hero-blog {
+  position: relative;
+  background: #f8f5f0; /* marfil */
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.hero-blog::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.25); /* sombra suave */
+  border-radius: inherit;
+}
+
+.hero-blog .hero-content {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+}
