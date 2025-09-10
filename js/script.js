@@ -241,6 +241,11 @@ if (ddCursos) {
     }
   });
 
+  // ✅ Soporte para evento personalizado desde otros scripts
+  document.addEventListener('open-auth-modal', function(){
+    openModal('login');
+  });
+
   // Cerrar y tabs
   closeBtn?.addEventListener('click', closeModal);
   backdrop.addEventListener('click', closeModal);
