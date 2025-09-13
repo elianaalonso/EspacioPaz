@@ -12,6 +12,9 @@
   --muted:#6d6675;
   --card:#ffffff;
   --shadow:0 6px 24px rgba(22,14,26,.08);
+
+  /* Overlay del hero */
+  --hero-overlay: rgba(248,245,240,0.55); 
 }
 
 .sr-only{
@@ -21,19 +24,26 @@
 }
 
 /* ---------- HERO ---------- */
-.courses-hero{ position:relative; isolation:isolate; }
-.courses-hero__bg{
-  height:22rem;
+.courses-hero{
+  position: relative;
+  isolation: isolate;
+  min-height: 22rem;
   background:
-    radial-gradient(120% 80% at 12% 10%, var(--lavanda), transparent 60%),
-    radial-gradient(80% 60% at 88% 28%, var(--rosa), transparent 60%),
-    linear-gradient(180deg, #eee, #faf7ff);
+    linear-gradient(var(--hero-overlay), var(--hero-overlay)),
+    url("../img/cursos/hero.png") center/cover no-repeat;
 }
+
 .courses-hero__inner{
+  position:relative;
   max-width:72rem;
   margin:0 auto;
   padding:2.5rem 1.25rem 1.25rem;
+  min-height:22rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
+
 .courses-hero__title{
   font-size:2rem; line-height:1.2; font-weight:700; margin:0 0 .5rem;
   color:var(--text);
@@ -76,6 +86,7 @@
   display:grid;
   grid-template-columns:18rem 1fr;
   gap:1.25rem;
+  margin-top: 2rem;
 }
 
 /* ---------- SIDEBAR ---------- */
@@ -118,8 +129,36 @@
 }
 .toolbar-label{ margin-right:.5rem; color:var(--muted); }
 .courses .select{
-  padding:.6rem .9rem; border-radius:.8rem;
-  border:1px solid #e8e2ef; background:#fff;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+  font: inherit;
+  padding: .6rem 2.5rem .6rem 1rem;
+  border-radius: 999px;
+  border: 1px solid #e8e2ef;
+  background-color: #fff;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color .2s ease, box-shadow .2s ease;
+  box-shadow: 0 4px 12px rgba(22,14,26,.06);
+}
+.courses .select:focus {
+  outline: none;
+  border-color: var(--lila);
+  box-shadow: 0 0 0 3px rgba(182,155,214,.25);
+}
+/* Flechita custom */
+.courses .select::after {
+  content: "";
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  margin-top: -3px;
+  border-width: 6px 6px 0 6px;
+  border-style: solid;
+  border-color: var(--muted) transparent transparent transparent;
+  pointer-events: none;
 }
 .count{ color:var(--muted); }
 
@@ -156,8 +195,6 @@
 .nl-title{ margin:0 0 .5rem; }
 .nl-form{ display:flex; gap:.75rem; }
 
-/* ---------- Footer (ajustes suaves para tu marcado) ---------- */
-
 /* ---------- Responsive ---------- */
 @media (max-width:64rem){ /* <= 1024px */
   .courses-body{ grid-template-columns:16rem 1fr; }
@@ -176,81 +213,3 @@
 
 /* A11y */
 :focus-visible{ outline:2px solid var(--dorado); outline-offset:2px; }
-
-/* HERO */
-.courses-hero{
-  position:relative;
-  isolation:isolate;
-  overflow:hidden;
-  /* da aire abajo para que no “choque” con el body */
-  padding-bottom: 1.5rem;
-}
-
-/* el fondo ocupa todo el hero */
-.courses-hero__bg{
-  position:absolute;
-  inset:0;
-  height:22rem;                 /* ajustá si querés más/menos alto */
-  background:
-    radial-gradient(120% 80% at 12% 10%, var(--lavanda), transparent 60%),
-    radial-gradient(80% 60% at 88% 28%, var(--rosa), transparent 60%),
-    linear-gradient(180deg, #eee, #faf7ff);
-}
-
-/* el contenido va por encima del fondo */
-.courses-hero__inner{
-  position:relative;            /* crea contexto por encima del bg */
-  max-width:72rem;
-  margin:0 auto;
-  padding: 2.5rem 1.25rem 1.25rem;
-  min-height: 22rem;            /* mismo alto que el fondo */
-  display:flex;
-  flex-direction:column;
-  justify-content:center;     /* texto “apoyado” abajo del hero */
-}
-
-.courses-hero__title{
-  font-size:2rem; line-height:1.2; font-weight:700; margin:0 0 .5rem;
-  color:var(--text);
-}
-.courses-hero__subtitle{ margin:0 0 1rem; max-width:56ch; color:var(--muted); }
-
-.courses-hero__search{
-  display:flex; gap:.75rem; align-items:center;
-}
-
-/* ---------- SELECT ORDENAR ---------- */
-.courses .select {
-  appearance: none;        /* quitamos flecha default */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  position: relative;
-  font: inherit;
-  padding: .6rem 2.5rem .6rem 1rem; /* espacio extra a la derecha */
-  border-radius: 999px;
-  border: 1px solid #e8e2ef;
-  background-color: #fff;
-  color: var(--text);
-  cursor: pointer;
-  transition: border-color .2s ease, box-shadow .2s ease;
-  box-shadow: 0 4px 12px rgba(22,14,26,.06);
-}
-
-.courses .select:focus {
-  outline: none;
-  border-color: var(--lila);
-  box-shadow: 0 0 0 3px rgba(182,155,214,.25);
-}
-
-/* Flechita custom */
-.courses .select::after {
-  content: "";
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  margin-top: -3px;
-  border-width: 6px 6px 0 6px;
-  border-style: solid;
-  border-color: var(--muted) transparent transparent transparent;
-  pointer-events: none;
-}
