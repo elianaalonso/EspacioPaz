@@ -1,0 +1,220 @@
+/* =========================================
+   Cursos — estilos específicos (encapsulados)
+   No sobrescribe tu estilo base del sitio.
+========================================= */
+:root{
+  --lila:#b69bd6;
+  --lavanda:#d9c9ef;
+  --rosa:#f4d9e6;
+  --marfil:#f8f5f0;
+  --dorado:#c8a553;
+  --text:#2e2a32;
+  --muted:#6d6675;
+  --card:#ffffff;
+  --shadow:0 6px 24px rgba(22,14,26,.08);
+}
+
+.sr-only{
+  position:absolute!important; width:1px; height:1px;
+  padding:0; margin:-1px; overflow:hidden;
+  clip:rect(0,0,0,0); border:0;
+}
+
+/* ---------- HERO ---------- */
+.courses-hero{ position:relative; isolation:isolate; }
+.courses-hero__bg{
+  height:22rem;
+  background:
+    radial-gradient(120% 80% at 12% 10%, var(--lavanda), transparent 60%),
+    radial-gradient(80% 60% at 88% 28%, var(--rosa), transparent 60%),
+    linear-gradient(180deg, #eee, #faf7ff);
+}
+.courses-hero__inner{
+  max-width:72rem;
+  margin:0 auto;
+  padding:2.5rem 1.25rem 1.25rem;
+}
+.courses-hero__title{
+  font-size:2rem; line-height:1.2; font-weight:700; margin:0 0 .5rem;
+  color:var(--text);
+}
+.courses-hero__subtitle{
+  margin:0 0 1rem; max-width:56ch; color:var(--muted);
+}
+.courses-hero__search{
+  display:flex; gap:.75rem; align-items:center;
+}
+.courses .input{
+  flex:1; min-width:12rem; padding:.85rem 1rem;
+  border-radius:1rem; border:1px solid #e8e2ef; background:#fff;
+}
+.courses .btn{
+  padding:.85rem 1rem; border-radius:1rem; border:1px solid transparent;
+  background:var(--lila); color:#fff; cursor:pointer; box-shadow:var(--shadow);
+}
+.courses .btn.btn-ghost{
+  background:#fff; color:var(--text); border:1px solid #ece6f5;
+}
+.courses .btn.btn-secondary{
+  background:var(--dorado); color:#1f1a12;
+}
+.courses .btn:focus-visible,
+.courses .input:focus-visible,
+.courses select:focus-visible{
+  outline:2px solid var(--dorado); outline-offset:2px;
+}
+
+/* ---------- LAYOUT: Sidebar + Grid ---------- */
+.courses{
+  background:var(--marfil);
+  color:var(--text);
+}
+.courses-body{
+  max-width:80rem;
+  margin:0 auto;
+  padding:0 1.25rem 3rem;
+  display:grid;
+  grid-template-columns:18rem 1fr;
+  gap:1.25rem;
+}
+
+/* ---------- SIDEBAR ---------- */
+.courses-sidebar{
+  position:sticky; top:1rem; align-self:start;
+  background:#fff; border-radius:1.25rem; box-shadow:var(--shadow);
+  padding:1rem;
+}
+.courses-sidebar__title{ font-size:1.125rem; margin:0 0 .5rem; }
+.courses-sidebar__toggle{
+  display:none; width:100%;
+  justify-content:space-between; align-items:center;
+  padding:.7rem 1rem; border-radius:.8rem;
+  border:1px solid #eee; background:#fff;
+}
+.courses-filter{
+  list-style:none; margin:0; padding:0;
+  display:grid; gap:.5rem;
+}
+.chip{
+  display:inline-block; padding:.55rem .95rem; cursor:pointer;
+  border-radius:999px; background:#fff; border:1px solid #e7e0ef;
+  font:inherit;
+}
+.chip.is-active, .chip:hover{
+  border-color:var(--lila);
+  box-shadow:0 0 0 3px rgba(182,155,214,.14);
+}
+.courses-cta{
+  margin-top:1rem; padding:1rem; background:#fdfbff;
+  border:1px dashed #eadff7; border-radius:1rem;
+}
+.courses-cta__text{ margin:0 0 .5rem; color:var(--muted); }
+
+/* ---------- LISTADO / TOOLBAR ---------- */
+.courses-listing{ min-width:0; }
+.courses-toolbar{
+  display:flex; justify-content:space-between; align-items:center;
+  margin:0 0 1rem;
+}
+.toolbar-label{ margin-right:.5rem; color:var(--muted); }
+.courses .select{
+  padding:.6rem .9rem; border-radius:.8rem;
+  border:1px solid #e8e2ef; background:#fff;
+}
+.count{ color:var(--muted); }
+
+/* ---------- GRID + CARDS ---------- */
+.courses-grid{
+  list-style:none; margin:0; padding:0;
+  display:grid; gap:1rem; grid-template-columns:repeat(3,minmax(0,1fr));
+}
+.course-card{
+  background:var(--card); border-radius:1.5rem;
+  box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column;
+}
+.course-card__link{ text-decoration:none; color:inherit; display:flex; flex-direction:column; }
+.course-card__media{ aspect-ratio:16/9; }
+
+/* Colores sólidos para visualizar sin imágenes */
+.color-1{ background:#c8a553; } /* dorado */
+.color-2{ background:#b69bd6; } /* lila */
+.color-3{ background:#f4d9e6; } /* rosa pastel */
+.color-4{ background:#d9c9ef; } /* lavanda */
+
+.course-card__body{ padding:1rem; }
+.course-card__title{ font-size:1rem; margin:.2rem 0 .25rem; }
+.course-card__desc{ margin:0 0 .75rem; color:var(--muted); }
+.course-card__meta{ display:flex; justify-content:space-between; align-items:center; }
+.price{ font-weight:700; color:#1f1a1f; }
+
+/* ---------- Newsletter ---------- */
+.courses-newsletter{
+  max-width:72rem; margin:2rem auto 3rem;
+  background:#ffffff; border-radius:1.25rem; box-shadow:var(--shadow);
+  padding:1.25rem;
+}
+.nl-title{ margin:0 0 .5rem; }
+.nl-form{ display:flex; gap:.75rem; }
+
+/* ---------- Footer (ajustes suaves para tu marcado) ---------- */
+
+/* ---------- Responsive ---------- */
+@media (max-width:64rem){ /* <= 1024px */
+  .courses-body{ grid-template-columns:16rem 1fr; }
+  .courses-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+
+@media (max-width:48rem){ /* <= 768px */
+  .courses-hero__inner{ padding:1.25rem; }
+  .courses-body{ grid-template-columns:1fr; }
+  .courses-sidebar{ position:relative; }
+  .courses-sidebar__toggle{ display:flex; }
+  .courses-sidebar__panel{ display:none; margin-top:.75rem; }
+  .courses-grid{ grid-template-columns:1fr; }
+  .footer-inner{ grid-template-columns:1fr; }
+}
+
+/* A11y */
+:focus-visible{ outline:2px solid var(--dorado); outline-offset:2px; }
+
+/* HERO */
+.courses-hero{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  /* da aire abajo para que no “choque” con el body */
+  padding-bottom: 1.5rem;
+}
+
+/* el fondo ocupa todo el hero */
+.courses-hero__bg{
+  position:absolute;
+  inset:0;
+  height:22rem;                 /* ajustá si querés más/menos alto */
+  background:
+    radial-gradient(120% 80% at 12% 10%, var(--lavanda), transparent 60%),
+    radial-gradient(80% 60% at 88% 28%, var(--rosa), transparent 60%),
+    linear-gradient(180deg, #eee, #faf7ff);
+}
+
+/* el contenido va por encima del fondo */
+.courses-hero__inner{
+  position:relative;            /* crea contexto por encima del bg */
+  max-width:72rem;
+  margin:0 auto;
+  padding: 2.5rem 1.25rem 1.25rem;
+  min-height: 22rem;            /* mismo alto que el fondo */
+  display:flex;
+  flex-direction:column;
+  justify-content:center;     /* texto “apoyado” abajo del hero */
+}
+
+.courses-hero__title{
+  font-size:2rem; line-height:1.2; font-weight:700; margin:0 0 .5rem;
+  color:var(--text);
+}
+.courses-hero__subtitle{ margin:0 0 1rem; max-width:56ch; color:var(--muted); }
+
+.courses-hero__search{
+  display:flex; gap:.75rem; align-items:center;
+}

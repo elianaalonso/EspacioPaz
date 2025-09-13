@@ -1,22 +1,26 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Espacio Paz – Navbar</title>
+  <title>Espacio Paz — Cursos</title>
+  <meta name="description" content="Cursos y formaciones de Espacio Paz: Reiki, Meditaciones, Biodecodificación y más.">
   <link rel="stylesheet" href="../css/estilo.css">
+  <link rel="stylesheet" href="../css/cursos.css">
 </head>
 <body>
 
 <header class="nav-wrap">
   <nav class="nav" aria-label="Navegación principal">
-    <a class="brand" href="/">
+    <!-- Marca -->
+    <div class="brand">
       <img src="../img/logo.png" alt="Espacio Paz" class="logo">
       <span>Espacio Paz</span>
-    </a>
+    </div>
 
-    <!-- Botón hamburguesa -->
-    <button class="icon-btn hamburger" aria-label="Abrir menú" aria-expanded="false" id="hamburgerBtn">
+    <!-- Hamburguesa -->
+    <button class="icon-btn hamburger" type="button" aria-label="Abrir menú" aria-expanded="false" id="hamburgerBtn">
       <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke-width="2" stroke-linecap="round"/></svg>
     </button>
 
@@ -24,16 +28,16 @@
       <a href="../index.html">Inicio</a>
 
       <div class="dropdown" id="ddCursos">
-        <button class="dropdown-toggle">Cursos
+        <a href="cursos.html" class="dropdown-toggle" role="button">Cursos
           <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px">
             <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
-        </button>
+        </a>
         <div class="dropdown-menu">
-          <a href="/cursos/reiki">🔆 Reiki</a>
-          <a href="/cursos/meditaciones">🧘 Meditaciones</a>
-          <a href="/cursos/biodecodificacion">🌿 Biodecodificación</a>
-          <a href="/cursos/rituales">🔮 Rituales</a>
+          <a href="cursos/reiki.html">🔆 Reiki</a>
+          <a href="cursos/meditaciones.html">🧘 Meditaciones</a>
+          <a href="cursos/biodecodificacion.html">🌿 Biodecodificación</a>
+          <a href="cursos/rituales.html">🔮 Rituales</a>
         </div>
       </div>
 
@@ -42,7 +46,7 @@
       <a href="blog.html">Blog</a>
       <a href="contacto.html">Contacto</a>
 
-       <!-- BUSCADOR -->
+      <!-- BUSCADOR -->
       <div class="search-wrap" id="searchWrap">
         <input id="searchInput" type="search" placeholder="Buscar cursos… (ej: reiki, luna, chakras)" aria-label="Buscar cursos">
         <button class="icon-btn" type="button" id="searchToggle" aria-label="Abrir buscador">
@@ -54,29 +58,225 @@
         <div id="searchResults" class="search-results" aria-live="polite"></div>
       </div>
 
-      <div class="auth">
+      <!-- Auth area (lo rellena el JS) -->
+      <div class="auth" id="authArea">
         <a href="#" data-open="login">Iniciar sesión</a>
         <a href="#" data-open="register">Registrarse</a>
       </div>
 
       <!-- Carrito -->
-<a class="icon-btn cart-btn" href="html/carrito.html" aria-label="Carrito" id="cartButton">
-  <svg viewBox="0 0 24 24" fill="none" width="20" height="20" stroke="currentColor" aria-hidden="true">
-    <path d="M6 6h15l-1.5 9h-12L6 6z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="9" cy="20" r="1.8"></circle>
-    <circle cx="17" cy="20" r="1.8"></circle>
-  </svg>
-  <span class="cart-badge" id="cartBadge" aria-live="polite">0</span>
-</a>
-
+      <a class="icon-btn cart-btn" href="carrito.html" aria-label="Carrito" id="cartButton">
+        <svg viewBox="0 0 24 24" fill="none" width="20" height="20" stroke="currentColor" aria-hidden="true">
+          <path d="M6 6h15l-1.5 9h-12L6 6z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="9" cy="20" r="1.8"></circle>
+          <circle cx="17" cy="20" r="1.8"></circle>
+        </svg>
+        <span class="cart-badge" id="cartBadge" aria-live="polite">0</span>
+      </a>
     </div>
   </nav>
 </header>
-<main style="max-width:1200px;margin:40px auto;padding:0 20px">
-  <h1>Bienvenida</h1>
-  <p>Acá iría el contenido de la página. La navbar ya está separada en HTML + CSS + JS.</p>
-</main>
 
-<script src="js/script.js"></script>
+
+<main id="contenido" class="courses">
+  <section class="courses-hero" aria-label="Destacado">
+  <div class="courses-hero__bg" role="img" aria-label="Fondo con degradados lila y rosa"></div>
+
+  <div class="courses-hero__inner">
+    <h1 class="courses-hero__title">Cursos para tu proceso</h1>
+    <p class="courses-hero__subtitle">
+      Formaciones y prácticas para tu camino de sanación: Reiki,
+      Biodecodificación, meditaciones y más.
+    </p>
+    <form class="courses-hero__search" role="search" aria-label="Buscar cursos">
+      <label class="sr-only" for="q">Buscar cursos</label>
+      <input id="q" class="input" name="q" type="search" placeholder="Buscar cursos" autocomplete="off" />
+      <button class="btn" type="submit">Buscar</button>
+    </form>
+  </div>
+</section>
+
+          <section class="courses-body" aria-label="Listado de cursos y filtros">
+            <aside class="courses-sidebar" aria-labelledby="cats-title">
+              <h2 id="cats-title" class="courses-sidebar__title">Categorías</h2>
+              <button class="courses-sidebar__toggle" aria-expanded="false" aria-controls="cats-list">
+                Filtros <span class="chev" aria-hidden="true">▾</span>
+              </button>
+              <div id="cats-list" class="courses-sidebar__panel">
+                <ul class="courses-filter">
+                  <li><button class="chip is-active" data-filter="todos">Todos los cursos</button></li>
+                  <li><button class="chip" data-filter="reiki">Reiki</button></li>
+                  <li><button class="chip" data-filter="biodecodificacion">Biodecodificación</button></li>
+                  <li><button class="chip" data-filter="meditaciones">Meditaciones</button></li>
+                  <li><button class="chip" data-filter="rituales">Rituales</button></li>
+                  <li><button class="chip" data-filter="membresias">Membresías</button></li>
+                </ul>
+                <div class="courses-cta">
+                  <p class="courses-cta__text">¿No sabés por dónde empezar?</p>
+                  <a class="btn btn-secondary" href="/membresias/">Explorar membresías</a>
+                </div>
+              </div>
+            </aside>
+            <div class="courses-listing">
+              <div class="courses-toolbar" role="region" aria-label="Herramientas del listado">
+                <div class="toolbar-left">
+                  <span class="count" aria-live="polite"><strong id="count">0</strong> cursos</span>
+                </div>
+                <div class="toolbar-right">
+                  <label for="orden" class="toolbar-label">Ordenar</label>
+                  <select id="orden" class="select">
+                    <option value="pop">Más populares</option>
+                    <option value="new">Más recientes</option>
+                    <option value="priceAsc">Precio: menor a mayor</option>
+                    <option value="priceDesc">Precio: mayor a menor</option>
+                  </select>
+                </div>
+              </div>
+              <ul id="grid" class="courses-grid" aria-label="Listado de cursos">
+                <li class="course-card" data-cats="reiki" data-price="75" data-pop="98" data-date="2025-07-01">
+                  <a class="course-card__link" href="/cursos/reiki-nivel-1.html">
+                    <div class="course-card__media color-1" aria-hidden="true"></div>
+                    <div class="course-card__body">
+                      <h3 class="course-card__title">Reiki Usui — Nivel 1</h3>
+                      <p class="course-card__desc">Iniciación a la energía Reiki para uso personal y cuidado cotidiano.</p>
+                      <div class="course-card__meta">
+                        <span class="price" aria-label="Precio">$ 75</span>
+                        <button class="btn btn-ghost add-cart" data-id="reiki-n1" type="button">Agregar al carrito</button>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li class="course-card" data-cats="biodecodificacion" data-price="120" data-pop="86" data-date="2025-08-15">
+                  <a class="course-card__link" href="/cursos/biodecodificacion-intro.html">
+                    <div class="course-card__media color-2" aria-hidden="true"></div>
+                    <div class="course-card__body">
+                      <h3 class="course-card__title">Biodecodificación — Introducción</h3>
+                      <p class="course-card__desc">Claves para comprender el lenguaje simbólico del cuerpo.</p>
+                      <div class="course-card__meta">
+                        <span class="price">$ 120</span>
+                        <button class="btn btn-ghost add-cart" data-id="bio-intro" type="button">Agregar al carrito</button>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li class="course-card" data-cats="meditaciones" data-price="35" data-pop="92" data-date="2025-06-10">
+                  <a class="course-card__link" href="/cursos/meditacion-presencia.html">
+                    <div class="course-card__media color-3" aria-hidden="true"></div>
+                    <div class="course-card__body">
+                      <h3 class="course-card__title">Meditación — Vivir el presente</h3>
+                      <p class="course-card__desc">Prácticas guiadas para calmar la mente y habitarte.</p>
+                      <div class="course-card__meta">
+                        <span class="price">$ 35</span>
+                        <button class="btn btn-ghost add-cart" data-id="med-presencia" type="button">Agregar al carrito</button>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+                <li class="course-card" data-cats="rituales" data-price="49" data-pop="80" data-date="2025-05-22">
+                  <a class="course-card__link" href="/cursos/rituales-liberacion.html">
+                    <div class="course-card__media color-4" aria-hidden="true"></div>
+                    <div class="course-card__body">
+                      <h3 class="course-card__title">Rituales de liberación</h3>
+                      <p class="course-card__desc">Cartas, símbolos y prácticas para ordenar el sistema.</p>
+                      <div class="course-card__meta">
+                        <span class="price">$ 49</span>
+                        <button class="btn btn-ghost add-cart" data-id="rituales-lib" type="button">Agregar al carrito</button>
+                      </div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </section>
+          <section class="courses-newsletter" aria-label="Suscripción a novedades">
+            <h2 class="nl-title">Recibí novedades y promociones</h2>
+            <form class="nl-form">
+              <label class="sr-only" for="email">Correo electrónico</label>
+              <input id="email" class="input" type="email" placeholder="tu@email.com" aria-required="true" />
+              <button class="btn" type="submit">Suscribirme</button>
+            </form>
+          </section>
+        </main>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="f-brand">
+      <img src="../img/logo.png" alt="Espacio Paz" class="f-logo">
+      <div>
+        <strong>Espacio Paz</strong>
+        <small>Terapias · Reiki · Biodecodificación · Meditaciones</small>
+      </div>
+    </div>
+    <nav class="f-links">
+      <a href="../index.html">Inicio</a>
+      <a href="cursos.html">Cursos</a>
+      <a href="membresia.html">Membresías</a>
+      <a href="sobre-paz.html">Sobre mí</a>
+      <a href="contacto.html">Contacto</a>
+    </nav>
+    <div class="f-contact">
+      <a href="mailto:hola@espaciopaz.com">hola@espaciopaz.com</a>
+      <div class="f-social">
+        <a href="#" aria-label="Instagram">IG</a>
+        <a href="#" aria-label="YouTube">YT</a>
+        <a href="#" aria-label="TikTok">TT</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <small>© <span id="year"></span> Espacio Paz — Todos los derechos reservados.</small>
+  </div>
+</footer>
+
+<!-- ===== MODAL AUTH ===== -->
+<div class="auth-backdrop" id="authBackdrop" aria-hidden="true"></div>
+<section class="auth-modal" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle" hidden>
+  <button class="auth-close" id="authClose" aria-label="Cerrar" type="button">×</button>
+
+  <header class="auth-tabs">
+    <button class="auth-tab" data-tab="login" id="tabLogin" aria-controls="panelLogin" aria-selected="true" type="button">Iniciar sesión</button>
+    <button class="auth-tab" data-tab="register" id="tabRegister" aria-controls="panelRegister" aria-selected="false" type="button">Registrarse</button>
+  </header>
+
+  <!-- Login -->
+  <form class="auth-panel" id="panelLogin">
+    <h3 id="authTitle" class="auth-title">¡Hola de nuevo!</h3>
+    <label class="auth-field">
+      <span>Email</span>
+      <input type="email" id="loginEmail" autocomplete="email" required>
+    </label>
+    <label class="auth-field">
+      <span>Contraseña</span>
+      <input type="password" id="loginPass" autocomplete="current-password" required>
+    </label>
+    <div class="auth-actions">
+      <label class="auth-remember"><input type="checkbox"> Recordarme</label>
+      <a href="#" class="auth-link">Olvidé mi contraseña</a>
+    </div>
+    <button class="auth-btn" type="submit">Entrar</button>
+    <p class="auth-msg" id="loginMsg" aria-live="polite"></p>
+  </form>
+
+  <!-- Register -->
+  <form class="auth-panel" id="panelRegister" hidden>
+    <h3 class="auth-title">Crear cuenta</h3>
+    <label class="auth-field">
+      <span>Nombre</span>
+      <input type="text" id="regName" autocomplete="name" required>
+    </label>
+    <label class="auth-field">
+      <span>Email</span>
+      <input type="email" id="regEmail" autocomplete="email" required>
+    </label>
+    <label class="auth-field">
+      <span>Contraseña</span>
+      <input type="password" id="regPass" autocomplete="new-password" minlength="6" required>
+    </label>
+    <button class="auth-btn" type="submit">Crear cuenta</button>
+    <p class="auth-msg" id="regMsg" aria-live="polite"></p>
+  </form>
+</section>
+
+<script src="../js/script.js"></script>
+<script src="../js/cursos.js" defer></script>
 </body>
 </html>
