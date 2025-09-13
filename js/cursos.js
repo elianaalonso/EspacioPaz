@@ -69,20 +69,24 @@
 	}
 	if(select){ select.addEventListener('change', ()=> sortBy(select.value)); sortBy(select.value); }
 
-	// Buscar en hero
-	const form = $('.courses-hero__search');
-	const input = $('#q');
-	if(form && input){
-		form.addEventListener('submit', (e)=>{
-			e.preventDefault();
-			const q = input.value.trim().toLowerCase();
-			items.forEach(li =>{
-				const text = li.textContent.toLowerCase();
-				li.style.display = text.includes(q) ? '' : 'none';
+		// Buscar en hero (filtrado en vivo como en el index)
+		const form = $('.courses-hero__search');
+		const input = $('#q');
+		if(form && input){
+			function doSearch(){
+				const q = input.value.trim().toLowerCase();
+				items.forEach(li =>{
+					const text = li.textContent.toLowerCase();
+					li.style.display = text.includes(q) ? '' : 'none';
+				});
+				updateCount();
+			}
+			input.addEventListener('input', doSearch);
+			form.addEventListener('submit', (e)=>{
+				e.preventDefault();
+				doSearch();
 			});
-			updateCount();
-		});
-	}
+		}
 
 
 		// Botón "Agregar al carrito" (real, igual que en index)
