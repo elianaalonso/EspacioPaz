@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -79,124 +78,258 @@
 
 
 <main id="contenido" class="courses">
+  <!-- HERO -->
   <section class="courses-hero" aria-label="Destacado">
-  <div class="courses-hero__bg" role="img" aria-label="Fondo con degradados lila y rosa"></div>
+    <div class="courses-hero__bg" role="img" aria-label="Fondo con degradados lila y rosa"></div>
+    <div class="courses-hero__inner">
+      <h1 class="courses-hero__title">Cursos para tu proceso</h1>
+      <p class="courses-hero__subtitle">
+        Formaciones y prácticas para tu camino de sanación: Reiki,
+        Biodecodificación, meditaciones y más.
+      </p>
+      <form class="courses-hero__search" role="search" aria-label="Buscar cursos">
+        <label class="sr-only" for="q">Buscar cursos</label>
+        <input id="q" class="input" name="q" type="search" placeholder="Buscar cursos" autocomplete="off" />
+        <button class="btn" type="submit">Buscar</button>
+      </form>
+    </div>
+  </section>
 
-  <div class="courses-hero__inner">
-    <h1 class="courses-hero__title">Cursos para tu proceso</h1>
-    <p class="courses-hero__subtitle">
-      Formaciones y prácticas para tu camino de sanación: Reiki,
-      Biodecodificación, meditaciones y más.
-    </p>
-    <form class="courses-hero__search" role="search" aria-label="Buscar cursos">
-      <label class="sr-only" for="q">Buscar cursos</label>
-      <input id="q" class="input" name="q" type="search" placeholder="Buscar cursos" autocomplete="off" />
-      <button class="btn" type="submit">Buscar</button>
-    </form>
-  </div>
-</section>
+  <!-- BODY -->
+  <section class="courses-body" aria-label="Listado de cursos y filtros">
+    <aside class="courses-sidebar" aria-labelledby="cats-title">
+      <h2 id="cats-title" class="courses-sidebar__title">Categorías</h2>
+      <button class="courses-sidebar__toggle" aria-expanded="false" aria-controls="cats-list">
+        Filtros <span class="chev" aria-hidden="true">▾</span>
+      </button>
+      <div id="cats-list" class="courses-sidebar__panel">
+        <ul class="courses-filter">
+          <li><button class="chip is-active" data-filter="todos">Todos los cursos</button></li>
+          <li><button class="chip" data-filter="reiki">Reiki</button></li>
+          <li><button class="chip" data-filter="biodecodificacion">Biodecodificación</button></li>
+          <li><button class="chip" data-filter="meditaciones">Meditaciones</button></li>
+          <li><button class="chip" data-filter="rituales">Rituales</button></li>
+          <li><button class="chip" data-filter="membresias">Membresías</button></li>
+        </ul>
+        <div class="courses-cta">
+          <p class="courses-cta__text">¿No sabés por dónde empezar?</p>
+          <a class="btn btn-secondary" href="/membresias/">Explorar membresías</a>
+        </div>
+      </div>
+    </aside>
 
-          <section class="courses-body" aria-label="Listado de cursos y filtros">
-            <aside class="courses-sidebar" aria-labelledby="cats-title">
-              <h2 id="cats-title" class="courses-sidebar__title">Categorías</h2>
-              <button class="courses-sidebar__toggle" aria-expanded="false" aria-controls="cats-list">
-                Filtros <span class="chev" aria-hidden="true">▾</span>
-              </button>
-              <div id="cats-list" class="courses-sidebar__panel">
-                <ul class="courses-filter">
-                  <li><button class="chip is-active" data-filter="todos">Todos los cursos</button></li>
-                  <li><button class="chip" data-filter="reiki">Reiki</button></li>
-                  <li><button class="chip" data-filter="biodecodificacion">Biodecodificación</button></li>
-                  <li><button class="chip" data-filter="meditaciones">Meditaciones</button></li>
-                  <li><button class="chip" data-filter="rituales">Rituales</button></li>
-                  <li><button class="chip" data-filter="membresias">Membresías</button></li>
-                </ul>
-                <div class="courses-cta">
-                  <p class="courses-cta__text">¿No sabés por dónde empezar?</p>
-                  <a class="btn btn-secondary" href="/membresias/">Explorar membresías</a>
-                </div>
+    <div class="courses-listing">
+      <!-- Toolbar -->
+      <div class="courses-toolbar" role="region" aria-label="Herramientas del listado">
+        <div class="toolbar-left">
+          <span class="count" aria-live="polite"><strong id="count">0</strong> cursos</span>
+        </div>
+        <div class="toolbar-right">
+          <label for="orden" class="toolbar-label">Ordenar</label>
+          <select id="orden" class="select">
+            <option value="pop">Más populares</option>
+            <option value="new">Más recientes</option>
+            <option value="priceAsc">Precio: menor a mayor</option>
+            <option value="priceDesc">Precio: mayor a menor</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- GRID -->
+      <ul id="grid" class="courses-grid" aria-label="Listado de cursos">
+        <!-- 1 -->
+        <li class="course-card" data-cats="reiki" data-price="75" data-pop="98" data-date="2025-07-01">
+          <a class="course-card__link" href="/cursos/reiki-nivel-1.html">
+            <div class="course-card__media color-1" aria-hidden="true"></div>
+            <div class="course-card__body">
+              <h3 class="course-card__title">Reiki Usui — Nivel 1</h3>
+              <p class="course-card__desc">Iniciación a la energía Reiki para uso personal y cuidado cotidiano.</p>
+              <div class="course-card__meta">
+                <span class="price" aria-label="Precio">$ 75</span>
+                <button class="btn btn-ghost add-cart" data-id="reiki-n1" type="button">Agregar al carrito</button>
               </div>
-            </aside>
-            <div class="courses-listing">
-              <div class="courses-toolbar" role="region" aria-label="Herramientas del listado">
-                <div class="toolbar-left">
-                  <span class="count" aria-live="polite"><strong id="count">0</strong> cursos</span>
-                </div>
-                <div class="toolbar-right">
-                  <label for="orden" class="toolbar-label">Ordenar</label>
-                  <select id="orden" class="select">
-                    <option value="pop">Más populares</option>
-                    <option value="new">Más recientes</option>
-                    <option value="priceAsc">Precio: menor a mayor</option>
-                    <option value="priceDesc">Precio: mayor a menor</option>
-                  </select>
-                </div>
-              </div>
-              <ul id="grid" class="courses-grid" aria-label="Listado de cursos">
-                <li class="course-card" data-cats="reiki" data-price="75" data-pop="98" data-date="2025-07-01">
-                  <a class="course-card__link" href="/cursos/reiki-nivel-1.html">
-                    <div class="course-card__media color-1" aria-hidden="true"></div>
-                    <div class="course-card__body">
-                      <h3 class="course-card__title">Reiki Usui — Nivel 1</h3>
-                      <p class="course-card__desc">Iniciación a la energía Reiki para uso personal y cuidado cotidiano.</p>
-                      <div class="course-card__meta">
-                        <span class="price" aria-label="Precio">$ 75</span>
-                        <button class="btn btn-ghost add-cart" data-id="reiki-n1" type="button">Agregar al carrito</button>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                <li class="course-card" data-cats="biodecodificacion" data-price="120" data-pop="86" data-date="2025-08-15">
-                  <a class="course-card__link" href="/cursos/biodecodificacion-intro.html">
-                    <div class="course-card__media color-2" aria-hidden="true"></div>
-                    <div class="course-card__body">
-                      <h3 class="course-card__title">Biodecodificación — Introducción</h3>
-                      <p class="course-card__desc">Claves para comprender el lenguaje simbólico del cuerpo.</p>
-                      <div class="course-card__meta">
-                        <span class="price">$ 120</span>
-                        <button class="btn btn-ghost add-cart" data-id="bio-intro" type="button">Agregar al carrito</button>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                <li class="course-card" data-cats="meditaciones" data-price="35" data-pop="92" data-date="2025-06-10">
-                  <a class="course-card__link" href="/cursos/meditacion-presencia.html">
-                    <div class="course-card__media color-3" aria-hidden="true"></div>
-                    <div class="course-card__body">
-                      <h3 class="course-card__title">Meditación — Vivir el presente</h3>
-                      <p class="course-card__desc">Prácticas guiadas para calmar la mente y habitarte.</p>
-                      <div class="course-card__meta">
-                        <span class="price">$ 35</span>
-                        <button class="btn btn-ghost add-cart" data-id="med-presencia" type="button">Agregar al carrito</button>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                <li class="course-card" data-cats="rituales" data-price="49" data-pop="80" data-date="2025-05-22">
-                  <a class="course-card__link" href="/cursos/rituales-liberacion.html">
-                    <div class="course-card__media color-4" aria-hidden="true"></div>
-                    <div class="course-card__body">
-                      <h3 class="course-card__title">Rituales de liberación</h3>
-                      <p class="course-card__desc">Cartas, símbolos y prácticas para ordenar el sistema.</p>
-                      <div class="course-card__meta">
-                        <span class="price">$ 49</span>
-                        <button class="btn btn-ghost add-cart" data-id="rituales-lib" type="button">Agregar al carrito</button>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-              </ul>
             </div>
-          </section>
-          <section class="courses-newsletter" aria-label="Suscripción a novedades">
-            <h2 class="nl-title">Recibí novedades y promociones</h2>
-            <form class="nl-form">
-              <label class="sr-only" for="email">Correo electrónico</label>
-              <input id="email" class="input" type="email" placeholder="tu@email.com" aria-required="true" />
-              <button class="btn" type="submit">Suscribirme</button>
-            </form>
-          </section>
-        </main>
+          </a>
+        </li>
+
+        <!-- 2 -->
+        <li class="course-card" data-cats="biodecodificacion" data-price="120" data-pop="86" data-date="2025-08-15">
+          <a class="course-card__link" href="/cursos/biodecodificacion-intro.html">
+            <div class="course-card__media color-2" aria-hidden="true"></div>
+            <div class="course-card__body">
+              <h3 class="course-card__title">Biodecodificación — Introducción</h3>
+              <p class="course-card__desc">Claves para comprender el lenguaje simbólico del cuerpo.</p>
+              <div class="course-card__meta">
+                <span class="price">$ 120</span>
+                <button class="btn btn-ghost add-cart" data-id="bio-intro" type="button">Agregar al carrito</button>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- 3 -->
+        <li class="course-card" data-cats="meditaciones" data-price="35" data-pop="92" data-date="2025-06-10">
+          <a class="course-card__link" href="/cursos/meditacion-presencia.html">
+            <div class="course-card__media color-3" aria-hidden="true"></div>
+            <div class="course-card__body">
+              <h3 class="course-card__title">Meditación — Vivir el presente</h3>
+              <p class="course-card__desc">Prácticas guiadas para calmar la mente y habitarte.</p>
+              <div class="course-card__meta">
+                <span class="price">$ 35</span>
+                <button class="btn btn-ghost add-cart" data-id="med-presencia" type="button">Agregar al carrito</button>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- 4 -->
+        <li class="course-card" data-cats="rituales" data-price="49" data-pop="80" data-date="2025-05-22">
+          <a class="course-card__link" href="/cursos/rituales-liberacion.html">
+            <div class="course-card__media color-4" aria-hidden="true"></div>
+            <div class="course-card__body">
+              <h3 class="course-card__title">Rituales de liberación</h3>
+              <p class="course-card__desc">Cartas, símbolos y prácticas para ordenar el sistema.</p>
+              <div class="course-card__meta">
+                <span class="price">$ 49</span>
+                <button class="btn btn-ghost add-cart" data-id="rituales-lib" type="button">Agregar al carrito</button>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- 5 -->
+        <li class="course-card" data-cats="reiki" data-price="95" data-pop="91" data-date="2025-08-01">
+          <a class="course-card__link" href="/cursos/reiki-nivel-2.html">
+            <div class="course-card__media color-2" aria-hidden="true"></div>
+            <div class="course-card__body">
+              <h3 class="course-card__title">Reiki Usui — Nivel 2</h3>
+              <p class="course-card__desc">Símbolos, distancia y profundización del canal energético.</p>
+              <div class="course-card__meta">
+                <span class="price">$ 95</span>
+                <button class="btn btn-ghost add-cart" data-id="reiki-n2" type="button">Agregar al carrito</button>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- 6 -->
+        <li class="course-card" data-cats="reiki" data-price="180" data-pop="78" data-date="2025-09-05">
+          <a class="course-card__link" href="/cursos/reiki-maestria.html">
+            <div class="course-card__media color-3" aria-hidden="true"></div>
+            <div class="course-card__body">
+              <h3 class="course-card__title">Reiki — Maestría</h3>
+              <p class="course-card__desc">Camino de maestría: ética, transmisión y práctica docente.</p>
+              <div class="course-card__meta">
+                <span class="price">$ 180</span>
+                <button class="btn btn-ghost add-cart" data-id="reiki-master" type="button">Agregar al carrito</button>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- 7 -->
+        <li class="course-card" data-cats="biodecodificacion" data-price="140" data-pop="84" data-date="2025-07-28">
+          <a class="course-card__link" href="/cursos/biodecodificacion-avanzada.html">
+            <div class="course-card__media color-1" aria-hidden="true"></div>
+            <div class="course-card__body">
+              <h3 class="course-card__title">Biodecodificación — Avanzada</h3>
+              <p class="course-card__desc">Transgeneracional, lealtades y protocolos prácticos.</p>
+              <div class="course-card__meta">
+                <span class="price">$ 140</span>
+                <button class="btn btn-ghost add-cart" data-id="bio-adv" type="button">Agregar al carrito</button>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- 8 -->
+        <li class="course-card" data-cats="meditaciones" data-price="29" data-pop="74" data-date="2025-06-25">
+          <a class="course-card__link" href="/cursos/meditacion-sueño.html">
+            <div class="course-card__media color-4" aria-hidden="true"></div>
+            <div class="course-card__body">
+              <h3 class="course-card__title">Meditación — Descanso profundo</h3>
+              <p class="course-card__desc">Rutinas de respiración y visualización para dormir mejor.</p>
+              <div class="course-card__meta">
+                <span class="price">$ 29</span>
+                <button class="btn btn-ghost add-cart" data-id="med-suenio" type="button">Agregar al carrito</button>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- 9 -->
+        <li class="course-card" data-cats="rituales" data-price="59" data-pop="82" data-date="2025-05-30">
+          <a class="course-card__link" href="/cursos/ritual-abundancia.html">
+            <div class="course-card__media color-2" aria-hidden="true"></div>
+            <div class="course-card__body">
+              <h3 class="course-card__title">Ritual de Abundancia</h3>
+              <p class="course-card__desc">Orden interno, símbolos y carta de prosperidad (7 días).</p>
+              <div class="course-card__meta">
+                <span class="price">$ 59</span>
+                <button class="btn btn-ghost add-cart" data-id="ritual-abo" type="button">Agregar al carrito</button>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- 10 -->
+        <li class="course-card" data-cats="meditaciones" data-price="39" data-pop="76" data-date="2025-06-05">
+          <a class="course-card__link" href="/cursos/chakras-basico.html">
+            <div class="course-card__media color-1" aria-hidden="true"></div>
+            <div class="course-card__body">
+              <h3 class="course-card__title">Chakras — Básico</h3>
+              <p class="course-card__desc">Equilibrá tus centros energéticos con prácticas guiadas.</p>
+              <div class="course-card__meta">
+                <span class="price">$ 39</span>
+                <button class="btn btn-ghost add-cart" data-id="chakras-basic" type="button">Agregar al carrito</button>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- 11 -->
+        <li class="course-card" data-cats="meditaciones" data-price="55" data-pop="79" data-date="2025-04-18">
+          <a class="course-card__link" href="/cursos/sonido-gong.html">
+            <div class="course-card__media color-3" aria-hidden="true"></div>
+            <div class="course-card__body">
+              <h3 class="course-card__title">Sanación Sonora — Gong</h3>
+              <p class="course-card__desc">Baños de gong para relajar cuerpo y mente.</p>
+              <div class="course-card__meta">
+                <span class="price">$ 55</span>
+                <button class="btn btn-ghost add-cart" data-id="gong" type="button">Agregar al carrito</button>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- 12 -->
+        <li class="course-card" data-cats="membresias" data-price="25" data-pop="99" data-date="2025-09-01">
+          <a class="course-card__link" href="/membresia.html">
+            <div class="course-card__media color-4" aria-hidden="true"></div>
+            <div class="course-card__body">
+              <h3 class="course-card__title">Membresía Espacio Paz</h3>
+              <p class="course-card__desc">Clases nuevas cada mes, comunidad y material exclusivo.</p>
+              <div class="course-card__meta">
+                <span class="price">$ 25/mes</span>
+                <button class="btn btn-ghost add-cart" data-id="membresia" type="button">Agregar al carrito</button>
+              </div>
+            </div>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="courses-newsletter" aria-label="Suscripción a novedades">
+    <h2 class="nl-title">Recibí novedades y promociones</h2>
+    <form class="nl-form">
+      <label class="sr-only" for="email">Correo electrónico</label>
+      <input id="email" class="input" type="email" placeholder="tu@email.com" aria-required="true" />
+      <button class="btn" type="submit">Suscribirme</button>
+    </form>
+  </section>
+</main>
+
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="f-brand">
