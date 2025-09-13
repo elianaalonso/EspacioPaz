@@ -151,6 +151,3 @@
 	if(y) y.textContent = new Date().getFullYear();
 })();
 
-/* ============================= */
-/* FIN js/cursos.js              */
-/* ============================= */
