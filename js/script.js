@@ -21,11 +21,13 @@ if (ddCursos) {
   if (toggle) {
     toggle.addEventListener('click', (e) => {
       if (window.matchMedia('(max-width: 920px)').matches) {
+        // Solo prevenir si es tap en móvil
         e.preventDefault();
         ddCursos.classList.toggle('open');
         ddCursos.querySelector('.dropdown-menu').style.display =
           ddCursos.classList.contains('open') ? "flex" : "none";
       }
+      // Si no es móvil, dejar que navegue normalmente
     });
   }
 }
