@@ -84,12 +84,63 @@
 		});
 	}
 
-	// Botón "Agregar al carrito" (stub)
-	$$('.add-cart').forEach(btn => btn.addEventListener('click', (e)=>{
-		e.preventDefault();
-		const id = btn.dataset.id;
-		alert('Agregado al carrito: ' + id);
-	}));
+
+		// Botón "Agregar al carrito" (real, igual que en index)
+		function readCart(){
+			try { return JSON.parse(localStorage.getItem('espaciopaz_cart_v1')) || []; }
+			catch { return []; }
+		}
+		function writeCart(items){
+			localStorage.setItem('espaciopaz_cart_v1', JSON.stringify(items));
+		}
+		function cartCount(){
+			return readCart().reduce((acc, it) => acc + (it.qty||0), 0);
+		}
+		function updateCartBadge(){
+			const badge = document.getElementById('cartBadge');
+			if (!badge) return;
+			const n = cartCount();
+			badge.textContent = n;
+			badge.style.visibility = n > 0 ? 'visible' : 'hidden';
+		}
+		function animateCartIcon(){
+			const btn = document.getElementById('cartButton');
+			if (!btn) return;
+			btn.classList.remove('bump');
+			void btn.offsetWidth;
+			btn.classList.add('bump');
+		}
+		function addToCartFromCard(btn){
+			const card = btn.closest('.course-card');
+			if (!card) return;
+			const id = btn.dataset.id || card.dataset.href || crypto.randomUUID();
+			const name = (card.querySelector('h3')?.textContent || 'Curso').trim();
+			const priceText = (card.querySelector('.price')?.textContent || '0').replace(/[^\d.,]/g,'').replace(',','.');
+			const price = parseFloat(priceText) || 0;
+			const img = card.querySelector('.course-card__media img')?.getAttribute('src') || '';
+			const cart = readCart();
+			const idx = cart.findIndex(it => it.id === id);
+			if (idx >= 0){ cart[idx].qty += 1; }
+			else { cart.push({ id, name, price, img, qty: 1 }); }
+			writeCart(cart);
+			updateCartBadge();
+			animateCartIcon();
+			// feedback visual rápido en el botón
+			btn.disabled = true;
+			const prev = btn.textContent.trim();
+			btn.classList.add('added');
+			btn.textContent = 'Agregado ✓';
+			setTimeout(() => {
+				btn.disabled = false;
+				btn.classList.remove('added');
+				btn.textContent = prev;
+			}, 900);
+		}
+		$$('.add-cart').forEach(btn => btn.addEventListener('click', (e)=>{
+			e.preventDefault();
+			addToCartFromCard(btn);
+		}));
+		document.addEventListener('DOMContentLoaded', updateCartBadge);
 
 	// Año en footer
 	const y = document.getElementById('year');
