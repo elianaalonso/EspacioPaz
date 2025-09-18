@@ -1,0 +1,112 @@
+:root{
+  --lila:#b69bd6; --lavanda:#d9c9ef; --rosa:#f4d9e6; --marfil:#f8f5f0; --dorado:#c8a553;
+  --text:#2e2a32; --muted:#6d6675; --card:#ffffff; --line:#ece7f2; --shadow:0 8px 36px rgba(22,14,26,.08);
+  --radius:1.25rem;
+}
+html{ scroll-behavior:smooth; }
+body{ margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans'; background:var(--marfil); color:var(--text); }
+.main{ padding-bottom:calc(4.5rem + env(safe-area-inset-bottom)); }
+
+/* HERO elegante */
+.curso-hero{ position:relative; min-height:28rem; display:grid; align-items:end; isolation:isolate; }
+.curso-hero__bg{ position:absolute; inset:0; background:
+  radial-gradient(120% 90% at 0% 10%, rgba(182,155,214,.55), transparent 60%),
+  radial-gradient(120% 100% at 100% 100%, rgba(244,217,230,.7), transparent 65%),
+  linear-gradient(180deg, rgba(22,14,26,.20), rgba(22,14,26,.55)),
+  url('/img/cursos/bio-fundamentos-cover.jpg') center/cover no-repeat;
+  filter:saturate(1.02); z-index:-1; }
+.curso-hero__inner{ max-width:74rem; padding:3.5rem 1.25rem; margin-inline:auto; color:#fff; }
+.eyebrow{ display:flex; gap:.75rem; align-items:center; margin-bottom:.5rem; }
+.badge{ display:inline-block; padding:.35rem .7rem; font-weight:600; font-size:.9rem; border-radius:999px; color:#2b1f36;
+  background:rgba(255,255,255,.9); border:1px solid rgba(0,0,0,.06); box-shadow:var(--shadow); }
+.badge.soft{ background:#faf7ff; color:#5b4569; border:1px solid #efe9f7; }
+.pill-ghost{ color:#fff; border:1px solid rgba(255,255,255,.4); background:rgba(255,255,255,.12); padding:.35rem .7rem; border-radius:999px; font-size:.9rem; }
+.title{ font-size:clamp(2rem, 3.8vw, 3.25rem); line-height:1.1; margin:.35rem 0 .6rem; letter-spacing:-.01em; }
+.excerpt{ font-size:1.125rem; max-width:60ch; opacity:.95; }
+.meta{ display:flex; flex-wrap:wrap; gap:.85rem 1.35rem; margin:1.25rem 0 1.5rem; font-weight:600; }
+.meta span{ display:inline-flex; align-items:center; gap:.4rem; }
+
+/* Botones */
+.btn{ --pad:0.9rem 1.2rem; border-radius:var(--radius); padding:var(--pad); border:1px solid transparent; box-shadow:var(--shadow); font-weight:700; cursor:pointer; transition: transform .06s ease; }
+.btn:active{ transform: translateY(1px); }
+.btn-primary{ background:linear-gradient(135deg, var(--lila), var(--rosa)); color:#2b1f36; }
+.btn-outline{ background:rgba(255,255,255,.95); color:var(--text); border-color:#eee; }
+.btn-ghost{ background:transparent; color:#fff; border:1px solid rgba(255,255,255,.5); box-shadow:none; }
+.btn-block{ width:100%; }
+.btn-sm{ padding:.55rem .8rem; font-size:.92rem; box-shadow:none; }
+.btn:focus-visible{ outline:2px solid var(--dorado); outline-offset:2px; }
+
+/* Barra de compra sticky */
+.buybar{ position:sticky; top:0; z-index:20; background:rgba(248,245,240,.6); backdrop-filter: blur(10px); border-bottom:1px solid rgba(0,0,0,.06); }
+.buybar__inner{ max-width:74rem; margin-inline:auto; padding:.6rem 1.25rem; display:flex; gap:1rem; align-items:center; }
+.buybar__title{ font-weight:700; font-size:1rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.price{ margin-left:auto; font-weight:800; font-size:1.15rem; }
+
+/* Layout */
+.wrap{ max-width:74rem; margin:2rem auto; padding:0 1.25rem; }
+.grid-2{ display:grid; gap:1.25rem; }
+@media (min-width: 60rem){ .grid-2{ grid-template-columns: minmax(0,1fr) 23rem; } }
+
+.card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); }
+.card__body{ padding:1.25rem; }
+.card__hd{ padding:1rem 1.25rem; border-bottom:1px solid var(--line); font-weight:800; }
+
+/* Grillas internas */
+.cols-3{ display:grid; gap:1rem; }
+@media (min-width: 50rem){ .cols-3{ grid-template-columns: repeat(3,1fr);} }
+.list-check{ display:grid; gap:.5rem; padding-left:1.1rem; }
+.list-check li{ list-style:"✔ "; padding-left:.25rem; }
+
+/* Curriculum refinado */
+.modulos{ display:flex; flex-direction:column; gap:1rem; }
+.modulo{ border:1px solid var(--line); border-radius:calc(var(--radius) + .25rem); overflow:hidden; background:#fff; }
+.modulo__hd{ width:100%; text-align:left; display:grid; grid-template-columns: 1fr auto; gap:.75rem; align-items:center; padding:1rem 1.25rem; background:linear-gradient(180deg,#fff,#fefbfd); border:0; cursor:pointer; }
+.modulo__meta{ color:var(--muted); font-weight:600; font-size:.95rem; }
+.lecciones{ border-top:1px solid var(--line); }
+.leccion{ display:grid; grid-template-columns: 1.4rem 1fr auto; align-items:center; gap:.75rem; padding:.85rem 1.25rem; }
+.leccion + .leccion{ border-top:1px solid #f1ecf6; }
+.ic{ width:1.1rem; height:1.1rem; display:inline-block; }
+.ic svg{ display:block; width:100%; height:100%; }
+.ic--play path{ fill:#3a2c48; }
+.ic--lock path{ stroke:#6d6675; stroke-width:1.6; fill:none; }
+.time{ color:var(--muted); font-variant-numeric: tabular-nums; font-weight:600; }
+.tag{ margin-left:.5rem; padding:.12rem .55rem; border-radius:999px; background:var(--lavanda); color:#3a2c48; font-size:.78rem; font-weight:700; }
+.locked{ color:var(--muted); }
+
+/* Sidebar refinada */
+.badge.soft{ background:#faf7ff; color:#5b4569; border:1px solid #efe9f7; }
+.precio-linea{ display:flex; align-items:baseline; gap:.6rem; margin-top:.5rem; }
+.precio-actual{ font-size:2rem; font-weight:900; letter-spacing:-.01em; }
+.precio-antes{ color:var(--muted); text-decoration:line-through; }
+.ticks{ display:grid; gap:.4rem; margin:0; padding-left:1.1rem; }
+.ticks li{ list-style:"✔ "; }
+.profe{ display:grid; grid-template-columns:3.25rem 1fr; gap:.75rem; align-items:center; }
+.profe__foto{ width:3.25rem; height:3.25rem; border-radius:50%; object-fit:cover; border:2px solid #fff; box-shadow:var(--shadow); }
+
+/* Secciones ancho completo */
+.section{ margin:2rem 0; }
+.solo-una-col{ display:grid; gap:1rem; grid-template-columns:1fr; }
+
+/* FAQ */
+.faq{ display:grid; gap:.75rem; }
+.faq details{ border:1px solid var(--line); border-radius:var(--radius); background:#fff; }
+.faq summary{ cursor:pointer; padding:1rem 1.1rem; font-weight:700; list-style:none; }
+.faq summary::-webkit-details-marker{ display:none; }
+.faq .ans{ padding:0 1.1rem 1rem; color:var(--muted); }
+
+/* CTA fijo inferior */
+.cta-fijo{ position:fixed; left:0; right:0; bottom:0; z-index:30; padding:.6rem 1rem calc(.6rem + env(safe-area-inset-bottom)); background:rgba(255,255,255,.82); backdrop-filter: blur(10px); border-top:1px solid rgba(0,0,0,.06); }
+.cta-fijo__inner{ max-width:74rem; margin:0 auto; display:flex; gap:.75rem; align-items:center; justify-content:flex-end; }
+.cta-fijo__precio{ margin-right:auto; font-weight:900; font-size:1.15rem; }
+
+/* Owned state */
+body.is-owned .locked{ color:inherit; }
+body.is-owned .cta-comprar, body.is-owned .cta-fijo, body.is-owned .price{ display:none !important; }
+body.is-owned [data-owned-only]{ display:block !important; }
+
+/* Utilidades */
+.muted{ color:var(--muted); }
+.h2{ font-size:clamp(1.4rem, 2.4vw, 2rem); margin:.25rem 0 1rem; letter-spacing:-.01em; }
+.h3{ font-size:1.25rem; margin:.25rem 0 .75rem; }
+.lead{ font-size:1.05rem; color:#3a2c48; }
+.sep{ height:1px; background:var(--line); margin:1rem 0; }
