@@ -1,7 +1,14 @@
+
 const $ = (s, el=document) => el.querySelector(s);
 const $$ = (s, el=document) => [...el.querySelectorAll(s)];
 const body = document.body;
 const OWNED_KEY = `owned_${body.dataset.courseId}`;
+const USER_KEY = 'espaciopaz_user_v1';
+
+function readUser(){
+  try { return JSON.parse(localStorage.getItem(USER_KEY)) || null; }
+  catch { return null; }
+}
 
 // Restaurar estado
 try{
@@ -30,8 +37,20 @@ $$('[data-preview]').forEach(a => a.addEventListener('click', e => {
   alert('▶ Aquí se abriría el player con la preview pública.');
 }));
 
-// Comprar (simulación)
-$$('.js-comprar').forEach(b => b.addEventListener('click', () => {
+// Comprar: solo si está logueado
+$$('.js-comprar').forEach(b => b.addEventListener('click', (e) => {
+  const user = readUser();
+  if (!user) {
+    e.preventDefault();
+    // Abrir modal de login si existe
+    if (typeof openAuth === 'function') openAuth('login');
+    else {
+      // fallback: trigger modal manualmente
+      const evt = new CustomEvent('open-auth-modal');
+      document.dispatchEvent(evt);
+    }
+    return;
+  }
   if(confirm('¿Simular compra y desbloquear el curso?')){
     body.classList.add('is-owned');
     try{ localStorage.setItem(OWNED_KEY,'1'); }catch{}
@@ -42,3 +61,13 @@ $$('.js-comprar').forEach(b => b.addEventListener('click', () => {
 
 // Guardar
 $$('.js-guardar').forEach(btn => btn.addEventListener('click', () => btn.classList.toggle('is-on')));
+
+// Eliminar OWNED al cerrar sesión
+document.addEventListener('click', (e) => {
+  const logoutBtn = e.target.closest('#btnLogout');
+  if (!logoutBtn) return;
+  // Limpiar compra simulada solo de este curso
+  try { localStorage.removeItem(OWNED_KEY); } catch {}
+  body.classList.remove('is-owned');
+  $$('[data-owned-only]')?.forEach(x=>x.setAttribute('hidden',''));
+});
