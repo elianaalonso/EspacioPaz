@@ -92,6 +92,17 @@ if(favBtn){
     favBtn.innerHTML = 'Favorito <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>';
   }
   favBtn.addEventListener('click', function(){
+    const user = readUser();
+    if (!user) {
+      // Abrir modal de login si existe
+      if (typeof openAuth === 'function') openAuth('login');
+      else {
+        // fallback: trigger modal manualmente
+        const evt = new CustomEvent('open-auth-modal');
+        document.dispatchEvent(evt);
+      }
+      return;
+    }
     toggleFav(courseId);
     const isNowFav = isFav(courseId);
     favBtn.classList.toggle('is-fav', isNowFav);
@@ -111,6 +122,16 @@ document.addEventListener('click', (e) => {
   if (!logoutBtn) return;
   // Limpiar compra simulada solo de este curso
   try { localStorage.removeItem(OWNED_KEY); } catch {}
+  // Limpiar favoritos globales
+  try { localStorage.removeItem('espaciopaz_favs_v1'); } catch {}
+  // Limpiar usuario (por si no lo hace el global)
+  try { localStorage.removeItem('espaciopaz_user_v1'); } catch {}
+  // Actualizar botón de favoritos si existe
+  const favBtn = document.querySelector('.btn-fav');
+  if (favBtn) {
+    favBtn.classList.remove('is-fav');
+    favBtn.innerHTML = 'Agregar a favoritos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>';
+  }
   body.classList.remove('is-owned');
   $$('[data-owned-only]')?.forEach(x=>x.setAttribute('hidden',''));
 });
