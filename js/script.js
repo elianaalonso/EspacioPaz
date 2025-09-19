@@ -661,6 +661,7 @@ function renderAuthUI(){
       </button>
       <div class="user-dropdown" role="menu">
         <a href="html/mi-cuenta.html" role="menuitem">Mi cuenta</a>
+        <a href="html/favoritos.html" role="menuitem">Favoritos</a>
         <a href="html/membresia.html" role="menuitem">Membresía</a>
         <a href="html/compras.html" role="menuitem">Compras</a>
         <button type="button" id="btnLogout" role="menuitem">Cerrar sesión</button>
