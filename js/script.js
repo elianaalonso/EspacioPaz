@@ -649,22 +649,29 @@ function renderAuthUI(){
     return;
   }
 
+  // Íconos minimalistas para cada item
+  const iconHeart = `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+  const iconUser = `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg>`;
+  const iconStar = `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polygon points="12 2 15 8.5 22 9.3 17 14 18.2 21 12 17.8 5.8 21 7 14 2 9.3 9 8.5 12 2"/></svg>`;
+  const iconBag = `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M6 2l1.5 4h9L18 2"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M16 10a4 4 0 01-8 0"/></svg>`;
+  const iconLogout = `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>`;
+
   const initials = initialsFromName(u.name || u.email);
   mount.innerHTML = `
     <div class="user-menu" id="userMenu">
       <button class="user-toggle" type="button" aria-haspopup="menu" aria-expanded="false">
         <span class="user-avatar">${initials}</span>
         <span>${u.name || u.email}</span>
-        <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
+        <svg viewBox="0 0 24 24" fill="none" width="16" height="16" aria-hidden="true">
           <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </button>
       <div class="user-dropdown" role="menu">
-        <a href="html/mi-cuenta.html" role="menuitem">Mi cuenta</a>
-        <a href="html/favoritos.html" role="menuitem">Favoritos</a>
-        <a href="html/membresia.html" role="menuitem">Membresía</a>
-        <a href="html/compras.html" role="menuitem">Compras</a>
-        <button type="button" id="btnLogout" role="menuitem">Cerrar sesión</button>
+  <a href="/html/mi-cuenta.html" role="menuitem">${iconUser}<span>Mi cuenta</span></a>
+  <a href="/html/favoritos.html" role="menuitem" class="user-fav">${iconHeart}<span>Favoritos</span></a>
+        <a href="/html/membresia.html" role="menuitem">${iconStar}<span>Membresía</span></a>
+        <a href="/html/compras.html" role="menuitem">${iconBag}<span>Compras</span></a>
+        <button type="button" id="btnLogout" role="menuitem">${iconLogout}<span>Cerrar sesión</span></button>
       </div>
     </div>
   `;
