@@ -27,6 +27,17 @@ body{
 /* =========================
    Navbar
 ========================= */
+@media (min-width: 57.51rem) {
+  .nav, .nav-links {
+    flex-wrap: nowrap !important;
+  }
+  .nav-links > * {
+    white-space: nowrap !important;
+  }
+  .brand {
+    white-space: nowrap !important;
+  }
+}
 .nav-wrap{
   position: sticky; top: 0; z-index: 1000;
   background: linear-gradient(180deg, var(--blanco), #ffffffcc);

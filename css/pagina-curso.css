@@ -1,112 +1,142 @@
-:root{
-  --lila:#b69bd6; --lavanda:#d9c9ef; --rosa:#f4d9e6; --marfil:#f8f5f0; --dorado:#c8a553;
-  --text:#2e2a32; --muted:#6d6675; --card:#ffffff; --line:#ece7f2; --shadow:0 8px 36px rgba(22,14,26,.08);
-  --radius:0.7rem;
+/* ====== PÁGINA DE CURSO (aislado a .curso-page) ====== */
+
+/* Tokens SOLO para esta página (no tocan :root) */
+.curso-page{
+  --card:#ffffff;
+  --line:#ece7f2;
+  --shadow:0 8px 36px rgba(22,14,26,.08);
+  --radius:.7rem;
+
+  /* Colores ya existen en estilo.css, se usan acá: */
+  /* --lila, --lavanda, --rosa, --marfil, --dorado, --texto, --blanco */
 }
-html{ scroll-behavior:smooth; }
-body{ margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans'; background:var(--marfil); color:var(--text); font-size:14px; }
-.main{ padding-bottom:calc(3rem + env(safe-area-inset-bottom)); }
 
-/* HERO elegante */
-.curso-hero{ position:relative; min-height:28rem; display:grid; align-items:end; isolation:isolate; }
-.curso-hero__bg{ position:absolute; inset:0; background:
-  radial-gradient(120% 90% at 0% 10%, rgba(182,155,214,.55), transparent 60%),
-  radial-gradient(120% 100% at 100% 100%, rgba(244,217,230,.7), transparent 65%),
-  linear-gradient(180deg, rgba(22,14,26,.20), rgba(22,14,26,.55)),
-  url('/img/cursos/bio-fundamentos-cover.jpg') center/cover no-repeat;
-  filter:saturate(1.02); z-index:-1; }
-.curso-hero__inner{ max-width:60rem; padding:2rem 0.7rem; margin-inline:auto; color:#fff; }
-.eyebrow{ display:flex; gap:.4rem; align-items:center; margin-bottom:.2rem; font-size:.93rem; }
-.badge{ display:inline-block; padding:.18rem .45rem; font-weight:600; font-size:.85rem; border-radius:999px; color:#2b1f36;
-  background:rgba(255,255,255,.9); border:1px solid rgba(0,0,0,.06); box-shadow:var(--shadow); }
-.badge.soft{ background:#faf7ff; color:#5b4569; border:1px solid #efe9f7; }
-.pill-ghost{ color:#fff; border:1px solid rgba(255,255,255,.4); background:rgba(255,255,255,.12); padding:.18rem .45rem; border-radius:999px; font-size:.85rem; }
-.title{ font-size:clamp(1.3rem, 2.2vw, 1.7rem); line-height:1.1; margin:.18rem 0 .3rem; letter-spacing:-.01em; }
-.excerpt{ font-size:.97rem; max-width:60ch; opacity:.95; }
-.meta{ display:flex; flex-wrap:wrap; gap:.4rem .7rem; margin:.6rem 0 .8rem; font-weight:600; font-size:.93em; }
-.meta span{ display:inline-flex; align-items:center; gap:.4rem; }
+/* Espaciado inferior por la barra fija */
+.curso-page .main{ padding-bottom:calc(3rem + env(safe-area-inset-bottom)); }
 
-/* Botones */
-.btn{ --pad:0.5rem 0.8rem; border-radius:var(--radius); padding:var(--pad); border:1px solid transparent; box-shadow:var(--shadow); font-weight:700; cursor:pointer; transition: transform .06s ease; font-size:.95em; }
-.btn:active{ transform: translateY(1px); }
-.btn-primary{ background:linear-gradient(135deg, var(--lila), var(--rosa)); color:#2b1f36; }
-.btn-outline{ background:rgba(255,255,255,.95); color:var(--text); border-color:#eee; }
-.btn-ghost{ background:transparent; color:#fff; border:1px solid rgba(255,255,255,.5); box-shadow:none; }
-.btn-block{ width:100%; }
-.btn-sm{ padding:.55rem .8rem; font-size:.92rem; box-shadow:none; }
-.btn:focus-visible{ outline:2px solid var(--dorado); outline-offset:2px; }
+/* ---------- HERO ---------- */
+.curso-page .curso-hero{ position:relative; min-height:28rem; display:grid; align-items:end; isolation:isolate; }
+.curso-page .curso-hero__bg{
+  position:absolute; inset:0;
+  background:
+    radial-gradient(120% 90% at 0% 10%, rgba(182,155,214,.55), transparent 60%),
+    radial-gradient(120% 100% at 100% 100%, rgba(244,217,230,.7), transparent 65%),
+    linear-gradient(180deg, rgba(22,14,26,.20), rgba(22,14,26,.55)),
+    url('/img/cursos/bio-fundamentos-cover.jpg') center/cover no-repeat;
+  filter:saturate(1.02);
+  z-index:-1;
+}
+.curso-page .curso-hero__inner{ max-width:60rem; padding:2rem .7rem; margin-inline:auto; color:#fff; }
 
-/* Barra de compra sticky */
-.buybar{ position:sticky; top:0; z-index:20; background:rgba(248,245,240,.6); backdrop-filter: blur(10px); border-bottom:1px solid rgba(0,0,0,.06); }
-.buybar__inner{ max-width:60rem; margin-inline:auto; padding:.3rem 0.7rem; display:flex; gap:.5rem; align-items:center; }
-.buybar__title{ font-weight:700; font-size:.93rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.price{ margin-left:auto; font-weight:800; font-size:.97rem; }
+.curso-page .eyebrow{ display:flex; gap:.4rem; align-items:center; margin-bottom:.2rem; font-size:.93rem; }
+.curso-page .badge{
+  display:inline-block; padding:.18rem .45rem; font-weight:700; font-size:.85rem; border-radius:999px;
+  color:#2b1f36; background:rgba(255,255,255,.92); border:1px solid rgba(0,0,0,.06); box-shadow:var(--shadow);
+}
+.curso-page .badge.soft{ background:#faf7ff; color:#5b4569; border:1px solid #efe9f7; }
+.curso-page .pill-ghost{
+  color:#fff; border:1px solid rgba(255,255,255,.4); background:rgba(255,255,255,.12);
+  padding:.18rem .45rem; border-radius:999px; font-size:.85rem;
+}
 
-/* Layout */
-.wrap{ max-width:60rem; margin:1rem auto; padding:0 0.7rem; }
-.grid-2{ display:grid; gap:.6rem; }
-@media (min-width: 60rem){ .grid-2{ grid-template-columns: minmax(0,1fr) 23rem; } }
+/* Tamaños alineados con el home (sin tocar .hero del sitio) */
+.curso-page .title{ font-size:clamp(1.6rem, 3vw, 2.125rem); line-height:1.12; margin:.2rem 0 .35rem; letter-spacing:-.01em; }
+.curso-page .excerpt{ font-size:1rem; max-width:60ch; opacity:.96; }
+.curso-page .meta{ display:flex; flex-wrap:wrap; gap:.4rem .7rem; margin:.6rem 0 .8rem; font-weight:600; font-size:.93em; }
+.curso-page .meta span{ display:inline-flex; align-items:center; gap:.4rem; }
 
-.card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); }
-.card__body{ padding:.7rem; }
-.card__hd{ padding:.6rem 0.7rem; border-bottom:1px solid var(--line); font-weight:800; font-size:1em; }
+/* Botones: usamos los globales; solo añadimos variantes locales */
+.curso-page .btn-outline{
+  background:#fff; color:var(--texto); border:1px solid #eee; box-shadow:0 8px 24px rgba(0,0,0,.06);
+}
+.curso-page .btn-block{ width:100%; }
+.curso-page .btn-sm{ padding:.55rem .8rem; font-size:.92rem; box-shadow:none; }
+
+/* ---------- LAYOUT ---------- */
+.curso-page .wrap{ max-width:60rem; margin:1rem auto; padding:0 .7rem; }
+.curso-page .grid-2{ display:grid; gap:.6rem; }
+@media (min-width:60rem){ .curso-page .grid-2{ grid-template-columns:minmax(0,1fr) 23rem; } }
+
+.curso-page .card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); }
+.curso-page .card__body{ padding:.7rem; }
+.curso-page .card__hd{ padding:.6rem .7rem; border-bottom:1px solid var(--line); font-weight:800; font-size:1rem; }
 
 /* Grillas internas */
-.cols-3{ display:grid; gap:.5rem; }
-@media (min-width: 50rem){ .cols-3{ grid-template-columns: repeat(3,1fr);} }
-.list-check{ display:grid; gap:.2rem; padding-left:.6rem; }
-.list-check li{ list-style:"✔ "; padding-left:.25rem; }
+.curso-page .cols-3{ display:grid; gap:.5rem; }
+@media (min-width:50rem){ .curso-page .cols-3{ grid-template-columns:repeat(3,1fr); } }
+.curso-page .list-check{ display:grid; gap:.25rem; padding-left:.6rem; }
+.curso-page .list-check li{ list-style:"✔ "; padding-left:.25rem; }
 
-/* Curriculum refinado */
-.modulos{ display:flex; flex-direction:column; gap:1rem; }
-.modulo{ border:1px solid var(--line); border-radius:calc(var(--radius) + .25rem); overflow:hidden; background:#fff; }
-.modulo__hd{ width:100%; text-align:left; display:grid; grid-template-columns: 1fr auto; gap:.4rem; align-items:center; padding:.6rem 0.7rem; background:linear-gradient(180deg,#fff,#fefbfd); border:0; cursor:pointer; font-size:.95em; }
-.modulo__meta{ color:var(--muted); font-weight:600; font-size:.95rem; }
-.lecciones{ border-top:1px solid var(--line); }
-.leccion{ display:grid; grid-template-columns: 1.1rem 1fr auto; align-items:center; gap:.4rem; padding:.5rem 0.7rem; font-size:.95em; }
-.leccion + .leccion{ border-top:1px solid #f1ecf6; }
-.ic{ width:.8rem; height:.8rem; display:inline-block; }
-.ic svg{ display:block; width:100%; height:100%; }
-.ic--play path{ fill:#3a2c48; }
-.ic--lock path{ stroke:#6d6675; stroke-width:1.6; fill:none; }
-.time{ color:var(--muted); font-variant-numeric: tabular-nums; font-weight:600; font-size:.95em; }
-.tag{ margin-left:.2rem; padding:.06rem .3rem; border-radius:999px; background:var(--lavanda); color:#3a2c48; font-size:.7rem; font-weight:700; }
-.locked{ color:var(--muted); font-size:.95em; }
+/* ---------- CURRÍCULUM ---------- */
+.curso-page .modulos{ display:flex; flex-direction:column; gap:1rem; }
+.curso-page .modulo{ border:1px solid var(--line); border-radius:calc(var(--radius) + .25rem); overflow:hidden; background:#fff; }
+.curso-page .modulo__hd{
+  width:100%; text-align:left; display:grid; grid-template-columns:1fr auto; gap:.4rem;
+  align-items:center; padding:.6rem .7rem; background:linear-gradient(180deg,#fff,#fefbfd);
+  border:0; cursor:pointer; font-size:.95em;
+}
+.curso-page .modulo__meta{ color:#6d6675; font-weight:600; font-size:.95rem; }
+.curso-page .lecciones{ border-top:1px solid var(--line); }
+.curso-page .leccion{
+  display:grid; grid-template-columns:1.1rem 1fr auto; align-items:center; gap:.4rem; padding:.5rem .7rem; font-size:.95em;
+}
+.curso-page .leccion + .leccion{ border-top:1px solid #f1ecf6; }
+.curso-page .ic{ width:.8rem; height:.8rem; display:inline-block; }
+.curso-page .ic svg{ display:block; width:100%; height:100%; }
+.curso-page .ic--play path{ fill:#3a2c48; }
+.curso-page .ic--lock path{ stroke:#6d6675; stroke-width:1.6; fill:none; }
+.curso-page .time{ color:#6d6675; font-variant-numeric:tabular-nums; font-weight:600; font-size:.95em; }
+.curso-page .tag{ margin-left:.2rem; padding:.06rem .3rem; border-radius:999px; background:var(--lavanda); color:#3a2c48; font-size:.7rem; font-weight:700; }
+.curso-page .locked{ color:#6d6675; font-size:.95em; }
 
-/* Sidebar refinada */
-.badge.soft{ background:#faf7ff; color:#5b4569; border:1px solid #efe9f7; font-size:.93em; }
-.precio-linea{ display:flex; align-items:baseline; gap:.3rem; margin-top:.2rem; }
-.precio-actual{ font-size:1.1rem; font-weight:900; letter-spacing:-.01em; }
-.precio-antes{ color:var(--muted); text-decoration:line-through; font-size:.95em; }
-.ticks{ display:grid; gap:.1rem; margin:0; padding-left:.6rem; }
-.ticks li{ list-style:"✔ "; }
-.profe{ display:grid; grid-template-columns:1.7rem 1fr; gap:.3rem; align-items:center; }
-.profe__foto{ width:1.7rem; height:1.7rem; border-radius:50%; object-fit:cover; border:2px solid #fff; box-shadow:var(--shadow); }
+/* ---------- SIDEBAR ---------- */
+.curso-page .precio-linea{ display:flex; align-items:baseline; gap:.35rem; margin-top:.2rem; }
+.curso-page .precio-actual{ font-size:1.1rem; font-weight:900; letter-spacing:-.01em; }
+.curso-page .precio-antes{ color:#6d6675; text-decoration:line-through; font-size:.95em; }
+.curso-page .ticks{ display:grid; gap:.1rem; margin:0; padding-left:.6rem; }
+.curso-page .ticks li{ list-style:"✔ "; }
+.curso-page .profe{ display:grid; grid-template-columns:1.7rem 1fr; gap:.35rem; align-items:center; }
+.curso-page .profe__foto{ width:1.7rem; height:1.7rem; border-radius:50%; object-fit:cover; border:2px solid #fff; box-shadow:var(--shadow); }
 
-/* Secciones ancho completo */
-.section{ margin:.7rem 0; }
-.solo-una-col{ display:grid; gap:.5rem; grid-template-columns:1fr; }
+/* ---------- SECCIONES FULL ---------- */
+.curso-page .section{ margin:.7rem 0; }
+.curso-page .solo-una-col{ display:grid; gap:.5rem; grid-template-columns:1fr; }
 
-/* FAQ */
-.faq{ display:grid; gap:.3rem; }
-.faq details{ border:1px solid var(--line); border-radius:var(--radius); background:#fff; font-size:.95em; }
-.faq summary{ cursor:pointer; padding:.6rem 0.7rem; font-weight:700; list-style:none; }
-.faq summary::-webkit-details-marker{ display:none; }
-.faq .ans{ padding:0 0.7rem .6rem; color:var(--muted); }
+/* ---------- FAQ ---------- */
+.curso-page .faq{ display:grid; gap:.35rem; }
+.curso-page .faq details{ border:1px solid var(--line); border-radius:var(--radius); background:#fff; font-size:.95em; }
+.curso-page .faq summary{ cursor:pointer; padding:.6rem .7rem; font-weight:700; list-style:none; }
+.curso-page .faq summary::-webkit-details-marker{ display:none; }
+.curso-page .faq .ans{ padding:0 .7rem .6rem; color:#6d6675; }
 
-/* CTA fijo inferior */
-.cta-fijo{ position:fixed; left:0; right:0; bottom:0; z-index:30; padding:.2rem 0.6rem calc(.2rem + env(safe-area-inset-bottom)); background:rgba(255,255,255,.82); backdrop-filter: blur(10px); border-top:1px solid rgba(0,0,0,.06); }
-.cta-fijo__inner{ max-width:60rem; margin:0 auto; display:flex; gap:.4rem; align-items:center; justify-content:flex-end; }
-.cta-fijo__precio{ margin-right:auto; font-weight:900; font-size:.95rem; }
+/* ---------- CTA FIJA INFERIOR ---------- */
+.curso-page .cta-fijo{
+  position:fixed; left:0; right:0; bottom:0; z-index:30;
+  padding:.2rem .6rem calc(.2rem + env(safe-area-inset-bottom));
+  background:rgba(255,255,255,.82); backdrop-filter:blur(10px); border-top:1px solid rgba(0,0,0,.06);
+}
+.curso-page .cta-fijo__inner{ max-width:60rem; margin:0 auto; display:flex; gap:.4rem; align-items:center; justify-content:flex-end; }
+.curso-page .cta-fijo__precio{ margin-right:auto; font-weight:900; font-size:.95rem; }
 
-/* Owned state */
-body.is-owned .locked{ color:inherit; }
-body.is-owned .cta-comprar, body.is-owned .cta-fijo, body.is-owned .price{ display:none !important; }
-body.is-owned [data-owned-only]{ display:block !important; }
+/* ---------- ESTADOS ---------- */
+.curso-page .muted{ color:#6d6675; }
+.curso-page .h2{ font-size:clamp(1.1rem, 1.8vw, 1.35rem); margin:.15rem 0 .5rem; letter-spacing:-.01em; }
+.curso-page .h3{ font-size:1rem; margin:.15rem 0 .3rem; }
+.curso-page .lead{ font-size:1rem; color:#3a2c48; }
+.curso-page .sep{ height:1px; background:var(--line); margin:.5rem 0; }
 
-/* Utilidades */
-.muted{ color:var(--muted); }
-.h2{ font-size:clamp(1rem, 1.5vw, 1.2rem); margin:.15rem 0 .5rem; letter-spacing:-.01em; }
-.h3{ font-size:.97rem; margin:.15rem 0 .3rem; }
-.lead{ font-size:.95rem; color:#3a2c48; }
-.sep{ height:1px; background:var(--line); margin:.4rem 0; }
+/* Propietario del curso */
+.curso-page.is-owned .locked{ color:inherit; }
+.curso-page.is-owned .cta-comprar, .curso-page.is-owned .cta-fijo, .curso-page.is-owned .price{ display:none !important; }
+.curso-page.is-owned [data-owned-only]{ display:block !important; }
+/* Alias del botón de navbar en páginas internas */
+.nav-cta{
+  background: linear-gradient(180deg, var(--dorado), #b08c3f);
+  color:#dcadeb !important;
+  box-shadow: 0 0.375rem 1.125rem #c8a55355;
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.625rem;
+  font: 700 0.875rem/1 Inter, system-ui, sans-serif;
+  text-decoration: none;
+}
+.nav-cta:hover{ filter:brightness(1.05); }
