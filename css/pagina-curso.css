@@ -367,30 +367,6 @@
 /* =========================================================
    CTA FIJA INFERIOR
    ========================================================= */
-.curso-page .cta-fijo{
-  position: fixed;
-  left: 0; right: 0; bottom: 0;
-  z-index: 30;
-  padding: .2rem .6rem calc(.2rem + env(safe-area-inset-bottom));
-  background: rgba(255,255,255,.82);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(0,0,0,.06);
-}
-
-.curso-page .cta-fijo__inner{
-  max-width: 60rem;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: .4rem;
-}
-
-.curso-page .cta-fijo__precio{
-  margin-right: auto;
-  font-weight: 900;
-  font-size: .95rem;
-}
 
 
 /* =========================================================
@@ -423,7 +399,6 @@
 /* Estado: usuaria propietaria del curso */
 .curso-page.is-owned .locked{ color: inherit; }
 .curso-page.is-owned .cta-comprar,
-.curso-page.is-owned .cta-fijo,
 .curso-page.is-owned .price{
   display: none !important;
 }
@@ -445,3 +420,10 @@
 }
 
 .nav-cta:hover{ filter: brightness(1.05); }
+
+.btn-fav{
+  display:inline-flex;             /* ya lo tiene .btn, pero por si acaso */
+  align-items:center;
+  gap:.45rem;                      /* <— separación texto/ícono */
+}
+.btn-fav svg{ width:18px; height:18px; flex:0 0 auto; }
