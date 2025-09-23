@@ -15,6 +15,58 @@ try{
   if(localStorage.getItem(OWNED_KEY)==='1'){
     body.classList.add('is-owned');
     $$('[data-owned-only]')?.forEach(x=>x.removeAttribute('hidden'));
+    // Desbloquear lecciones si ya se compró
+    $$('.leccion.locked').forEach(li => {
+      li.classList.remove('locked');
+      // Ocultar candado y mostrar flecha play
+      const lockIcon = li.querySelector('.ic--lock');
+      if(lockIcon) lockIcon.style.display = 'none';
+      let playIcon = li.querySelector('.ic--play');
+      if(!playIcon){
+        playIcon = document.createElement('span');
+        playIcon.className = 'ic ic--play';
+        playIcon.setAttribute('aria-hidden','true');
+        playIcon.innerHTML = '<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M8 6l10 6-10 6z"/></svg>';
+        li.insertBefore(playIcon, li.firstChild);
+      } else {
+        playIcon.style.display = '';
+      }
+      // Si la lección tiene <span> en vez de <a>, lo convertimos en <a>
+      const span = li.querySelector('span:not(.ic--lock):not(.ic--play):not(.time)');
+      if(span){
+        const label = span.textContent.trim();
+        let src = '';
+        if(label.includes('Proyecto sentido')) src = '/media/bio/proyecto-sentido.mp4';
+        else if(label.includes('Programaciones')) src = '/media/bio/programaciones.mp4';
+        else if(label.includes('Dobles')) src = '/media/bio/dobles.mp4';
+        else if(label.includes('Práctica: línea del tiempo')) src = '/media/bio/linea-tiempo.mp4';
+        else if(label.includes('Ritual: reconocimiento de excluidos')) src = '/media/bio/ritual-excluidos.mp4';
+        else if(label.includes('Integración')) src = '/media/bio/integracion.mp4';
+        else if(label.includes('Principios y lenguaje del cuerpo')) src = '/media/bio/03-principios.mp4';
+        else if(label.includes('Práctica: observación amable')) src = '/media/bio/04-practica.mp4';
+        else if(label.includes('Ritual de 7 días')) src = '/media/bio/ritual-7dias.mp4';
+        else if(label.includes('Carta al cuerpo')) src = '/media/bio/carta-cuerpo.mp4';
+        else if(label.includes('Agradecimiento al síntoma')) src = '/media/bio/agradecimiento.mp4';
+        const a = document.createElement('a');
+        a.href = '#';
+        a.textContent = label;
+        a.setAttribute('data-src', src);
+        a.style.pointerEvents = 'auto';
+        a.style.color = '#3a2c48';
+        a.style.textDecoration = 'none';
+        a.setAttribute('tabindex', '0');
+        span.replaceWith(a);
+        a.addEventListener('click', e => { e.preventDefault(); playLesson(a); });
+      } else {
+        const a = li.querySelector('a');
+        if(a){
+          a.style.pointerEvents = 'auto';
+          a.style.color = '#3a2c48';
+          a.style.textDecoration = 'none';
+          a.setAttribute('tabindex', '0');
+        }
+      }
+    });
   }
 }catch{}
 
@@ -145,10 +197,21 @@ $$('.js-comprar').forEach(b => b.addEventListener('click', (e) => {
     // Quitar 'locked' y ocultar candados en todas las lecciones
     $$('.leccion.locked').forEach(li => {
       li.classList.remove('locked');
+      // Ocultar candado y mostrar flecha play
       const lockIcon = li.querySelector('.ic--lock');
-      if(lockIcon) lockIcon.setAttribute('hidden','');
+      if(lockIcon) lockIcon.style.display = 'none';
+      let playIcon = li.querySelector('.ic--play');
+      if(!playIcon){
+        playIcon = document.createElement('span');
+        playIcon.className = 'ic ic--play';
+        playIcon.setAttribute('aria-hidden','true');
+        playIcon.innerHTML = '<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M8 6l10 6-10 6z"/></svg>';
+        li.insertBefore(playIcon, li.firstChild);
+      } else {
+        playIcon.style.display = '';
+      }
       // Si la lección tiene <span> en vez de <a>, lo convertimos en <a>
-      const span = li.querySelector('span:not(.ic--lock):not(.time)');
+      const span = li.querySelector('span:not(.ic--lock):not(.ic--play):not(.time)');
       if(span){
         const label = span.textContent.trim();
         let src = '';
