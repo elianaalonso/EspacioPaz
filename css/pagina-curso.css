@@ -1,3 +1,43 @@
+/* ===== Player dentro de la página ===== */
+.player-wrap{
+  max-width: 60rem;
+  margin: .9rem auto .6rem;
+  padding: 0 .7rem;
+}
+.player-box{
+  position: relative;
+  background: #000;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.player-box iframe,
+.player-box video{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+.player-meta{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  padding: .55rem .1rem 0;
+}
+.playing-label{ color: var(--muted, #6d6675); font-weight: 700; margin-right: .35rem; }
+.playing-title{ font-weight: 800; }
+/* lección activa en la lista */
+.leccion.is-active{ background: #faf7ff; }
+.leccion.is-active a{ font-weight: 700; }
+/* en móviles, que no pelee con la CTA fija */
+@media (max-width: 51.25rem){
+  .player-wrap{ margin-bottom: .4rem; }
+}
 /* ==========================================================================
    PÁGINA DE CURSO (aislada a .curso-page)
    Nota: Usa tokens globales de estilo.css (—lila, —lavanda, —rosa, —marfil, —dorado, —texto, —blanco)

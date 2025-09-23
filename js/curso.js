@@ -32,10 +32,97 @@ $$('.modulo').forEach(mod => {
 });
 
 // Previews (simulación)
-$$('[data-preview]').forEach(a => a.addEventListener('click', e => {
-  e.preventDefault();
-  alert('▶ Aquí se abriría el player con la preview pública.');
-}));
+
+// ===== Player in-page =====
+
+let currentPlayerWrap = null;
+let currentActiveLesson = null;
+
+function toEmbed(url){
+  if(!url) return '';
+  // YouTube normal -> embed
+  const yt = /(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_\-]+)/i.exec(url);
+  if(yt) return `https://www.youtube.com/embed/${yt[1]}?rel=0&modestbranding=1`;
+
+  // Vimeo normal -> embed
+  const vm = /vimeo\.com\/(\d+)/i.exec(url);
+  if(vm) return `https://player.vimeo.com/video/${vm[1]}?title=0&byline=0&portrait=0`;
+
+  return url; // MP4 u otro embed ya listo
+}
+
+function setPlayer(src){
+  if(!src) return '';
+  const isMp4 = /\.mp4(\?|$)/i.test(src);
+  const url = isMp4 ? src : toEmbed(src);
+  return isMp4
+    ? `<video controls playsinline preload="metadata"><source src="${url}" type="video/mp4"></video>`
+    : `<iframe src="${url}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+}
+
+function playLesson(linkEl){
+  const src = linkEl.dataset.src;
+  if(!src) return;
+
+  const li = linkEl.closest('.leccion');
+  const locked = li?.classList.contains('locked');
+  const owned  = document.body.classList.contains('is-owned');
+  const isPreview = linkEl.hasAttribute('data-preview');
+
+  // gate
+  if(locked && !owned && !isPreview){
+    if (typeof openAuth === 'function') openAuth('login');
+    else document.dispatchEvent(new CustomEvent('open-auth-modal'));
+    return;
+  }
+
+  // Si ya está activa, ocultar el reproductor
+  if (li === currentActiveLesson) {
+    if (currentPlayerWrap) {
+      currentPlayerWrap.remove();
+      currentPlayerWrap = null;
+      currentActiveLesson.classList.remove('is-active');
+      currentActiveLesson = null;
+    }
+    return;
+  }
+
+  // Eliminar reproductor anterior si existe
+  if (currentPlayerWrap) {
+    currentPlayerWrap.remove();
+    if (currentActiveLesson) currentActiveLesson.classList.remove('is-active');
+  }
+
+  // Crear y mostrar el reproductor debajo de la lección
+  const playerWrap = document.createElement('section');
+  playerWrap.className = 'player-wrap';
+  playerWrap.innerHTML = `
+    <div class="player-box" role="region" aria-label="Video del curso">
+      ${setPlayer(src)}
+    </div>
+    <div class="player-meta">
+      <div class="playing">
+        <strong class="playing-label">Reproduciendo:</strong>
+        <span class="playing-title">${linkEl.textContent.trim()}</span>
+      </div>
+    </div>
+  `;
+  li.after(playerWrap);
+  li.classList.add('is-active');
+  currentPlayerWrap = playerWrap;
+  currentActiveLesson = li;
+
+  // scroll al reproductor si está fuera de vista
+  playerWrap.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+// listeners en todas las lecciones con data-src
+document.querySelectorAll('.leccion a[data-src]').forEach(a=>{
+  a.addEventListener('click', e => { e.preventDefault(); playLesson(a); });
+});
+
+// AUTOCARGA: primera preview o primera lección si la usuaria es dueña
+// El reproductor solo aparece al hacer click, no autoload
 
 // Comprar: solo si está logueado
 $$('.js-comprar').forEach(b => b.addEventListener('click', (e) => {
