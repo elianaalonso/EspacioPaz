@@ -103,11 +103,11 @@ try{
         a.style.color = '#3a2c48';
         a.style.textDecoration = 'none';
         a.setAttribute('tabindex', '0');
+        span.replaceWith(a);
         // Solo agregar el evento clásico si NO es preview
         if(!a.hasAttribute('data-preview')){
           a.addEventListener('click', e => { e.preventDefault(); playLesson(a); });
         }
-        span.replaceWith(a);
       } else {
         const a = li.querySelector('a');
         if(a){
@@ -117,6 +117,7 @@ try{
           a.setAttribute('tabindex', '0');
           // Solo agregar el evento clásico si NO es preview
           if(!a.hasAttribute('data-preview')){
+            a.removeEventListener('click', playLesson); // Evita duplicados
             a.addEventListener('click', e => { e.preventDefault(); playLesson(a); });
           }
         }
