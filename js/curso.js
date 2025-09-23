@@ -215,6 +215,33 @@ function restoreLockedState() {
 
 // Ejemplo: restaurar al cerrar sesión
 window.addEventListener('logout', restoreLockedState);
+window.addEventListener('logout', () => {
+  restoreLockedState();
+  // Animación de cierre de sesión
+  let overlay = document.createElement('div');
+  overlay.style.position = 'fixed';
+  overlay.style.top = 0;
+  overlay.style.left = 0;
+  overlay.style.width = '100vw';
+  overlay.style.height = '100vh';
+  overlay.style.background = 'rgba(255,255,255,0.85)';
+  overlay.style.zIndex = 9999;
+  overlay.style.display = 'flex';
+  overlay.style.alignItems = 'center';
+  overlay.style.justifyContent = 'center';
+  overlay.style.fontSize = '2rem';
+  overlay.style.fontWeight = 'bold';
+  overlay.style.color = '#444';
+  overlay.style.transition = 'opacity 0.5s';
+  overlay.innerHTML = '<span>⏳ Cerrando sesión...</span>';
+  document.body.appendChild(overlay);
+  setTimeout(() => {
+    overlay.style.opacity = 0;
+    setTimeout(() => {
+      location.reload();
+    }, 400);
+  }, 1200);
+});
 const FAV_KEY = 'espaciopaz_favs_v1';
 function readFavs(){
   try { return JSON.parse(localStorage.getItem(FAV_KEY)) || []; }
@@ -288,4 +315,6 @@ document.addEventListener('click', (e) => {
   }
   body.classList.remove('is-owned');
   $$('[data-owned-only]')?.forEach(x=>x.setAttribute('hidden',''));
+  // Disparar evento logout para animación y recarga
+  window.dispatchEvent(new Event('logout'));
 });
