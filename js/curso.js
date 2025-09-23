@@ -150,9 +150,7 @@ $$('.js-comprar').forEach(b => b.addEventListener('click', (e) => {
       // Si la lección tiene <span> en vez de <a>, lo convertimos en <a>
       const span = li.querySelector('span:not(.ic--lock):not(.time)');
       if(span){
-        // Tomar el texto y buscar el video correspondiente
         const label = span.textContent.trim();
-        // Buscar el data-src correcto (puedes ajustar esto si tienes los src en otro lado)
         let src = '';
         if(label.includes('Proyecto sentido')) src = '/media/bio/proyecto-sentido.mp4';
         else if(label.includes('Programaciones')) src = '/media/bio/programaciones.mp4';
@@ -165,24 +163,22 @@ $$('.js-comprar').forEach(b => b.addEventListener('click', (e) => {
         else if(label.includes('Ritual de 7 días')) src = '/media/bio/ritual-7dias.mp4';
         else if(label.includes('Carta al cuerpo')) src = '/media/bio/carta-cuerpo.mp4';
         else if(label.includes('Agradecimiento al síntoma')) src = '/media/bio/agradecimiento.mp4';
-        // Crear el <a>
         const a = document.createElement('a');
         a.href = '#';
         a.textContent = label;
         a.setAttribute('data-src', src);
         a.style.pointerEvents = 'auto';
-        a.style.color = '#1976d2';
-        a.style.textDecoration = 'underline';
+        a.style.color = '#3a2c48';
+        a.style.textDecoration = 'none';
         a.setAttribute('tabindex', '0');
         span.replaceWith(a);
         a.addEventListener('click', e => { e.preventDefault(); playLesson(a); });
       } else {
-        // Si ya tiene <a>, solo lo habilitamos
         const a = li.querySelector('a');
         if(a){
           a.style.pointerEvents = 'auto';
-          a.style.color = '#1976d2';
-          a.style.textDecoration = 'underline';
+          a.style.color = '#3a2c48';
+          a.style.textDecoration = 'none';
           a.setAttribute('tabindex', '0');
         }
       }
@@ -195,7 +191,7 @@ $$('.js-comprar').forEach(b => b.addEventListener('click', (e) => {
 // ================= FAVORITOS =================
 // Función para restaurar el estado bloqueado al cerrar sesión
 function restoreLockedState() {
-  body.classList.remove('is-owned');
+  // Solo bloquear si es cierre de sesión, no al recargar
   // Volver a poner 'locked' y mostrar candados en todas las lecciones bloqueables
   $$('.leccion').forEach(li => {
     const a = li.querySelector('a');
