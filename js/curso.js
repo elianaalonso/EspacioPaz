@@ -1,4 +1,3 @@
-
 const $ = (s, el=document) => el.querySelector(s);
 const $$ = (s, el=document) => [...el.querySelectorAll(s)];
 const body = document.body;
@@ -11,6 +10,55 @@ function readUser(){
 }
 
 // Restaurar estado
+// Lista de videos de YouTube aleatorios para demo
+const YT_VIDEOS = [
+  'https://www.youtube.com/watch?v=ysz5S6PUM-U',
+  'https://www.youtube.com/watch?v=jNQXAC9IVRw',
+  'https://www.youtube.com/watch?v=ScMzIvxBSi4',
+  'https://www.youtube.com/watch?v=aqz-KE-bpKQ',
+  'https://www.youtube.com/watch?v=2Vv-BfVoq4g',
+  'https://www.youtube.com/watch?v=3JZ_D3ELwOQ',
+  'https://www.youtube.com/watch?v=9bZkp7q19f0',
+  'https://www.youtube.com/watch?v=60ItHLz5WEA',
+  'https://www.youtube.com/watch?v=OPf0YbXqDm0',
+  'https://www.youtube.com/watch?v=RgKAFK5djSk'
+];
+
+// Utilidad para obtener el ID de YouTube
+function getYouTubeId(url){
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([A-Za-z0-9_\-]+)/);
+  return match ? match[1] : null;
+}
+
+// Utilidad para obtener duración de video YouTube (API pública)
+async function fetchYouTubeDuration(videoId){
+  // Demo: usar API pública de noembed para obtener duración aproximada
+  try {
+    const res = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`);
+    const data = await res.json();
+    // data.duration está en segundos
+    if(data && data.duration) return data.duration;
+  } catch{}
+  return null;
+}
+
+// Formatear segundos a mm:ss
+function formatDuration(sec){
+  if(!sec) return '--:--';
+  const m = Math.floor(sec/60);
+  const s = Math.round(sec%60);
+  return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+}
+
+// Asignar videos y duraciones a las lecciones
+async function assignVideosAndDurations(){
+  const lecciones = document.querySelectorAll('.leccion');
+  let totalSec = 0;
+  // ...el resto de la función puede quedar vacío o solo con lógica de asignación de videos si lo necesitas...
+}
+
+// Ejecutar al cargar
+window.addEventListener('DOMContentLoaded', assignVideosAndDurations);
 try{
   if(localStorage.getItem(OWNED_KEY)==='1'){
     body.classList.add('is-owned');
@@ -55,8 +103,11 @@ try{
         a.style.color = '#3a2c48';
         a.style.textDecoration = 'none';
         a.setAttribute('tabindex', '0');
+        // Solo agregar el evento clásico si NO es preview
+        if(!a.hasAttribute('data-preview')){
+          a.addEventListener('click', e => { e.preventDefault(); playLesson(a); });
+        }
         span.replaceWith(a);
-        a.addEventListener('click', e => { e.preventDefault(); playLesson(a); });
       } else {
         const a = li.querySelector('a');
         if(a){
@@ -64,6 +115,10 @@ try{
           a.style.color = '#3a2c48';
           a.style.textDecoration = 'none';
           a.setAttribute('tabindex', '0');
+          // Solo agregar el evento clásico si NO es preview
+          if(!a.hasAttribute('data-preview')){
+            a.addEventListener('click', e => { e.preventDefault(); playLesson(a); });
+          }
         }
       }
     });
@@ -169,7 +224,7 @@ function playLesson(linkEl){
 }
 
 // listeners en todas las lecciones con data-src
-document.querySelectorAll('.leccion a[data-src]').forEach(a=>{
+document.querySelectorAll('.leccion a[data-src]:not([data-preview])').forEach(a=>{
   a.addEventListener('click', e => { e.preventDefault(); playLesson(a); });
 });
 
@@ -377,3 +432,288 @@ document.addEventListener('click', (e) => {
   // Disparar evento logout para animación y recarga
   window.dispatchEvent(new Event('logout'));
 });
+
+// ================= DURACIONES AUTO (lecciones y módulos) =================
+(function(){
+  const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+  const $  = (s, el=document) => el.querySelector(s);
+
+  // --- formatos ---
+  const pad2 = n => String(n).padStart(2,'0');
+  function secondsToClock(s){
+    s = Math.max(0, Math.floor(s||0));
+    const h = Math.floor(s/3600);
+    const m = Math.floor((s%3600)/60);
+    const sec = s%60;
+    return h ? `${h}:${pad2(m)}:${pad2(sec)}` : `${m}:${pad2(sec)}`;
+  }
+  function secondsToHM(s){
+    s = Math.round(s/60); // a minutos
+    const h = Math.floor(s/60);
+    const m = s%60;
+    return h ? `${h} h ${m} min` : `${m} min`;
+  }
+  function parseDurationToSeconds(txt){
+    if(!txt) return 0;
+    const s = String(txt).trim().toLowerCase();
+
+    // H:MM:SS
+    let m = s.match(/^(\d+):([0-5]?\d):([0-5]?\d)$/);
+    if(m) return (+m[1])*3600 + (+m[2])*60 + (+m[3]);
+
+    // MM:SS
+    m = s.match(/^([0-5]?\d):([0-5]?\d)$/);
+    if(m) return (+m[1])*60 + (+m[2]);
+
+    // "X h Y min" | "Xh Ym" | "X h" | "Y min"
+    m = s.match(/(?:(\d+)\s*h)?\s*(?:(\d+)\s*m(?:in)?)?/);
+    if(m && (m[1] || m[2])){
+      return (+(m[1]||0))*3600 + (+(m[2]||0))*60;
+    }
+    return 0;
+  }
+
+  // --- YouTube helper (solo si hace falta) ---
+  let ytApiReady;
+  function ensureYT(){
+    if(ytApiReady) return ytApiReady;
+    ytApiReady = new Promise(res=>{
+      const tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(tag);
+      window.onYouTubeIframeAPIReady = () => res();
+    });
+    return ytApiReady;
+  }
+  function parseYTId(url){
+    try{
+      const u = new URL(url);
+      if(u.hostname.includes('youtu.be')){
+        return u.pathname.slice(1);
+      }
+      if(u.hostname.includes('youtube.com')){
+        if(u.searchParams.get('v')) return u.searchParams.get('v');
+        const m = u.pathname.match(/\/embed\/([A-ZaZ0-9_-]+)/);
+        if(m) return m[1];
+      }
+    }catch{}
+    return null;
+  }
+  function getYouTubeDurationSec(videoId){
+    return ensureYT().then(()=> new Promise(resolve=>{
+      const holder = document.createElement('div');
+      holder.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;';
+      document.body.appendChild(holder);
+      /* global YT */
+      const player = new YT.Player(holder, {
+        width: 1, height: 1, videoId,
+        events: {
+          onReady: () => {
+            // a veces da 0 al principio; reintentar breve
+            const start = performance.now();
+            (function tick(){
+              const d = Math.floor(player.getDuration() || 0);
+              if(d>0 || performance.now()-start>3000){
+                try{ player.destroy(); }catch{}
+                holder.remove();
+                resolve(d>0 ? d : 0);
+              } else {
+                requestAnimationFrame(tick);
+              }
+            })();
+          }
+        }
+      });
+    }));
+  }
+
+  // --- archivos de vídeo (mp4/webm) ---
+  function getFileVideoDurationSec(src){
+    return new Promise(resolve=>{
+      const v = document.createElement('video');
+      v.preload = 'metadata';
+      v.muted = true;
+      v.src = src;
+      const done = () => {
+        const d = Math.floor(v.duration || 0);
+        cleanup(); resolve(d);
+      };
+      const fail = () => { cleanup(); resolve(0); };
+      const cleanup = () => {
+        v.removeEventListener('loadedmetadata', done);
+        v.removeEventListener('error', fail);
+        v.src = '';
+      };
+      v.addEventListener('loadedmetadata', done);
+      v.addEventListener('error', fail);
+      // por si no dispara nunca
+      setTimeout(fail, 7000);
+    });
+  }
+
+  // --- escribir tiempo en .time sin perder la .tag ---
+  function renderTime(elTime, seconds){
+    const tag = elTime.querySelector('.tag');
+    elTime.dataset.seconds = seconds || 0;
+    elTime.textContent = seconds ? secondsToClock(seconds) : '';
+    if(tag){ elTime.append(' '); elTime.append(tag); }
+  }
+
+  // --- sumar módulo ---
+  function updateModuloMeta(mod){
+    const meta = $('.modulo__meta', mod);
+    if(!meta) return;
+    let total = 0;
+    $$('.leccion .time', mod).forEach(t=>{
+      const ds = +t.dataset.seconds || 0;
+      // si aún no tiene dataset pero sí texto tipo "04:12", lo parseo
+      if(!ds){
+        const parsed = parseDurationToSeconds(t.textContent);
+        if(parsed){
+          t.dataset.seconds = parsed;
+          renderTime(t, parsed);
+          total += parsed;
+        }
+      }else{
+        total += ds;
+      }
+    });
+    const lessons = $$('.leccion', mod).length;
+    meta.textContent = `${lessons} lecciones • ${secondsToHM(total)}`;
+  }
+
+  async function resolveOneLesson(lessonLi){
+    const timeEl = $('.time', lessonLi) || lessonLi.appendChild(Object.assign(document.createElement('span'),{className:'time'}));
+
+    // 1) data-duration explícito
+    const explicit = lessonLi.dataset.duration || timeEl.dataset.duration;
+    if(explicit){
+      const sec = parseDurationToSeconds(explicit);
+      renderTime(timeEl, sec);
+      return sec;
+    }
+
+    // 2) si ya viene texto, úsalo
+    const existing = parseDurationToSeconds(timeEl.textContent);
+    if(existing){
+      renderTime(timeEl, existing);
+      return existing;
+    }
+
+    // 3) data-src => archivo o YouTube
+    const a = lessonLi.querySelector('[data-src]');
+    const src = a?.dataset.src;
+    if(!src){ renderTime(timeEl, 0); return 0; }
+
+    // YT vs archivo
+    const ytId = parseYTId(src);
+    const seconds = ytId ? await getYouTubeDurationSec(ytId)
+                         : await getFileVideoDurationSec(src);
+    renderTime(timeEl, seconds);
+    return seconds;
+  }
+
+  // --- proceso general ---
+  (async function boot(){
+    let grandTotal = 0;
+    let totalLessonsAcross = 0;
+
+    for (const mod of $$('.modulo')) {
+      const lessons = $$('.leccion', mod);
+
+      // Resolver duraciones de cada lección (en paralelo por módulo)
+      await Promise.all(lessons.map(li => resolveOneLesson(li)));
+
+      // Actualizar el encabezado del módulo
+      updateModuloMeta(mod);
+
+      // Acumular totales globales
+      totalLessonsAcross += lessons.length;
+      $$('.leccion .time', mod).forEach(t => {
+        grandTotal += (+t.dataset.seconds || 0);
+      });
+    }
+
+    // ---- Actualizar meta del HERO ----
+    const heroMeta = $('.curso-hero .meta');
+    if (heroMeta) {
+      // Duración total
+      const durSpan = [...heroMeta.querySelectorAll('span')]
+        .find(s => /duración:/i.test(s.textContent));
+      if (durSpan) {
+        durSpan.innerHTML = `<strong>Duración:</strong> ${secondsToHM(grandTotal)}`;
+      }
+
+      // Cantidad total de clases
+      const clsSpan = [...heroMeta.querySelectorAll('span')]
+        .find(s => /clases:/i.test(s.textContent));
+      if (clsSpan) {
+        clsSpan.innerHTML = `<strong>Clases:</strong> ${totalLessonsAcross} lecciones`;
+      }
+    }
+  })();
+})();
+
+// ================= PREVIEW INLINE (estilo Domestika) =================
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[data-preview]');
+  if (!a) return;
+  e.preventDefault();
+  toggleInlinePreview(a);
+});
+
+function toggleInlinePreview(anchor){
+  const li = anchor.closest('.leccion');
+  if (!li) return;
+
+  // Si ya está abierto en este, cerrarlo y salir
+  if (li.nextElementSibling?.classList.contains('preview-slot')) {
+    li.nextElementSibling.remove();
+    return;
+  }
+
+  // Cerrar cualquier otro preview abierto
+  document.querySelectorAll('.preview-slot.open').forEach(s => s.remove());
+
+  // Crear contenedor
+  const slot = document.createElement('div');
+  slot.className = 'preview-slot open';
+  slot.innerHTML = renderPreviewHTML(anchor);
+  li.after(slot);
+
+  // Enfocar para accesibilidad
+  const focusable = slot.querySelector('iframe,video');
+  focusable?.focus({preventScroll:true});
+}
+
+function renderPreviewHTML(anchor){
+  const yt = anchor.dataset.youtube;          // ej: data-youtube="dQw4w9WgXcQ"
+  const src = anchor.dataset.src;             // ej: data-src="/videos/bienvenida.mp4"
+
+  if (yt) {
+    const url = `https://www.youtube.com/embed/${yt}?autoplay=1&rel=0&modestbranding=1`;
+    return `
+      <div class="preview-inner">
+        <div class="player-box">
+          <iframe src="${url}" title="Preview" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>`;
+  }
+
+  if (src) {
+    return `
+      <div class="preview-inner">
+        <div class="player-box">
+          <video src="${src}" controls playsinline></video>
+        </div>
+      </div>`;
+  }
+
+  // Fallback si aún no definiste fuente
+  return `
+    <div class="preview-inner">
+      <div class="player-box fallback">
+        <p>La preview estará disponible pronto.</p>
+      </div>
+    </div>`;
+}
