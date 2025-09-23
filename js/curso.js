@@ -142,12 +142,79 @@ $$('.js-comprar').forEach(b => b.addEventListener('click', (e) => {
     body.classList.add('is-owned');
     try{ localStorage.setItem(OWNED_KEY,'1'); }catch{}
     $$('[data-owned-only]')?.forEach(x=>x.removeAttribute('hidden'));
+    // Quitar 'locked' y ocultar candados en todas las lecciones
+    $$('.leccion.locked').forEach(li => {
+      li.classList.remove('locked');
+      const lockIcon = li.querySelector('.ic--lock');
+      if(lockIcon) lockIcon.setAttribute('hidden','');
+      // Si la lección tiene <span> en vez de <a>, lo convertimos en <a>
+      const span = li.querySelector('span:not(.ic--lock):not(.time)');
+      if(span){
+        // Tomar el texto y buscar el video correspondiente
+        const label = span.textContent.trim();
+        // Buscar el data-src correcto (puedes ajustar esto si tienes los src en otro lado)
+        let src = '';
+        if(label.includes('Proyecto sentido')) src = '/media/bio/proyecto-sentido.mp4';
+        else if(label.includes('Programaciones')) src = '/media/bio/programaciones.mp4';
+        else if(label.includes('Dobles')) src = '/media/bio/dobles.mp4';
+        else if(label.includes('Práctica: línea del tiempo')) src = '/media/bio/linea-tiempo.mp4';
+        else if(label.includes('Ritual: reconocimiento de excluidos')) src = '/media/bio/ritual-excluidos.mp4';
+        else if(label.includes('Integración')) src = '/media/bio/integracion.mp4';
+        else if(label.includes('Principios y lenguaje del cuerpo')) src = '/media/bio/03-principios.mp4';
+        else if(label.includes('Práctica: observación amable')) src = '/media/bio/04-practica.mp4';
+        else if(label.includes('Ritual de 7 días')) src = '/media/bio/ritual-7dias.mp4';
+        else if(label.includes('Carta al cuerpo')) src = '/media/bio/carta-cuerpo.mp4';
+        else if(label.includes('Agradecimiento al síntoma')) src = '/media/bio/agradecimiento.mp4';
+        // Crear el <a>
+        const a = document.createElement('a');
+        a.href = '#';
+        a.textContent = label;
+        a.setAttribute('data-src', src);
+        a.style.pointerEvents = 'auto';
+        a.style.color = '#1976d2';
+        a.style.textDecoration = 'underline';
+        a.setAttribute('tabindex', '0');
+        span.replaceWith(a);
+        a.addEventListener('click', e => { e.preventDefault(); playLesson(a); });
+      } else {
+        // Si ya tiene <a>, solo lo habilitamos
+        const a = li.querySelector('a');
+        if(a){
+          a.style.pointerEvents = 'auto';
+          a.style.color = '#1976d2';
+          a.style.textDecoration = 'underline';
+          a.setAttribute('tabindex', '0');
+        }
+      }
+    });
     alert('¡Listo! Contenido desbloqueado.');
   }
 }));
 
 
 // ================= FAVORITOS =================
+// Función para restaurar el estado bloqueado al cerrar sesión
+function restoreLockedState() {
+  body.classList.remove('is-owned');
+  // Volver a poner 'locked' y mostrar candados en todas las lecciones bloqueables
+  $$('.leccion').forEach(li => {
+    const a = li.querySelector('a');
+    if (a && !a.hasAttribute('data-preview')) {
+      li.classList.add('locked');
+      const lockIcon = li.querySelector('.ic--lock');
+      if(lockIcon) lockIcon.removeAttribute('hidden');
+      a.style.pointerEvents = 'none';
+      a.style.color = '#aaa';
+      a.style.textDecoration = 'none';
+      a.setAttribute('tabindex', '-1');
+    }
+  });
+  // Ocultar recursos solo para dueños
+  $$('[data-owned-only]').forEach(x => x.setAttribute('hidden', ''));
+}
+
+// Ejemplo: restaurar al cerrar sesión
+window.addEventListener('logout', restoreLockedState);
 const FAV_KEY = 'espaciopaz_favs_v1';
 function readFavs(){
   try { return JSON.parse(localStorage.getItem(FAV_KEY)) || []; }
