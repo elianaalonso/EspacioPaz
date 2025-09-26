@@ -527,3 +527,68 @@
   60% { transform: scale(1.08); }
   100% { transform: scale(1); }
 }
+
+/* Sidebar: bloque "Sobre Paz" */
+.curso-page .profe{
+  display:grid;
+  grid-template-columns: 1.7rem 1fr;
+  gap:.35rem;
+  align-items:start;            /* mejor alineación vertical */
+}
+
+.curso-page .profe__foto{
+  grid-column:1;                /* avatar en col 1 */
+  grid-row:1 / span 2;          /* ocupa alto de foto + texto */
+}
+
+.curso-page .profe p{
+  grid-column:2;                /* texto en col 2 */
+}
+
+/* ⬇️ botón debajo del texto, ancho normal */
+.curso-page .profe .btn{
+  grid-column:2;                /* ponelo en la columna ancha */
+  justify-self:start;
+  margin-top:.25rem;
+}
+
+/* Si lo preferís a todo el ancho del bloque, usa esto en su lugar: */
+/* .curso-page .profe .btn{ grid-column:1 / -1; justify-self:stretch; } */
+/* ===== Sidebar: "Sobre Paz" — bloque limpio ===== */
+.curso-page .card .profe{
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;  /* avatar + contenido */
+  column-gap: .75rem;
+  row-gap: .35rem;
+  align-items: start;
+}
+
+/* Avatar redondo, un poco más grande */
+.curso-page .profe__foto{
+  grid-column: 1;
+  grid-row: 1 / span 2;              /* ocupa altura de texto + botón */
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: var(--shadow);
+  margin-top: .15rem;                 /* pequeño ajuste vertical */
+}
+
+/* Texto de la bio */
+.curso-page .profe p{
+  grid-column: 2;
+  margin: 0;
+  color: var(--texto);
+  line-height: 1.45;
+}
+
+/* Botón debajo del texto, alineado a la izquierda */
+.curso-page .profe .btn{
+  grid-column: 2;
+  justify-self: start;
+  margin-top: .5rem;
+}
+.curso-page .profe .btn{ 
+  grid-column: 1 / -1; justify-self: stretch; }
