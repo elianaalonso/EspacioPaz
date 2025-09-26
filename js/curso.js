@@ -541,34 +541,43 @@ document.addEventListener('click', (e) => {
   }
 
   async function resolveOneLesson(lessonLi){
-    const timeEl = $('.time', lessonLi) || lessonLi.appendChild(Object.assign(document.createElement('span'),{className:'time'}));
+    try {
+      const timeEl = $('.time', lessonLi) || lessonLi.appendChild(Object.assign(document.createElement('span'),{className:'time'}));
 
-    // 1) data-duration explícito
-    const explicit = lessonLi.dataset.duration || timeEl.dataset.duration;
-    if(explicit){
-      const sec = parseDurationToSeconds(explicit);
-      renderTime(timeEl, sec);
-      return sec;
+      // 1) data-duration explícito
+      const explicit = lessonLi.dataset.duration || timeEl.dataset.duration;
+      if(explicit){
+        const sec = parseDurationToSeconds(explicit);
+        renderTime(timeEl, sec);
+        return sec;
+      }
+
+      // 2) si ya viene texto, úsalo
+      const existing = parseDurationToSeconds(timeEl.textContent);
+      if(existing){
+        renderTime(timeEl, existing);
+        return existing;
+      }
+
+      // 3) data-youtube o data-src en <a> o <li>
+      const a = lessonLi.querySelector('[data-youtube], [data-src]');
+      const liSrc = lessonLi.dataset.src || null;
+      const aSrc  = a?.dataset?.src || null;
+      const ytId  = a?.dataset?.youtube || parseYTId(aSrc || liSrc);
+
+      let seconds = 0;
+      if (ytId) {
+        seconds = await getYouTubeDurationSec(ytId);
+      } else if (aSrc || liSrc) {
+        seconds = await getFileVideoDurationSec(aSrc || liSrc);
+      }
+
+      renderTime(timeEl, seconds);
+      return seconds;
+    } catch {
+      renderTime($('.time', lessonLi) || lessonLi, 0);
+      return 0;
     }
-
-    // 2) si ya viene texto, úsalo
-    const existing = parseDurationToSeconds(timeEl.textContent);
-    if(existing){
-      renderTime(timeEl, existing);
-      return existing;
-    }
-
-    // 3) data-src => archivo o YouTube
-    const a = lessonLi.querySelector('[data-src]');
-    const src = a?.dataset.src;
-    if(!src){ renderTime(timeEl, 0); return 0; }
-
-    // YT vs archivo
-    const ytId = parseYTId(src);
-    const seconds = ytId ? await getYouTubeDurationSec(ytId)
-                         : await getFileVideoDurationSec(src);
-    renderTime(timeEl, seconds);
-    return seconds;
   }
 
   // --- proceso general ---
