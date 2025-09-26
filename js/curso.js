@@ -1,8 +1,77 @@
+
 const $ = (s, el=document) => el.querySelector(s);
 const $$ = (s, el=document) => [...el.querySelectorAll(s)];
 const body = document.body;
 const OWNED_KEY = `owned_${body.dataset.courseId}`;
 const USER_KEY = 'espaciopaz_user_v1';
+
+// ============ Helpers ============
+const norm = s => (s||'').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,'').replace(/\s+/g,' ').trim();
+
+function bindLessonClick(a){
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    const src = a.dataset.src || a.getAttribute('href');
+    if(!src) return;
+    if (typeof playLesson === 'function') playLesson(a);
+    else if (typeof setPlayer === 'function') setPlayer({ src, provider: a.dataset.provider||'mp4', title: a.textContent.trim() }, a.closest('.leccion'));
+  });
+}
+
+function unlockLessonsIfOwned(){
+  if(!document.body.classList.contains('is-owned')) return;
+
+  document.querySelectorAll('.leccion.locked').forEach(li => {
+    // si ya tiene <a>, no hacemos nada (evita duplicados tipo "Bienvenida")
+    if (li.querySelector('a')) { li.classList.remove('locked'); return; }
+
+    const src = li.dataset.src;
+    const provider = li.dataset.provider || 'mp4';
+    if (!src) return;
+
+    const labelEl = li.querySelector('span:nth-child(2)') || li.querySelector('span:not(.ic):not(.time)');
+    const timeEl  = li.querySelector('.time') || li.appendChild(document.createElement('span'));
+    timeEl.classList.add('time');
+
+    const a = document.createElement('a');
+    a.textContent = (labelEl?.textContent || '').trim();
+    a.href = '#';
+    a.dataset.src = src;
+    a.dataset.provider = provider;
+
+    if (labelEl && labelEl.tagName.toLowerCase() === 'span') labelEl.replaceWith(a);
+    else li.insertBefore(a, timeEl);
+
+    // icono: candado -> play
+    const ic = li.querySelector('.ic');
+    if (ic){
+      ic.classList.remove('ic--lock');
+      ic.classList.add('ic--play');
+      ic.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6l10 6-10 6z"/></svg>';
+    }
+
+    li.classList.remove('locked');
+    bindLessonClick(a);
+  });
+
+  // Recalcular duraciones si tenés esa lógica
+  if (typeof assignVideosAndDurations === 'function') {
+    assignVideosAndDurations();
+  }
+}
+function parseMMSS(s){ const m = (s||'').match(/(\d{1,2}):(\d{2})/); return m ? (+m[1]*60 + +m[2]) : 0; }
+function mmToLabel(totalSec){
+  const h = Math.floor(totalSec/3600), m = Math.round((totalSec%3600)/60);
+  return h ? `${h} h ${m} min` : `${m} min`;
+}
+function updateAllModuleTotals(){
+  document.querySelectorAll('.modulo').forEach(mod=>{
+    const secs = [...mod.querySelectorAll('.time')].map(el => parseMMSS(el.textContent)).reduce((a,b)=>a+b,0);
+    const lessons = mod.querySelectorAll('.leccion').length;
+    const meta = mod.querySelector('.modulo__meta');
+    if (meta) meta.textContent = `${lessons} lecciones • ${mmToLabel(secs)}`;
+  });
+}
 
 function readUser(){
   try { return JSON.parse(localStorage.getItem(USER_KEY)) || null; }
@@ -58,73 +127,16 @@ async function assignVideosAndDurations(){
 }
 
 // Ejecutar al cargar
-window.addEventListener('DOMContentLoaded', assignVideosAndDurations);
-try{
-  if(localStorage.getItem(OWNED_KEY)==='1'){
-    body.classList.add('is-owned');
-    $$('[data-owned-only]')?.forEach(x=>x.removeAttribute('hidden'));
-    // Desbloquear lecciones si ya se compró
-    $$('.leccion.locked').forEach(li => {
-      li.classList.remove('locked');
-      // Ocultar candado y mostrar flecha play
-      const lockIcon = li.querySelector('.ic--lock');
-      if(lockIcon) lockIcon.style.display = 'none';
-      let playIcon = li.querySelector('.ic--play');
-      if(!playIcon){
-        playIcon = document.createElement('span');
-        playIcon.className = 'ic ic--play';
-        playIcon.setAttribute('aria-hidden','true');
-        playIcon.innerHTML = '<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M8 6l10 6-10 6z"/></svg>';
-        li.insertBefore(playIcon, li.firstChild);
-      } else {
-        playIcon.style.display = '';
-      }
-      // Si la lección tiene <span> en vez de <a>, lo convertimos en <a>
-      const span = li.querySelector('span:not(.ic--lock):not(.ic--play):not(.time)');
-      if(span){
-        const label = span.textContent.trim();
-        let src = '';
-        if(label.includes('Proyecto sentido')) src = '/media/bio/proyecto-sentido.mp4';
-        else if(label.includes('Programaciones')) src = '/media/bio/programaciones.mp4';
-        else if(label.includes('Dobles')) src = '/media/bio/dobles.mp4';
-        else if(label.includes('Práctica: línea del tiempo')) src = '/media/bio/linea-tiempo.mp4';
-        else if(label.includes('Ritual: reconocimiento de excluidos')) src = '/media/bio/ritual-excluidos.mp4';
-        else if(label.includes('Integración')) src = '/media/bio/integracion.mp4';
-        else if(label.includes('Principios y lenguaje del cuerpo')) src = '/media/bio/03-principios.mp4';
-        else if(label.includes('Práctica: observación amable')) src = '/media/bio/04-practica.mp4';
-        else if(label.includes('Ritual de 7 días')) src = '/media/bio/ritual-7dias.mp4';
-        else if(label.includes('Carta al cuerpo')) src = '/media/bio/carta-cuerpo.mp4';
-        else if(label.includes('Agradecimiento al síntoma')) src = '/media/bio/agradecimiento.mp4';
-        const a = document.createElement('a');
-        a.href = '#';
-        a.textContent = label;
-        a.setAttribute('data-src', src);
-        a.style.pointerEvents = 'auto';
-        a.style.color = '#3a2c48';
-        a.style.textDecoration = 'none';
-        a.setAttribute('tabindex', '0');
-        span.replaceWith(a);
-        // Solo agregar el evento clásico si NO es preview
-        if(!a.hasAttribute('data-preview')){
-          a.addEventListener('click', e => { e.preventDefault(); playLesson(a); });
-        }
-      } else {
-        const a = li.querySelector('a');
-        if(a){
-          a.style.pointerEvents = 'auto';
-          a.style.color = '#3a2c48';
-          a.style.textDecoration = 'none';
-          a.setAttribute('tabindex', '0');
-          // Solo agregar el evento clásico si NO es preview
-          if(!a.hasAttribute('data-preview')){
-            a.removeEventListener('click', playLesson); // Evita duplicados
-            a.addEventListener('click', e => { e.preventDefault(); playLesson(a); });
-          }
-        }
-      }
-    });
-  }
-}catch{}
+window.addEventListener('DOMContentLoaded', () => {
+  assignVideosAndDurations();
+  try{
+    if(localStorage.getItem(OWNED_KEY)==='1'){
+      body.classList.add('is-owned');
+      $$('[data-owned-only]').forEach(x=>x.removeAttribute('hidden'));
+      unlockLessonsIfOwned();
+    }
+  }catch{}
+});
 
 // Expandir/colapsar módulos
 $$('.modulo').forEach(mod => {
@@ -237,71 +249,16 @@ $$('.js-comprar').forEach(b => b.addEventListener('click', (e) => {
   const user = readUser();
   if (!user) {
     e.preventDefault();
-    // Abrir modal de login si existe
     if (typeof openAuth === 'function') openAuth('login');
-    else {
-      // fallback: trigger modal manualmente
-      const evt = new CustomEvent('open-auth-modal');
-      document.dispatchEvent(evt);
-    }
+    else document.dispatchEvent(new CustomEvent('open-auth-modal'));
     return;
   }
+
   if(confirm('¿Simular compra y desbloquear el curso?')){
     body.classList.add('is-owned');
     try{ localStorage.setItem(OWNED_KEY,'1'); }catch{}
-    $$('[data-owned-only]')?.forEach(x=>x.removeAttribute('hidden'));
-    // Quitar 'locked' y ocultar candados en todas las lecciones
-    $$('.leccion.locked').forEach(li => {
-      li.classList.remove('locked');
-      // Ocultar candado y mostrar flecha play
-      const lockIcon = li.querySelector('.ic--lock');
-      if(lockIcon) lockIcon.style.display = 'none';
-      let playIcon = li.querySelector('.ic--play');
-      if(!playIcon){
-        playIcon = document.createElement('span');
-        playIcon.className = 'ic ic--play';
-        playIcon.setAttribute('aria-hidden','true');
-        playIcon.innerHTML = '<svg viewBox="0 0 24 24" focusable="false" aria-hidden="true"><path d="M8 6l10 6-10 6z"/></svg>';
-        li.insertBefore(playIcon, li.firstChild);
-      } else {
-        playIcon.style.display = '';
-      }
-      // Si la lección tiene <span> en vez de <a>, lo convertimos en <a>
-      const span = li.querySelector('span:not(.ic--lock):not(.ic--play):not(.time)');
-      if(span){
-        const label = span.textContent.trim();
-        let src = '';
-        if(label.includes('Proyecto sentido')) src = '/media/bio/proyecto-sentido.mp4';
-        else if(label.includes('Programaciones')) src = '/media/bio/programaciones.mp4';
-        else if(label.includes('Dobles')) src = '/media/bio/dobles.mp4';
-        else if(label.includes('Práctica: línea del tiempo')) src = '/media/bio/linea-tiempo.mp4';
-        else if(label.includes('Ritual: reconocimiento de excluidos')) src = '/media/bio/ritual-excluidos.mp4';
-        else if(label.includes('Integración')) src = '/media/bio/integracion.mp4';
-        else if(label.includes('Principios y lenguaje del cuerpo')) src = '/media/bio/03-principios.mp4';
-        else if(label.includes('Práctica: observación amable')) src = '/media/bio/04-practica.mp4';
-        else if(label.includes('Ritual de 7 días')) src = '/media/bio/ritual-7dias.mp4';
-        else if(label.includes('Carta al cuerpo')) src = '/media/bio/carta-cuerpo.mp4';
-        else if(label.includes('Agradecimiento al síntoma')) src = '/media/bio/agradecimiento.mp4';
-        const a = document.createElement('a');
-        a.href = '#';
-        a.textContent = label;
-        a.setAttribute('data-src', src);
-        a.style.pointerEvents = 'auto';
-        a.style.color = '#3a2c48';
-        a.style.textDecoration = 'none';
-        a.setAttribute('tabindex', '0');
-        span.replaceWith(a);
-        a.addEventListener('click', e => { e.preventDefault(); playLesson(a); });
-      } else {
-        const a = li.querySelector('a');
-        if(a){
-          a.style.pointerEvents = 'auto';
-          a.style.color = '#3a2c48';
-          a.style.textDecoration = 'none';
-          a.setAttribute('tabindex', '0');
-        }
-      }
-    });
+    $$('[data-owned-only]').forEach(x=>x.removeAttribute('hidden'));
+    unlockLessonsIfOwned();
     alert('¡Listo! Contenido desbloqueado.');
   }
 }));
