@@ -351,6 +351,12 @@ function restoreLockedState() {
 // Ejemplo: restaurar al cerrar sesión
 window.addEventListener('logout', restoreLockedState);
 window.addEventListener('logout', () => {
+  // Eliminar progreso y completados del curso actual
+  try {
+    localStorage.removeItem(`done_${body.dataset.courseId}`);
+    localStorage.removeItem(`dur_${body.dataset.courseId}`);
+    localStorage.removeItem(`owned_${body.dataset.courseId}`);
+  } catch(e){}
   restoreLockedState();
   // Animación de cierre de sesión
   let overlay = document.createElement('div');
