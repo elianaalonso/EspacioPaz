@@ -330,7 +330,7 @@ body{
 .f-logo{ height:2.25rem; width:auto; display:block }
 .f-brand strong{ display:block; font-size:1rem }
 .f-brand small{ color: var(--texto-claro) }
-.f-links{ display:flex; flex-wrap:nowrap; gap:0.625rem }
+.f-links{ display:flex; flex-wrap:wrap; gap:0.625rem }
 .f-links a{ text-decoration:none; color:var(--texto); padding:0.375rem 0.5rem; border-radius:0.5rem }
 .f-links a:hover{ background: var(--lavanda) }
 .f-contact{ display:flex; flex-direction:column; gap:0.5rem; align-items:flex-end }
@@ -665,8 +665,18 @@ section.gift-cta .gift-illu{
   .nav-links{
     position: fixed; inset: 4rem 0 auto 0; background: var(--blanco);
     border-bottom: 0.0625rem solid #eee; display: none; flex-direction: column; align-items: stretch;
-    gap: 0.25rem; padding: 0.75rem;
+  .f-contact{ align-items:center }
+  /* iPad vertical: que los links del footer envuelvan y se centren */
+  .f-links{ flex-wrap: wrap; justify-content: center; }
   }
+
+/* iPad Air/Mini/Pro (hasta 64rem): footer apilado y centrado, con wrap en links */
+@media (min-width: 51.3125rem) and (max-width: 64rem){
+  .footer-inner{ grid-template-columns: 1fr; gap: .75rem; text-align: center; }
+  .f-brand{ justify-content: center; }
+  .f-links{ flex-wrap: wrap; justify-content: center; }
+  .f-contact{ align-items: center; }
+}
   .nav-links.open{ display:flex }
   .nav-links a, .nav-links button{ padding:0.875rem; border-radius:0.75rem }
   .dropdown-menu{ position: static; display: none; border: 0; box-shadow: none; padding: 0; margin-left: 0.5rem; }
