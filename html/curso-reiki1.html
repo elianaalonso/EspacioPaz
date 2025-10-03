@@ -78,6 +78,9 @@
         <h1 id="curso-titulo" class="title">Biodescodificación Emocional — Fundamentos</h1>
         <p class="excerpt">Un recorrido claro y amoroso para comprender el lenguaje del cuerpo, los símbolos de la emoción y el origen de los síntomas. Ritualística simple, herramientas prácticas y una mirada humana para acompañarte.</p>
         <div class="meta" aria-label="Información del curso">
+          <!-- Progreso global del curso -->
+          <div class="progress global-progress" id="globalProgress" aria-label="Progreso del curso" style="margin-bottom:.7rem"><i></i></div>
+          <div class="pct-global" id="pctGlobal" style="font-weight:800;color:#6a57a5;margin-bottom:.5rem"></div>
           <span><strong>Duración:</strong> 6 h 30 min</span>
           <span><strong>Clases:</strong> 24 lecciones</span>
           <span><strong>Descargables:</strong> incluidos</span>
@@ -143,6 +146,16 @@
         <section class="card section" aria-labelledby="contenido-heading">
           <div class="card__hd" id="contenido-heading">Contenido del curso</div>
           <div class="card__body">
+            <div class="progreso-curso" id="progresoCurso" aria-label="Progreso del curso">
+           <div class="progreso-barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <span class="progreso-fill" style="width:0%"></span>
+          </div>
+          <small class="progreso-text">
+         <b class="prog-done">0</b>/<span class="prog-total">0</span> lecciones completadas • <span class="prog-pct">0%</span>
+       </small>
+      </div>
+
+            
             <ol class="modulos" role="list">
               <li class="modulo" data-open>
                 <button class="modulo__hd" aria-expanded="true">

@@ -592,3 +592,150 @@
 }
 .curso-page .profe .btn{ 
   grid-column: 1 / -1; justify-self: stretch; }
+
+  /* Más aire para la flecha en el header del módulo */
+.curso-page .modulo__hd{
+  /* antes: padding: .6rem .7rem;  */
+  padding: .6rem 3.25rem .6rem .7rem;   /* ↑ más padding a la derecha */
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto; /* título crece; meta a la derecha */
+  gap: .6rem;
+}
+
+/* Reubicar chevron para que no tape el texto */
+.curso-page .modulo__hd::after{
+  right: 1.1rem;                         /* antes ~.7rem */
+}
+
+/* Evitar que el meta se corte y dejarle aire extra por si acaso */
+.curso-page .modulo__meta{
+  white-space: nowrap;
+  padding-right: .25rem;                 /* mini colchón contra el chevron */
+}
+
+/* Header del módulo: más aire a la derecha y posición relativa */
+.curso-page .modulo__hd{
+  position: relative;
+  padding: .6rem 2.75rem .6rem .7rem;      /* <-- reserva zona para la flecha */
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto; /* título ocupa todo; meta a la derecha */
+  gap: .6rem;
+}
+
+/* Evitar que el título empuje la flecha fuera */
+.curso-page .modulo__hd > span:first-child{
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* El meta no se parte y deja un pelín de aire */
+.curso-page .modulo__meta{
+  white-space: nowrap;
+  padding-right: .25rem;
+}
+
+/* Chevron propio (por si no lo tenías o para reemplazar el anterior) */
+.curso-page .modulo__hd::after{
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: .9rem;                           /* <-- mueve la flecha hacia la IZQUIERDA */
+  width: .6rem;
+  height: .6rem;
+  border-right: 2px solid #8a77ad;
+  border-bottom: 2px solid #8a77ad;
+  transform: translateY(-50%) rotate(-45deg);
+  transition: transform .18s ease;
+  opacity: .9;
+}
+
+/* Rota al abrir */
+.curso-page .modulo__hd[aria-expanded="true"]::after{
+  transform: translateY(-50%) rotate(135deg);
+}
+
+/* (Opcional) un pelín más de aire en móvil */
+@media (max-width: 40rem){
+  .curso-page .modulo__hd{ padding-right: 3.1rem; }
+}
+/* Flecha chica y fija en los headers de módulo */
+.curso-page .modulo__hd{
+  position: relative;
+  padding: .6rem 2rem .6rem .7rem; /* reserva un poco a la derecha */
+}
+
+/* reemplaza la flecha anterior por un caret tipográfico “›” */
+.curso-page .modulo__hd::after{
+  content: "›";
+  position: absolute;
+  right: .75rem;
+  top: 50%;
+  transform: translateY(-52%);     /* NO rota */
+  font-size: .95rem;               /* más chica */
+  line-height: 1;
+  color: #8a77ad;
+  opacity: .8;
+  border: none !important;         /* por si quedó la versión con bordes */
+  width: auto; height: auto;       /* limpia el tamaño previo */
+  pointer-events: none;
+}
+
+/* asegura que no cambie al abrir/cerrar */
+.curso-page .modulo__hd[aria-expanded="true"]::after{
+  transform: translateY(-52%);     /* mismo estado */
+}
+/* Quita el indent por defecto del <ol> para alinear los módulos */
+.curso-page .modulos{
+  list-style: none;
+  margin: .25rem 0 0 0;   /* sin margen extra del <ol> */
+  padding: 0;             /* sin padding izquierdo */
+}
+
+/* También limpiamos el indent del <ol> interno de lecciones */
+.curso-page .modulos .lecciones{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Opcional: un poquito más de aire vertical entre módulos */
+.curso-page .modulo{ margin: .35rem 0; }
+
+/* Flecha chica y fija (dejamos igual que antes, por si no lo tenías) */
+.curso-page .modulo__hd{
+  position: relative;
+  padding: .6rem 2rem .6rem .7rem;
+}
+.curso-page .modulo__hd::after{
+  content: "›";
+  position: absolute;
+  right: .75rem;
+  top: 50%;
+  transform: translateY(-52%);
+  font-size: .95rem;
+  color: #8a77ad; opacity: .8;
+  pointer-events: none;
+}
+.curso-page .modulo__hd[aria-expanded="true"]::after{
+  transform: translateY(-52%); /* sin giro */
+}
+/* ——— Compacta el listado de módulos ——— */
+.curso-page .modulos{
+  gap: .80rem;          /* antes 1rem */
+}
+
+/* sin margen adicional entre tarjetas (ya hay gap) */
+.curso-page .modulo{
+  margin: 0;
+}
+
+/* un pelín menos de alto en el header del módulo */
+.curso-page .modulo__hd{
+  padding: .5rem 2rem .5rem .7rem;
+}
+
+/* opcional: compactar lecciones también */
+.curso-page .leccion{
+  padding: .45rem .7rem;
+}

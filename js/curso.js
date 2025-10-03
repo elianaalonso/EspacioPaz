@@ -1,3 +1,24 @@
+// Progreso global en el HERO
+function setGlobalProgressBar(){
+  const allLessons = [...document.querySelectorAll('.leccion')];
+  const total = allLessons.length;
+  const done = allLessons.filter(li => (li.dataset.done === "1")).length;
+  const pct = total ? Math.round(100*done/total) : 0;
+  const bar = document.getElementById('globalProgress')?.querySelector('i');
+  if(bar) bar.style.width = pct + '%';
+  const pctLabel = document.getElementById('pctGlobal');
+  if(pctLabel) pctLabel.textContent = `Progreso: ${pct}% completado`;
+}
+
+// Actualizar global al marcar done
+const _oldMarkDone = typeof markDone === 'function' ? markDone : null;
+window.markDone = function(li, value){
+  if(_oldMarkDone) _oldMarkDone(li, value);
+  setGlobalProgressBar();
+};
+
+// Actualizar global al iniciar
+document.addEventListener('DOMContentLoaded', setGlobalProgressBar);
 
 const $ = (s, el=document) => el.querySelector(s);
 const $$ = (s, el=document) => [...el.querySelectorAll(s)];
@@ -684,3 +705,4 @@ function renderPreviewHTML(anchor){
       </div>
     </div>`;
 }
+
