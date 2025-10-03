@@ -395,12 +395,10 @@
   font-weight: 700;
 }
 
-.curso-page .locked{
+.curso-page .leccion.locked{
   color: #b6adc2;
-  font-size: .97em;
   background: #f7f5fa;
   cursor: not-allowed;
-  opacity: .7;
 }
 .curso-page .leccion.locked a {
   color: #b6adc2 !important;
@@ -931,3 +929,27 @@
   border-top: none; border-right: none;
   transform: rotate(-45deg);
 }
+
+/* Asegurar mismo layout para span de título (en bloqueadas) que para <a> */
+.curso-page .leccion > span:not(.ic):not(.time){
+  order: 3;
+  min-width: 0;         /* evita saltos cuando el texto es largo */
+}
+
+/* Estado bloqueado: no deformar, solo desactivar y grisear */
+.curso-page .leccion.locked .tick{ pointer-events: none; opacity: .6; }
+.curso-page .leccion.locked > span:not(.ic):not(.time){ color: #b6adc2; }
+.curso-page .leccion.locked .time{ color: #b6adc2; }
+
+/* ===== Fix final de layout (evita que otras reglas pisen columnas) ===== */
+.curso-page .lecciones .leccion{
+  display: grid !important;
+  grid-template-columns: 1rem 1.05rem minmax(0,1fr) auto !important; /* ic • tick • título • tiempo */
+  align-items: center !important;
+  column-gap: .55rem !important;
+}
+.curso-page .lecciones .leccion .ic{ order: 1 !important; }
+.curso-page .lecciones .leccion .tick{ order: 2 !important; }
+.curso-page .lecciones .leccion a{ order: 3 !important; min-width: 0 !important; }
+.curso-page .lecciones .leccion .time{ order: 4 !important; }
+.curso-page .lecciones .leccion > span:not(.ic):not(.time){ order: 3 !important; min-width: 0 !important; }
