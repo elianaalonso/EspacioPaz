@@ -209,6 +209,22 @@
   gap: .4rem;
 }
 
+/* CTA + favoritos + progreso en una misma fila (hero) */
+.curso-page .cta-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:.6rem .8rem;
+  margin:.6rem 0 .4rem;
+}
+.curso-page .cta-row .btn{ flex:0 0 auto; }
+.curso-page .cta-row .btn-fav{ height:2.2rem; }
+.curso-page .cta-row .pct-global{ flex:0 0 auto; white-space:nowrap; }
+.curso-page .cta-row .checklist-global{ flex:0 0 auto; }
+
+/* Cuando es dueña, ocultamos CTA y mantenemos fila */
+.curso-page.is-owned .cta-row .cta-comprar{ display:none !important; }
+
 
 /* =========================================================
    BOTONES (se apoya en estilos globales; variantes locales)
