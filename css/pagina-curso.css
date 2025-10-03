@@ -1,59 +1,4 @@
-.curso-page .leccion {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 2rem;
-  padding: .15rem 1rem .15rem .3rem;
-  gap: 1.2rem;
-}
-.curso-page .leccion .check-done {
-  margin-left: 0;
-  margin-right: .2rem;
-  width: 1.3rem;
-  height: 1.3rem;
-  font-size: 1.1rem;
-  border-radius: .45rem;
-  border: 2px solid #cbb5f2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  transition: background .2s, color .2s;
-  cursor: pointer;
-  user-select: none;
-}
-.curso-page .leccion[data-done="1"] .check-done {
-  background: #faf7ff;
-  color: #6a57a5;
-  text-decoration: line-through;
-}
-.curso-page .leccion {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 2rem;
-  padding: .15rem 1rem .15rem .3rem;
-  gap: 1.2rem;
-}
-.curso-page .leccion .check-done {
-  margin-left: 0;
-  margin-right: .2rem;
-  width: 1.3rem;
-  height: 1.3rem;
-  font-size: 1.1rem;
-  border-radius: .45rem;
-  border: 2px solid #cbb5f2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  transition: background .2s, color .2s;
-}
-.curso-page .leccion[data-done="1"] .check-done {
-  background: #faf7ff;
-  color: #6a57a5;
-  text-decoration: line-through;
-}
+/* limpiado: bloques legacy de .leccion (flex) y .check-done eliminados */
 /* ===== Player dentro de la página ===== */
 .player-wrap{
   max-width: 60rem;
@@ -225,6 +170,16 @@
 /* Cuando es dueña, ocultamos CTA y mantenemos fila */
 .curso-page.is-owned .cta-row .cta-comprar{ display:none !important; }
 
+/* Mobile: apilar CTA y envolver el grupo para que Progreso baje de renglón */
+@media (max-width: 34rem){
+  .curso-page .cta-row{ align-items: stretch; }
+  .curso-page .cta-row .btn.cta-comprar{ width: 100%; }
+  .curso-page .cta-row > div{ display:flex; flex-wrap:wrap; width:100%; gap:.5rem .6rem; }
+  .curso-page .cta-row .btn-fav{ order:1; }
+  .curso-page .cta-row .pct-global{ order:2; flex:1 1 100%; white-space: normal; }
+  .curso-page .cta-row .checklist-global{ order:3; }
+}
+
 
 /* =========================================================
    BOTONES (se apoya en estilos globales; variantes locales)
@@ -256,12 +211,27 @@
 .curso-page .grid-2{
   display: grid;
   gap: .6rem;
+  /* en móvil, mostramos primero el sidebar y luego el contenido principal */
+  grid-template-areas:
+    "aside"
+    "main";
 }
 
 @media (min-width: 60rem){
   .curso-page .grid-2{
     grid-template-columns: minmax(0,1fr) 23rem;
+    /* en desktop: main a la izquierda, aside a la derecha */
+    grid-template-areas: "main aside";
   }
+}
+
+/* asignamos las áreas a los hijos directos del contenedor grid-2 */
+.curso-page .grid-2 > div:first-child{ grid-area: main; }
+.curso-page .grid-2 > aside{ grid-area: aside; }
+
+/* micro-ajuste: en pantallas ultra angostas dejar que el texto de progreso pueda saltar de línea */
+@media (max-width: 22rem){
+  .curso-page .cta-row .pct-global{ white-space: normal; }
 }
 
 .curso-page .card{
@@ -664,97 +634,8 @@
   grid-column: 1 / -1; justify-self: stretch; }
 
   /* Más aire para la flecha en el header del módulo */
-.curso-page .modulo__hd{
-  /* antes: padding: .6rem .7rem;  */
-  padding: .6rem 3.25rem .6rem .7rem;   /* ↑ más padding a la derecha */
-  display: grid;
-  grid-template-columns: minmax(0,1fr) auto; /* título crece; meta a la derecha */
-  gap: .6rem;
-}
-
-/* Reubicar chevron para que no tape el texto */
-.curso-page .modulo__hd::after{
-  right: 1.1rem;                         /* antes ~.7rem */
-}
-
-/* Evitar que el meta se corte y dejarle aire extra por si acaso */
-.curso-page .modulo__meta{
-  white-space: nowrap;
-  padding-right: .25rem;                 /* mini colchón contra el chevron */
-}
-
-/* Header del módulo: más aire a la derecha y posición relativa */
-.curso-page .modulo__hd{
-  position: relative;
-  padding: .6rem 2.75rem .6rem .7rem;      /* <-- reserva zona para la flecha */
-  display: grid;
-  grid-template-columns: minmax(0,1fr) auto; /* título ocupa todo; meta a la derecha */
-  gap: .6rem;
-}
-
-/* Evitar que el título empuje la flecha fuera */
-.curso-page .modulo__hd > span:first-child{
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* El meta no se parte y deja un pelín de aire */
-.curso-page .modulo__meta{
-  white-space: nowrap;
-  padding-right: .25rem;
-}
-
-/* Chevron propio (por si no lo tenías o para reemplazar el anterior) */
-.curso-page .modulo__hd::after{
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: .9rem;                           /* <-- mueve la flecha hacia la IZQUIERDA */
-  width: .6rem;
-  height: .6rem;
-  border-right: 2px solid #8a77ad;
-  border-bottom: 2px solid #8a77ad;
-  transform: translateY(-50%) rotate(-45deg);
-  transition: transform .18s ease;
-  opacity: .9;
-}
-
-/* Rota al abrir */
-.curso-page .modulo__hd[aria-expanded="true"]::after{
-  transform: translateY(-50%) rotate(135deg);
-}
-
-/* (Opcional) un pelín más de aire en móvil */
-@media (max-width: 40rem){
-  .curso-page .modulo__hd{ padding-right: 3.1rem; }
-}
-/* Flecha chica y fija en los headers de módulo */
-.curso-page .modulo__hd{
-  position: relative;
-  padding: .6rem 2rem .6rem .7rem; /* reserva un poco a la derecha */
-}
-
-/* reemplaza la flecha anterior por un caret tipográfico “›” */
-.curso-page .modulo__hd::after{
-  content: "›";
-  position: absolute;
-  right: .75rem;
-  top: 50%;
-  transform: translateY(-52%);     /* NO rota */
-  font-size: .95rem;               /* más chica */
-  line-height: 1;
-  color: #8a77ad;
-  opacity: .8;
-  border: none !important;         /* por si quedó la versión con bordes */
-  width: auto; height: auto;       /* limpia el tamaño previo */
-  pointer-events: none;
-}
-
-/* asegura que no cambie al abrir/cerrar */
-.curso-page .modulo__hd[aria-expanded="true"]::after{
-  transform: translateY(-52%);     /* mismo estado */
-}
+/* limpiado: versión previa del chevron (borders + rotate) eliminada */
+/* (se mantiene una única versión del caret tipográfico para el chevron) */
 /* Quita el indent por defecto del <ol> para alinear los módulos */
 .curso-page .modulos{
   list-style: none;
@@ -772,7 +653,7 @@
 /* Opcional: un poquito más de aire vertical entre módulos */
 .curso-page .modulo{ margin: .35rem 0; }
 
-/* Flecha chica y fija (dejamos igual que antes, por si no lo tenías) */
+/* flecha chica y fija (única definición) */
 .curso-page .modulo__hd{
   position: relative;
   padding: .6rem 2rem .6rem .7rem;
