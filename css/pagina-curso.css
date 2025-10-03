@@ -1,3 +1,59 @@
+.curso-page .leccion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 2rem;
+  padding: .15rem 1rem .15rem .3rem;
+  gap: 1.2rem;
+}
+.curso-page .leccion .check-done {
+  margin-left: 0;
+  margin-right: .2rem;
+  width: 1.3rem;
+  height: 1.3rem;
+  font-size: 1.1rem;
+  border-radius: .45rem;
+  border: 2px solid #cbb5f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  transition: background .2s, color .2s;
+  cursor: pointer;
+  user-select: none;
+}
+.curso-page .leccion[data-done="1"] .check-done {
+  background: #faf7ff;
+  color: #6a57a5;
+  text-decoration: line-through;
+}
+.curso-page .leccion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 2rem;
+  padding: .15rem 1rem .15rem .3rem;
+  gap: 1.2rem;
+}
+.curso-page .leccion .check-done {
+  margin-left: 0;
+  margin-right: .2rem;
+  width: 1.3rem;
+  height: 1.3rem;
+  font-size: 1.1rem;
+  border-radius: .45rem;
+  border: 2px solid #cbb5f2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  transition: background .2s, color .2s;
+}
+.curso-page .leccion[data-done="1"] .check-done {
+  background: #faf7ff;
+  color: #6a57a5;
+  text-decoration: line-through;
+}
 /* ===== Player dentro de la página ===== */
 .player-wrap{
   max-width: 60rem;
@@ -738,4 +794,140 @@
 /* opcional: compactar lecciones también */
 .curso-page .leccion{
   padding: .45rem .7rem;
+}
+/* ---- Lección con checkbox al lado del título ---- */
+.curso-page .leccion{
+  /* 1) caret/play  2) checkbox  3) título  4) tiempo/labels */
+  grid-template-columns: 1rem 1.15rem minmax(0,1fr) auto;
+  align-items: center;
+  column-gap: .55rem;
+}
+
+/* Si por HTML el checkbox quedó al final, lo traemos a la 2ª columna */
+.curso-page .leccion .tick{ order: 2; }
+.curso-page .leccion .ic{ order: 1; }
+.curso-page .leccion a{ order: 3; min-width: 0; }      /* evita que empuje al tiempo */
+.curso-page .leccion .time{ order: 4; }
+
+/* Estilo del checkbox (sirve si es <button> o <input type="checkbox">) */
+.curso-page .tick{
+  width: 1.15rem; height: 1.15rem;
+  border-radius: .35rem;
+  border: 2px solid #ddd4ef;
+  background: #fff;
+  display: grid; place-items: center;
+  padding: 0; cursor: pointer;
+}
+.curso-page .tick svg{ width: .9rem; height: .9rem; opacity: 0; transition: opacity .12s; }
+
+/* Estados: soporta input:checked, [aria-pressed=true] o clase .is-on */
+.curso-page .tick:checked,
+.curso-page .tick[aria-pressed="true"],
+.curso-page .tick.is-on{
+  background: #d9c9ef; border-color: #d9c9ef;
+}
+.curso-page .tick:checked svg,
+.curso-page .tick[aria-pressed="true"] svg,
+.curso-page .tick.is-on svg{ opacity: 1; }
+
+/* Evita que el link capture el click arriba del checkbox */
+.curso-page .leccion a{ position: relative; z-index: 0; }
+.curso-page .tick{ position: relative; z-index: 1; }
+
+/* ===== Checklist y header de módulo ===== */
+
+/* El header pasa a flex para poder “mover” el chip de % a la izquierda */
+.curso-page .modulo__hd{
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+}
+
+/* Chip de porcentaje a la IZQUIERDA del título */
+.curso-page .modulo__hd .pct{
+  order:-1;
+  margin-right:.5rem;
+  padding:.2rem .5rem;
+  font-weight:800;
+  font-size:.78rem;
+  color:#5b4569;
+  background:#faf7ff;
+  border:1px solid #efe9f7;
+  border-radius:999px;
+}
+
+/* Lección: icono, tick, título, tiempo */
+.curso-page .leccion{
+  grid-template-columns: 1.1rem 1.1rem 1fr auto;
+}
+
+/* Estilo del tick (checkbox minimal) */
+.curso-page .leccion .tick{
+  appearance:none;
+  width:1rem; height:1rem;
+  border:2px solid #d8d0e6;
+  border-radius:.3rem;
+  background:#fff;
+  display:inline-grid; place-items:center;
+  cursor:pointer;
+}
+.curso-page .leccion .tick:checked{
+  border-color:#b69bd6; background:#faf7ff;
+}
+.curso-page .leccion .tick:checked::after{
+  content:""; width:.45rem; height:.25rem;
+  border:2px solid #3a2c48;
+  border-top:none; border-right:none;
+  transform:rotate(-45deg);
+}
+
+/* Feedback visual al marcar */
+.curso-page .leccion.is-done a{ color:#7a7185; text-decoration:line-through; }
+
+/* Fina: separaciones más compactas entre filas si lo querés */
+.curso-page .leccion{ padding:.45rem .7rem; }
+
+/* Quitar numeración / bullets del listado de lecciones */
+.curso-page .lecciones{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.curso-page .leccion{
+  list-style: none;
+}
+.curso-page .leccion::marker{
+  content: none;
+}
+/* Fila de lección: icono ▶ tick ▸ título ▸ tiempo */
+.curso-page .leccion{
+  display: grid;
+  grid-template-columns: 1.1rem 1.05rem 1fr auto;
+  align-items: center;
+  column-gap: .55rem;
+}
+.curso-page .leccion .ic{ order: 1; }
+.curso-page .leccion .tick{ order: 2; }
+.curso-page .leccion a{ order: 3; min-width: 0; }
+.curso-page .leccion .time{ order: 4; }
+
+/* Estilo del tick (clickeable) */
+.curso-page .leccion .tick{
+  appearance: none;
+  width: 1rem; height: 1rem;
+  border: 2px solid #d8d0e6;
+  border-radius: .3rem;
+  background: #fff;
+  display: inline-grid; place-items: center;
+  cursor: pointer;
+  z-index: 2;
+}
+.curso-page .leccion .tick:checked{
+  border-color: #b69bd6; background: #faf7ff;
+}
+.curso-page .leccion .tick:checked::after{
+  content: ""; width: .45rem; height: .25rem;
+  border: 2px solid #3a2c48;
+  border-top: none; border-right: none;
+  transform: rotate(-45deg);
 }

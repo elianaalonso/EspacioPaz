@@ -1,24 +1,66 @@
-// Progreso global en el HERO
-function setGlobalProgressBar(){
-  const allLessons = [...document.querySelectorAll('.leccion')];
-  const total = allLessons.length;
-  const done = allLessons.filter(li => (li.dataset.done === "1")).length;
-  const pct = total ? Math.round(100*done/total) : 0;
-  const bar = document.getElementById('globalProgress')?.querySelector('i');
-  if(bar) bar.style.width = pct + '%';
-  const pctLabel = document.getElementById('pctGlobal');
-  if(pctLabel) pctLabel.textContent = `Progreso: ${pct}% completado`;
+
+
+// Checklist visual en cada lección y barra de progreso por módulo
+function setModuleProgress(){
+  $$('.modulo').forEach(mod => {
+    const lis = [...mod.querySelectorAll('.leccion')];
+    const total = lis.length;
+    const done = lis.filter(li => (li.dataset.done === "1")).length;
+    const pct = total ? Math.round(100*done/total) : 0;
+
+    // Barra de progreso por módulo
+    let bar = mod.querySelector('.progress i');
+    if(!bar){
+      let wrap = mod.querySelector('.progress');
+      if(!wrap){ wrap = document.createElement('div'); wrap.className = 'progress'; wrap.innerHTML = '<i></i>'; mod.appendChild(wrap); }
+      bar = wrap.querySelector('i');
+    }
+    bar.style.width = pct + '%';
+
+    // Porcentaje en el header
+    const hd = mod.querySelector('.modulo__hd');
+    let s = hd.querySelector('.pct'); if(!s){ s = document.createElement('span'); s.className='pct'; hd.appendChild(s); }
+    s.textContent = ` ${pct}%`;
+
+    // Checklist visual en cada lección
+    lis.forEach(li => {
+      let check = li.querySelector('.tick');
+      if(!check){
+        check = document.createElement('button');
+        check.type = 'button';
+        check.className = 'tick';
+        check.setAttribute('aria-label','Marcar completada');
+        // Si hay .time, insertarlo después; si no, al final
+        const timeSpan = li.querySelector('.time');
+        if(timeSpan && timeSpan.nextSibling){
+          li.insertBefore(check, timeSpan.nextSibling);
+        }else{
+          li.appendChild(check);
+        }
+        check.addEventListener('click', e => {
+          e.preventDefault();
+          e.stopPropagation();
+          window.markDone(li, li.dataset.done !== "1");
+        });
+      }
+      if(li.dataset.done === "1"){
+        check.textContent = '✓';
+      }else{
+        check.textContent = '';
+      }
+    });
+  });
 }
 
-// Actualizar global al marcar done
+// Actualizar checklist y barra al marcar done
 const _oldMarkDone = typeof markDone === 'function' ? markDone : null;
 window.markDone = function(li, value){
   if(_oldMarkDone) _oldMarkDone(li, value);
-  setGlobalProgressBar();
+  setModuleProgress();
 };
 
-// Actualizar global al iniciar
-document.addEventListener('DOMContentLoaded', setGlobalProgressBar);
+// Actualizar checklist y barra al iniciar
+document.addEventListener('DOMContentLoaded', setModuleProgress);
 
 const $ = (s, el=document) => el.querySelector(s);
 const $$ = (s, el=document) => [...el.querySelectorAll(s)];
@@ -706,3 +748,122 @@ function renderPreviewHTML(anchor){
     </div>`;
 }
 
+// --- Ticks clickeables y progreso ---
+function bindTicks(){
+  $$('.leccion .tick').forEach(tick=>{
+    // evitar doble binding
+    if(tick.dataset.bound) return; tick.dataset.bound = '1';
+
+    tick.addEventListener('click', (e)=>{
+      e.stopPropagation(); // que no dispare el link
+      const row = tick.closest('.leccion');
+
+      // Soportar <input type="checkbox"> o <button>
+      if(tick.type === 'checkbox'){
+        row.classList.toggle('is-done', tick.checked);
+      }else{
+        const on = !(tick.getAttribute('aria-pressed')==='true');
+        tick.setAttribute('aria-pressed', String(on));
+        tick.classList.toggle('is-on', on);
+        row.classList.toggle('is-done', on);
+      }
+
+      // Actualizar progreso (tu función existente)
+      if(typeof updateProgress === 'function') updateProgress();
+    });
+  });
+}
+
+// Llamalo al iniciar y cada vez que renderices el player/listas
+bindTicks();
+
+// ===== Checklist + % por módulo + progreso global =====
+(function(){
+  const $  = (s, el=document) => el.querySelector(s);
+  const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+  const COURSE_ID = document.body.dataset.courseId || 'curso';
+  const DONE_KEY  = `done_${COURSE_ID}`;
+
+  function loadDone(){
+    try{ return JSON.parse(localStorage.getItem(DONE_KEY)) || {}; }catch{ return {}; }
+  }
+  function saveDone(map){ localStorage.setItem(DONE_KEY, JSON.stringify(map)); }
+
+  const doneMap = loadDone();
+
+  // Etiquetar lecciones con un id estable y montar el tick
+  $$('.modulo').forEach((mod, mi)=>{
+    // chip % a la izquierda del título
+    const hd = mod.querySelector('.modulo__hd');
+    if(hd && !hd.querySelector('.pct')){
+      const chip = document.createElement('span');
+      chip.className = 'pct';
+      chip.textContent = '0%';
+      hd.insertBefore(chip, hd.firstChild);
+    }
+
+    $$('.leccion', mod).forEach((li, lii)=>{
+      const id = `${mi+1}:${lii+1}`;
+      li.dataset.lid = id;
+
+      // insertar tick (después del icono)
+      if(!li.querySelector('.tick')){
+        const tick = document.createElement('input');
+        tick.type = 'checkbox';
+        tick.className = 'tick';
+        tick.title = 'Marcar lección como completada';
+        const afterIcon = li.children[1] || null;
+        li.insertBefore(tick, afterIcon); // icono (0), tick (1)
+        tick.addEventListener('click', e => e.stopPropagation());
+        tick.addEventListener('change', ()=>{
+          const on = tick.checked;
+          li.dataset.done = on ? '1' : '0';
+          li.classList.toggle('is-done', on);
+          doneMap[id] = on ? 1 : 0;
+          saveDone(doneMap);
+          updateModuleProgress(mod);
+          updateGlobalProgress();
+        });
+      }
+
+      // restaurar estado
+      const on = !!doneMap[id];
+      li.dataset.done = on ? '1' : '0';
+      li.classList.toggle('is-done', on);
+      const t = li.querySelector('.tick'); if(t) t.checked = on;
+    });
+
+    updateModuleProgress(mod);
+  });
+
+  function updateModuleProgress(mod){
+    const all  = $$('.leccion', mod).length;
+    const done = $$('.leccion[data-done="1"]', mod).length;
+    const pct  = all ? Math.round(100*done/all) : 0;
+    const chip = mod.querySelector('.modulo__hd .pct');
+    if(chip) chip.textContent = `${pct}%`;
+  }
+
+  function updateGlobalProgress(){
+    const allLessons  = $$('.leccion').length;
+    const doneLessons = $$('.leccion[data-done="1"]').length;
+    const pct = allLessons ? Math.round(100*doneLessons/allLessons) : 0;
+
+    // Barra y texto del bloque "progreso-curso"
+    const bar = $('.progreso-barra .progreso-fill');
+    if(bar) bar.style.width = pct + '%';
+    const pctTxt = $('.progreso-text .prog-pct');    if(pctTxt) pctTxt.textContent = pct + '%';
+    const dTxt   = $('.progreso-text .prog-done');   if(dTxt)   dTxt.textContent   = doneLessons;
+    const tTxt   = $('.progreso-text .prog-total');  if(tTxt)   tTxt.textContent   = allLessons;
+
+    // Texto del HERO
+    const heroPct = $('#pctGlobal');
+    if(heroPct) heroPct.textContent = `Progreso: ${pct}% completado`;
+  }
+
+  // expone por si querés actualizar desde otros lugares
+  window.updateProgress = updateGlobalProgress;
+
+  // primera pintada
+  updateGlobalProgress();
+})();
