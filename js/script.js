@@ -543,31 +543,35 @@ document.addEventListener('DOMContentLoaded', updateCartBadge);
           <a class="btn btn-ghost" href="../html/cursos.html">Ver cursos</a>
         </div>`;
       document.getElementById('cartTotal').textContent = formatUSD(0);
+      document.getElementById('sumCount').textContent = '0 productos';
+      document.getElementById('sumSubtotal').textContent = 'USD 0';
       updateCartBadge();
       return;
     }
 
     let total = 0;
+    let totalQty = 0;
 
     cart.forEach((it, i) => {
       const li = document.createElement('li');
       li.className = 'cart-item';
-      const sub = it.price * it.qty;
-      total += sub;
+      totalQty += it.qty;
+      total += it.price * it.qty;
 
       li.innerHTML = `
         <img src="../${it.img || 'img/placeholder.png'}" alt="" class="cart-thumb">
         <div class="cart-info">
           <strong>${it.name}</strong>
-          <span class="cart-price">${formatUSD(it.price)}</span>
         </div>
         <div class="cart-qty">
           <button type="button" class="q minus" aria-label="Quitar uno">−</button>
           <input type="text" value="${it.qty}" inputmode="numeric" aria-label="Cantidad">
           <button type="button" class="q plus" aria-label="Agregar uno">+</button>
         </div>
-        <div class="cart-subtotal">${formatUSD(sub)}</div>
-        <button type="button" class="cart-remove" aria-label="Eliminar">×</button>
+        <div class="cart-price">${formatUSD(it.price)}</div>
+        <button type="button" class="cart-remove" aria-label="Eliminar">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+        </button>
       `;
 
       // handlers
@@ -597,6 +601,8 @@ document.addEventListener('DOMContentLoaded', updateCartBadge);
     });
 
     document.getElementById('cartTotal').textContent = formatUSD(total);
+    document.getElementById('sumCount').textContent = `${totalQty} producto${totalQty === 1 ? '' : 's'}`;
+    document.getElementById('sumSubtotal').textContent = `USD ${total.toFixed(2)}`;
     updateCartBadge();
   }
 
