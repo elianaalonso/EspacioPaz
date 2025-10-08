@@ -336,3 +336,41 @@ input:-webkit-autofill{
 
 /* 11) Textos de ayuda más claros */
 .secure-note, .tiny-muted, .meta .muted, .terms-help{ color:#9188a0; }
+
+/* 12) Productos del carrito en checkout */
+.cart-items-checkout .course-line {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.cart-items-checkout .course-line:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.course-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+  border-top: 2px solid var(--line);
+  margin-top: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 24px 16px;
+}
+
+.empty-cart .muted {
+  margin-bottom: 16px;
+  color: var(--muted);
+}
+
+.empty-cart .btn-ghost {
+  font-size: 14px;
+  padding: 8px 16px;
+}

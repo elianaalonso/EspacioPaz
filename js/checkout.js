@@ -30,11 +30,38 @@
 
   // --------- Estado
   const STATE_KEY = 'espaciopaz.checkout';
+  const CART_KEY = 'espaciopaz_cart_v1'; // Mismo key que en script.js
+  
+  // Leer carrito
+  function readCart(){
+    try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
+    catch { return []; }
+  }
+  
+  // Calcular totales del carrito
+  function calculateCartTotals(){
+    const cart = readCart();
+    const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+    return { cart, subtotal };
+  }
+  
   let state = {
     name: '', email: '', country: '', city: '',
     invoice: false, doc: '', addr: '',
-    method: '', subtotal: 99, descuento: 0, total: 99, coupon: ''
+    method: '', subtotal: 0, descuento: 0, total: 0, coupon: ''
   };
+  
+  // Inicializar con datos del carrito
+  const { cart, subtotal } = calculateCartTotals();
+  state.subtotal = subtotal;
+  state.total = subtotal;
+  
+  // Verificar que hay productos en el carrito
+  if (!cart.length) {
+    alert('Tu carrito está vacío. Te redirigimos a los cursos.');
+    window.location.href = '../html/cursos.html';
+    return;
+  }
 
   // Cargar de localStorage
   try{
@@ -63,7 +90,35 @@
     if (tot) tot.textContent = money(state.total);
     if (priceTag) priceTag.textContent = money(state.subtotal);
   }
+  
+  function renderCartItems(){
+    const cartItemsContainer = document.getElementById('cart-items');
+    if (!cartItemsContainer) return;
+    
+    const cart = readCart();
+    if (!cart.length) {
+      cartItemsContainer.innerHTML = `
+        <div class="empty-cart">
+          <p class="muted">No hay cursos en el carrito</p>
+          <a href="../html/cursos.html" class="btn-ghost">Ver cursos</a>
+        </div>`;
+      return;
+    }
+    
+    cartItemsContainer.innerHTML = cart.map(item => `
+      <div class="course-line">
+        <div class="thumb" style="background-image: url('../${item.img || 'img/placeholder.png'}')" aria-hidden="true"></div>
+        <div class="meta">
+          <p class="title">${item.name}</p>
+          <p class="muted">Cantidad: ${item.qty}</p>
+        </div>
+        <strong class="price">${money(item.price * item.qty)}</strong>
+      </div>
+    `).join('');
+  }
+  
   renderMoney();
+  renderCartItems();
 
   // --------- Validación paso 1
   function isStep1Valid(){
@@ -123,9 +178,19 @@
     const code = couponInput?.value.trim().toUpperCase() || '';
     state.coupon = code;
     state.descuento = 0;
-    if(code === 'PAZ10') state.descuento = 10;
-    if(code === 'PAZ25') state.descuento = 25;
+    
+    // Aplicar descuentos basados en el subtotal actual
+    if(code === 'PAZ10') state.descuento = Math.min(10, state.subtotal);
+    if(code === 'PAZ25') state.descuento = Math.min(25, state.subtotal);
+    if(code === 'PAZ50') state.descuento = Math.min(50, state.subtotal);
+    
     save(); renderMoney();
+    
+    // Feedback visual
+    if (state.descuento > 0) {
+      couponInput.style.borderColor = '#22c55e';
+      setTimeout(() => couponInput.style.borderColor = '', 2000);
+    }
   });
 
   // --------- Métodos de pago (mock + hooks)
