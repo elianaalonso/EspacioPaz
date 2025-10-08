@@ -914,3 +914,7 @@ body.modal-open .auth-modal{
 @media (max-width: 26.25rem){
   .auth-modal{ width: calc(100vw - 1.5rem); }
 }
+
+.f-links{
+  flex-wrap: nowrap;
+}
