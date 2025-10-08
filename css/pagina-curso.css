@@ -1,0 +1,1004 @@
+/* Centrado y ancho limitado para Preguntas frecuentes igual que Relacionados */
+.curso-page .section.faq {
+  max-width: 60rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* Limitar ancho de FAQ y Relacionados para que no ocupen toda la pantalla */
+.curso-page .section.related {
+  max-width: 60rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.curso-page .section {
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 60rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* limpiado: bloques legacy de .leccion (flex) y .check-done eliminados */
+/* ===== Player dentro de la página ===== */
+.player-wrap{
+  max-width: 60rem;
+  margin: .9rem auto .6rem;
+  padding: 0 .7rem;
+}
+.player-box{
+  position: relative;
+  background: #000;
+  aspect-ratio: 16 / 9;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.player-box iframe,
+.player-box video{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+.player-meta{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  padding: .55rem .1rem 0;
+}
+.playing-label{ color: var(--muted, #6d6675); font-weight: 700; margin-right: .35rem; }
+.playing-title{ font-weight: 800; }
+/* lección activa en la lista */
+.leccion.is-active{ background: #faf7ff; }
+.leccion.is-active a{ font-weight: 700; }
+/* en móviles, que no pelee con la CTA fija */
+@media (max-width: 51.25rem){
+  .player-wrap{ margin-bottom: .4rem; }
+}
+/* ==========================================================================
+   PÁGINA DE CURSO (aislada a .curso-page)
+   Nota: Usa tokens globales de estilo.css (—lila, —lavanda, —rosa, —marfil, —dorado, —texto, —blanco)
+   ========================================================================== */
+
+/* ------------------------------
+   Tokens locales (solo esta página)
+------------------------------ */
+.curso-page{
+  --card:   #ffffff;
+  --line:   #ece7f2;
+  --shadow: 0 8px 36px rgba(22,14,26,.08);
+  --radius: .7rem;
+}
+
+/* Espaciado inferior por la barra fija */
+.curso-page .main{
+  padding-bottom: calc(3rem + env(safe-area-inset-bottom));
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.curso-page .curso-hero{
+  position: relative;
+  display: grid;
+  align-items: end;
+  min-height: 28rem;
+  isolation: isolate;
+}
+
+.curso-page .curso-hero__bg{
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 0% 10%, rgba(182,155,214,.55), transparent 60%),
+    radial-gradient(120% 100% at 100% 100%, rgba(244,217,230,.7), transparent 65%),
+    linear-gradient(180deg, rgba(22,14,26,.20), rgba(22,14,26,.55)),
+    url('/img/cursos/bio-fundamentos-cover.jpg') center/cover no-repeat;
+  filter: saturate(1.02);
+  z-index: -1;
+}
+
+.curso-page .curso-hero__inner{
+  max-width: 60rem;
+  margin-inline: auto;
+  padding: 2rem .7rem;
+  color: #fff;
+}
+
+.curso-page .eyebrow{
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  margin-bottom: .2rem;
+  font-size: .93rem;
+}
+
+.curso-page .badge{
+  display: inline-block;
+  padding: .18rem .45rem;
+  font-weight: 700;
+  font-size: .85rem;
+  border-radius: 999px;
+  color: #2b1f36;
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(0,0,0,.06);
+  box-shadow: var(--shadow);
+}
+
+.curso-page .badge.soft{
+  background: #faf7ff;
+  color: #5b4569;
+  border: 1px solid #efe9f7;
+}
+
+.curso-page .pill-ghost{
+  padding: .18rem .45rem;
+  border: 1px solid rgba(255,255,255,.4);
+  border-radius: 999px;
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  font-size: .85rem;
+}
+
+/* Titulares y texto (alineado a home, sin tocar .hero global) */
+.curso-page .title{
+  margin: .2rem 0 .35rem;
+  font-size: clamp(1.6rem, 3vw, 2.125rem);
+  line-height: 1.12;
+  letter-spacing: -.01em;
+}
+
+.curso-page .excerpt{
+  max-width: 60ch;
+  font-size: 1rem;
+  opacity: .96;
+}
+
+.curso-page .meta{
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem .7rem;
+  margin: .6rem 0 .8rem;
+  font-weight: 600;
+  font-size: .93em;
+}
+
+.curso-page .meta span{
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+/* CTA + favoritos + progreso en una misma fila (hero) */
+.curso-page .cta-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:.6rem .8rem;
+  margin:.6rem 0 .4rem;
+}
+.curso-page .cta-row .btn{ flex:0 0 auto; }
+.curso-page .cta-row .btn-fav{ height:2.2rem; }
+.curso-page .cta-row .pct-global{ flex:0 0 auto; white-space:nowrap; }
+.curso-page .cta-row .checklist-global{ flex:0 0 auto; }
+
+/* Cuando es dueña, ocultamos CTA y mantenemos fila */
+.curso-page.is-owned .cta-row .cta-comprar{ display:none !important; }
+
+/* Mobile: apilar CTA y envolver el grupo para que Progreso baje de renglón */
+@media (max-width: 34rem){
+  .curso-page .cta-row{ align-items: stretch; }
+  .curso-page .cta-row .btn.cta-comprar{ width: 100%; }
+  .curso-page .cta-row > div{ display:flex; flex-wrap:wrap; width:100%; gap:.5rem .6rem; }
+  .curso-page .cta-row .btn-fav{ order:1; }
+  .curso-page .cta-row .pct-global{ order:2; flex:1 1 100%; white-space: normal; }
+  .curso-page .cta-row .checklist-global{ order:3; }
+}
+
+
+/* =========================================================
+   BOTONES (se apoya en estilos globales; variantes locales)
+   ========================================================= */
+.curso-page .btn-outline{
+  background: #fff;
+  color: var(--texto);
+  border: 1px solid #eee;
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+}
+
+.curso-page .btn-block{ width: 100%; }
+.curso-page .btn-sm{
+  padding: .55rem .8rem;
+  font-size: .92rem;
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+.curso-page .wrap{
+  max-width: 60rem;
+  margin: 1rem auto;
+  padding: 0 .7rem;
+}
+
+.curso-page .grid-2{
+  display: grid;
+  gap: .6rem;
+  /* en móvil, mostramos primero el sidebar y luego el contenido principal */
+  grid-template-areas:
+    "aside"
+    "main";
+}
+
+@media (min-width: 60rem){
+  .curso-page .grid-2{
+    grid-template-columns: minmax(0,1fr) 23rem;
+    /* en desktop: main a la izquierda, aside a la derecha */
+    grid-template-areas: "main aside";
+  }
+}
+
+/* asignamos las áreas a los hijos directos del contenedor grid-2 */
+.curso-page .grid-2 > div:first-child{ grid-area: main; }
+.curso-page .grid-2 > aside{ grid-area: aside; }
+
+/* micro-ajuste: en pantallas ultra angostas dejar que el texto de progreso pueda saltar de línea */
+@media (max-width: 22rem){
+  .curso-page .cta-row .pct-global{ white-space: normal; }
+}
+
+.curso-page .card{
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.curso-page .card__hd{
+  padding: .6rem .7rem;
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.curso-page .card__body{ padding: .7rem; }
+
+/* Grillas internas */
+.curso-page .cols-3{
+  display: grid;
+  gap: .5rem;
+}
+
+@media (min-width: 50rem){
+  .curso-page .cols-3{
+    grid-template-columns: repeat(3,1fr);
+  }
+}
+
+.curso-page .list-check{
+  display: grid;
+  gap: .25rem;
+  padding-left: .6rem;
+}
+
+.curso-page .list-check li{
+  list-style: "✔ ";
+  padding-left: .25rem;
+}
+
+
+/* =========================================================
+   CURRÍCULUM
+   ========================================================= */
+.curso-page .modulos{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.curso-page .modulo{
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) + .25rem);
+}
+
+.curso-page .modulo__hd{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: .4rem;
+  padding: .6rem .7rem;
+  background: linear-gradient(180deg,#fff,#fefbfd);
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  font-size: .95em;
+}
+
+.curso-page .modulo__meta{
+  color: #6d6675;
+  font-weight: 600;
+  font-size: .95rem;
+}
+
+.curso-page .lecciones{ border-top: 1px solid var(--line); }
+
+.curso-page .leccion{
+  display: grid;
+  grid-template-columns: 1.1rem 1fr auto;
+  align-items: center;
+  gap: .4rem;
+  padding: .5rem .7rem;
+  font-size: .97em;
+  border-radius: .55rem;
+  background: #fff;
+  box-shadow: 0 1px 8px rgba(182,155,214,0.04);
+  transition: background .25s, box-shadow .25s, transform .18s;
+  cursor: pointer;
+}
+
+
+.curso-page .leccion + .leccion{ border-top: 1px solid #f1ecf6; }
+.curso-page .leccion:not(.locked):hover {
+  background: #f6f2fa;
+  box-shadow: 0 4px 16px rgba(182,155,214,0.09);
+  transform: translateY(-2px) scale(1.01);
+}
+.curso-page .leccion:not(.locked) a {
+  color: #3a2c48;
+  text-decoration: none;
+  font-weight: 500;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  transition: color .18s, background .18s;
+}
+.curso-page .leccion:not(.locked) a:hover {
+  color: #5b4569;
+  background: #f6f2fa;
+}
+.curso-page .leccion.is-active {
+  background: #faf7ff;
+  box-shadow: 0 6px 24px rgba(182,155,214,0.13);
+  font-weight: 700;
+  color: #3a2c48;
+}
+
+.curso-page .ic{ width: .8rem; height: .8rem; display: inline-block; }
+.curso-page .ic svg{ width: 100%; height: 100%; display: block; }
+
+.curso-page .ic--play path{ fill: #3a2c48; }
+.curso-page .ic--lock path{
+  stroke: #6d6675;
+  stroke-width: 1.6;
+  fill: none;
+}
+
+.curso-page .time{
+  color: #6d6675;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: .95em;
+}
+
+.curso-page .tag{
+  margin-left: .2rem;
+  padding: .06rem .3rem;
+  border-radius: 999px;
+  background: var(--lavanda);
+  color: #3a2c48;
+  font-size: .7rem;
+  font-weight: 700;
+}
+
+.curso-page .leccion.locked{
+  color: #b6adc2;
+  background: #f7f5fa;
+  cursor: not-allowed;
+}
+.curso-page .leccion.locked a {
+  color: #b6adc2 !important;
+  text-decoration: none !important;
+  pointer-events: none !important;
+  cursor: not-allowed !important;
+}
+
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+.curso-page .precio-linea{
+  display: flex;
+  align-items: baseline;
+  gap: .35rem;
+  margin-top: .2rem;
+}
+
+.curso-page .precio-actual{
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: -.01em;
+}
+
+.curso-page .precio-antes{
+  color: #6d6675;
+  text-decoration: line-through;
+  font-size: .95em;
+}
+
+.curso-page .ticks{
+  display: grid;
+  gap: .1rem;
+  margin: 0;
+  padding-left: .6rem;
+}
+
+.curso-page .ticks li{ list-style: "✔ "; }
+
+.curso-page .profe{
+  display: grid;
+  grid-template-columns: 1.7rem 1fr;
+  align-items: center;
+  gap: .35rem;
+}
+
+.curso-page .profe__foto{
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: var(--shadow);
+}
+
+
+/* =========================================================
+   SECCIONES DE ANCHO COMPLETO
+   ========================================================= */
+.curso-page .section{ margin: .7rem 0; }
+
+.curso-page .solo-una-col{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .5rem;
+}
+
+
+/* =========================================================
+   PREGUNTAS FRECUENTES (FAQ)
+   ========================================================= */
+.curso-page .faq{
+  display: grid;
+  gap: .35rem;
+}
+
+.curso-page .faq details{
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: .95em;
+  filter: none;
+  opacity: 1;
+}
+
+.curso-page .faq summary{
+  padding: .6rem .7rem;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 700;
+}
+
+.curso-page .faq summary::-webkit-details-marker{ display: none; }
+
+.curso-page .faq .ans{
+  padding: 0 .7rem .6rem;
+  color: #6d6675;
+}
+
+
+/* =========================================================
+   CTA FIJA INFERIOR
+   ========================================================= */
+
+
+/* =========================================================
+   UTILIDADES / ESTADOS
+   ========================================================= */
+.curso-page .muted{ color: #6d6675; }
+
+.curso-page .h2{
+  margin: .15rem 0 .5rem;
+  font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+  letter-spacing: -.01em;
+}
+
+.curso-page .h3{
+  margin: .15rem 0 .3rem;
+  font-size: 1rem;
+}
+
+.curso-page .lead{
+  color: #3a2c48;
+  font-size: 1rem;
+}
+
+.curso-page .sep{
+  height: 1px;
+  margin: .5rem 0;
+  background: var(--line);
+}
+
+/* Estado: usuaria propietaria del curso */
+.curso-page.is-owned .locked{ color: inherit; }
+.curso-page.is-owned .cta-comprar,
+.curso-page.is-owned .price{
+  display: none !important;
+}
+
+
+
+/* =========================================================
+   CTA de NAVBAR (alias para páginas internas)
+   ========================================================= */
+.nav-cta{
+  padding: .625rem .75rem;
+  border-radius: .625rem;
+  text-decoration: none;
+  font: 700 .875rem/1 Inter, system-ui, sans-serif;
+  background: linear-gradient(180deg, var(--dorado), #b08c3f);
+  color: #dcadeb !important;
+  box-shadow: 0 .375rem 1.125rem #c8a55355;
+}
+
+.nav-cta:hover{ filter: brightness(1.05); }
+
+.btn-fav{
+  display:inline-flex;             /* ya lo tiene .btn, pero por si acaso */
+  align-items:center;
+  gap:.45rem;                      /* <— separación texto/ícono */
+}
+.btn-fav svg{ width:18px; height:18px; flex:0 0 auto; }
+
+/* Animación de agregado a favoritos */
+.btn-fav.fav-anim {
+  animation: fav-bounce 0.6s cubic-bezier(.4,1.6,.6,1);
+  background: #f4d9e6;
+  border-color: #b69bd6;
+}
+.btn-fav.is-fav {
+  color: #b69bd6;
+  border-color: #b69bd6;
+  background: #faf7ff;
+}
+@keyframes fav-bounce {
+  0% { transform: scale(1); }
+  20% { transform: scale(1.15); }
+  40% { transform: scale(0.95); }
+  60% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+/* Sidebar: bloque "Sobre Paz" */
+.curso-page .profe{
+  display:grid;
+  grid-template-columns: 1.7rem 1fr;
+  gap:.35rem;
+  align-items:start;            /* mejor alineación vertical */
+}
+
+.curso-page .profe__foto{
+  grid-column:1;                /* avatar en col 1 */
+  grid-row:1 / span 2;          /* ocupa alto de foto + texto */
+}
+
+.curso-page .profe p{
+  grid-column:2;                /* texto en col 2 */
+}
+
+/* ⬇️ botón debajo del texto, ancho normal */
+.curso-page .profe .btn{
+  grid-column:2;                /* ponelo en la columna ancha */
+  justify-self:start;
+  margin-top:.25rem;
+}
+
+/* Si lo preferís a todo el ancho del bloque, usa esto en su lugar: */
+/* .curso-page .profe .btn{ grid-column:1 / -1; justify-self:stretch; } */
+/* ===== Sidebar: "Sobre Paz" — bloque limpio ===== */
+.curso-page .card .profe{
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;  /* avatar + contenido */
+  column-gap: .75rem;
+  row-gap: .35rem;
+  align-items: start;
+}
+
+/* Avatar redondo, un poco más grande */
+.curso-page .profe__foto{
+  grid-column: 1;
+  grid-row: 1 / span 2;              /* ocupa altura de texto + botón */
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: var(--shadow);
+  margin-top: .15rem;                 /* pequeño ajuste vertical */
+}
+
+/* Texto de la bio */
+.curso-page .profe p{
+  grid-column: 2;
+  margin: 0;
+  color: var(--texto);
+  line-height: 1.45;
+}
+
+/* Botón debajo del texto, alineado a la izquierda */
+.curso-page .profe .btn{
+  grid-column: 2;
+  justify-self: start;
+  margin-top: .5rem;
+}
+.curso-page .profe .btn{ 
+  grid-column: 1 / -1; justify-self: stretch; }
+
+  /* Más aire para la flecha en el header del módulo */
+/* limpiado: versión previa del chevron (borders + rotate) eliminada */
+/* (se mantiene una única versión del caret tipográfico para el chevron) */
+/* Quita el indent por defecto del <ol> para alinear los módulos */
+.curso-page .modulos{
+  list-style: none;
+  margin: .25rem 0 0 0;   /* sin margen extra del <ol> */
+  padding: 0;             /* sin padding izquierdo */
+}
+
+/* También limpiamos el indent del <ol> interno de lecciones */
+.curso-page .modulos .lecciones{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Opcional: un poquito más de aire vertical entre módulos */
+.curso-page .modulo{ margin: .35rem 0; }
+
+/* flecha chica y fija (única definición) */
+.curso-page .modulo__hd{
+  position: relative;
+  padding: .6rem 2rem .6rem .7rem;
+}
+.curso-page .modulo__hd::after{
+  content: "›";
+  position: absolute;
+  right: .75rem;
+  top: 50%;
+  transform: translateY(-52%);
+  font-size: .95rem;
+  color: #8a77ad; opacity: .8;
+  pointer-events: none;
+}
+.curso-page .modulo__hd[aria-expanded="true"]::after{
+  transform: translateY(-52%); /* sin giro */
+}
+/* ——— Compacta el listado de módulos ——— */
+.curso-page .modulos{
+  gap: .80rem;          /* antes 1rem */
+}
+
+/* sin margen adicional entre tarjetas (ya hay gap) */
+.curso-page .modulo{
+  margin: 0;
+}
+
+/* un pelín menos de alto en el header del módulo */
+.curso-page .modulo__hd{
+  padding: .5rem 2rem .5rem .7rem;
+}
+
+/* opcional: compactar lecciones también */
+.curso-page .leccion{
+  padding: .45rem .7rem;
+}
+/* ---- Lección con checkbox al lado del título ---- */
+.curso-page .leccion{
+  /* 1) caret/play  2) checkbox  3) título  4) tiempo/labels */
+  grid-template-columns: 1rem 1.15rem minmax(0,1fr) auto;
+  align-items: center;
+  column-gap: .55rem;
+}
+
+/* Si por HTML el checkbox quedó al final, lo traemos a la 2ª columna */
+.curso-page .leccion .tick{ order: 2; }
+.curso-page .leccion .ic{ order: 1; }
+.curso-page .leccion a{ order: 3; min-width: 0; }      /* evita que empuje al tiempo */
+.curso-page .leccion .time{ order: 4; }
+
+/* Estilo del checkbox (sirve si es <button> o <input type="checkbox">) */
+.curso-page .tick{
+  width: 1.15rem; height: 1.15rem;
+  border-radius: .35rem;
+  border: 2px solid #ddd4ef;
+  background: #fff;
+  display: grid; place-items: center;
+  padding: 0; cursor: pointer;
+}
+.curso-page .tick svg{ width: .9rem; height: .9rem; opacity: 0; transition: opacity .12s; }
+
+/* Estados: soporta input:checked, [aria-pressed=true] o clase .is-on */
+.curso-page .tick:checked,
+.curso-page .tick[aria-pressed="true"],
+.curso-page .tick.is-on{
+  background: #d9c9ef; border-color: #d9c9ef;
+}
+.curso-page .tick:checked svg,
+.curso-page .tick[aria-pressed="true"] svg,
+.curso-page .tick.is-on svg{ opacity: 1; }
+
+/* Evita que el link capture el click arriba del checkbox */
+.curso-page .leccion a{ position: relative; z-index: 0; }
+.curso-page .tick{ position: relative; z-index: 1; }
+
+/* ===== Checklist y header de módulo ===== */
+
+/* El header pasa a flex para poder “mover” el chip de % a la izquierda */
+.curso-page .modulo__hd{
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+}
+
+/* Chip de porcentaje a la IZQUIERDA del título */
+.curso-page .modulo__hd .pct{
+  order:-1;
+  margin-right:.5rem;
+  padding:.2rem .5rem;
+  font-weight:800;
+  font-size:.78rem;
+  color:#5b4569;
+  background:#faf7ff;
+  border:1px solid #efe9f7;
+  border-radius:999px;
+}
+
+/* Lección: icono, tick, título, tiempo */
+.curso-page .leccion{
+  grid-template-columns: 1.1rem 1.1rem 1fr auto;
+}
+
+/* Estilo del tick (checkbox minimal) */
+.curso-page .leccion .tick{
+  appearance:none;
+  width:1rem; height:1rem;
+  border:2px solid #d8d0e6;
+  border-radius:.3rem;
+  background:#fff;
+  display:inline-grid; place-items:center;
+  cursor:pointer;
+}
+.curso-page .leccion .tick:checked{
+  border-color:#b69bd6; background:#faf7ff;
+}
+.curso-page .leccion .tick:checked::after{
+  content:""; width:.45rem; height:.25rem;
+  border:2px solid #3a2c48;
+  border-top:none; border-right:none;
+  transform:rotate(-45deg);
+}
+
+/* Feedback visual al marcar */
+.curso-page .leccion.is-done a{ color:#7a7185; text-decoration:line-through; }
+
+/* Fina: separaciones más compactas entre filas si lo querés */
+.curso-page .leccion{ padding:.45rem .7rem; }
+
+/* Quitar numeración / bullets del listado de lecciones */
+.curso-page .lecciones{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.curso-page .leccion{
+  list-style: none;
+}
+.curso-page .leccion::marker{
+  content: none;
+}
+/* Fila de lección: icono ▶ tick ▸ título ▸ tiempo */
+.curso-page .leccion{
+  display: grid;
+  grid-template-columns: 1.1rem 1.05rem 1fr auto;
+  align-items: center;
+  column-gap: .55rem;
+}
+.curso-page .leccion .ic{ order: 1; }
+.curso-page .leccion .tick{ order: 2; }
+.curso-page .leccion a{ order: 3; min-width: 0; }
+.curso-page .leccion .time{ order: 4; }
+
+/* Estilo del tick (clickeable) */
+.curso-page .leccion .tick{
+  appearance: none;
+  width: 1rem; height: 1rem;
+  border: 2px solid #d8d0e6;
+  border-radius: .3rem;
+  background: #fff;
+  display: inline-grid; place-items: center;
+  cursor: pointer;
+  z-index: 2;
+}
+.curso-page .leccion .tick:checked{
+  border-color: #b69bd6; background: #faf7ff;
+}
+.curso-page .leccion .tick:checked::after{
+  content: ""; width: .45rem; height: .25rem;
+  border: 2px solid #3a2c48;
+  border-top: none; border-right: none;
+  transform: rotate(-45deg);
+}
+
+/* Asegurar mismo layout para span de título (en bloqueadas) que para <a> */
+.curso-page .leccion > span:not(.ic):not(.time){
+  order: 3;
+  min-width: 0;         /* evita saltos cuando el texto es largo */
+}
+
+/* Estado bloqueado: no deformar, solo desactivar y grisear */
+.curso-page .leccion.locked .tick{ pointer-events: none; opacity: .6; }
+.curso-page .leccion.locked > span:not(.ic):not(.time){ color: #b6adc2; }
+.curso-page .leccion.locked .time{ color: #b6adc2; }
+
+/* ===== Fix final de layout (evita que otras reglas pisen columnas) ===== */
+.curso-page .lecciones .leccion{
+  display: grid !important;
+  grid-template-columns: 1rem 1.05rem minmax(0,1fr) auto !important; /* ic • tick • título • tiempo */
+  align-items: center !important;
+  column-gap: .55rem !important;
+}
+.curso-page .lecciones .leccion .ic{ order: 1 !important; }
+.curso-page .lecciones .leccion .tick{ order: 2 !important; }
+.curso-page .lecciones .leccion a{ order: 3 !important; min-width: 0 !important; }
+.curso-page .lecciones .leccion .time{ order: 4 !important; }
+.curso-page .lecciones .leccion > span:not(.ic):not(.time){ order: 3 !important; min-width: 0 !important; }
+
+/* ======== FEATURES (Proyecto / Materiales / Certificación) ======== */
+.curso-page .features{ display:grid; gap:.75rem; }
+@media (min-width:50rem){ .curso-page .features{ grid-template-columns:repeat(3,1fr); } }
+
+.curso-page .features .card{ border-radius:1rem; }
+.curso-page .features .card__hd{
+  display:flex; align-items:center; gap:.55rem;
+  font-weight:800; letter-spacing:.01em;
+}
+.curso-page .features .ico{
+  width:1.05rem; height:1.05rem; flex:0 0 auto;
+  color:#5b4569; opacity:.9;
+}
+.curso-page .features .card__body{ color:#4b3d5f; }
+
+/* ======== RECURSOS (tarjetas simples, responsive) ======== */
+.curso-page .resource-list{
+  display:grid; gap:.6rem; grid-template-columns:1fr;
+}
+@media (min-width:46rem){
+  .curso-page .resource-list{ grid-template-columns:repeat(3,1fr); }
+}
+.curso-page .res-card{
+  display:flex; align-items:center; gap:.6rem;
+  padding:.65rem .75rem; border:1px solid var(--line);
+  border-radius:.85rem; background:#fff; color:var(--texto);
+  text-decoration:none; transition:transform .12s ease, box-shadow .15s ease;
+}
+.curso-page .res-card:hover{
+  transform:translateY(-1px); box-shadow:0 10px 22px rgba(0,0,0,.06);
+}
+.curso-page .res-ico{
+  width:2.2rem; height:2.2rem; border-radius:.55rem;
+  border:1px solid #eee; background:#faf7ff; display:grid; place-items:center;
+  font-weight:800; color:#5b4569;
+}
+.curso-page .res-meta{ margin-left:auto; font-size:.85rem; color:#6d6675; }
+/* Minimal icon sizing inside resource badge */
+.curso-page .res-ico svg{ width:1.15rem; height:1.15rem; display:block; }
+
+/* ======== BANNER MEMBRESÍA / CERT (ligero) ======== */
+.curso-page .membership-banner{
+  margin:.9rem 0; padding:1rem; border-radius:1rem; border:1px solid #efe9f7;
+  background:linear-gradient(180deg,#faf7ff,#fff);
+  display:flex; align-items:center; gap:.75rem; justify-content:space-between;
+}
+.curso-page .membership-banner p{ margin:0; color:#4b3d5f }
+.curso-page .membership-banner .btn{ box-shadow:none; border:1px solid #e9e1f8; }
+
+/* ======== FAQ: 2 columnas + caret minimal ======== */
+.curso-page .faq{ gap:.6rem; }
+.curso-page .faq details{ overflow:hidden }
+.curso-page .faq summary{
+  display:flex; align-items:center; gap:.55rem;
+}
+.curso-page .faq summary::before{
+  content:""; width:.55rem; height:.55rem;
+  border:2px solid #b69bd6; border-left-color:transparent; border-bottom-color:transparent;
+  transform:rotate(45deg); transition:transform .2s ease;
+}
+.curso-page .faq details[open] summary::before{ transform:rotate(135deg); }
+
+@media (min-width:50rem){
+  .curso-page .faq{
+    display:grid; grid-template-columns:1fr 1fr; gap:.6rem;
+  }
+}
+
+/* ======== RELACIONADOS: carrusel horizontal sin JS ======== */
+.curso-page .related{ margin:1rem 0; }
+.curso-page .related__row{
+  display:grid; grid-auto-flow:column; grid-auto-columns:16rem; gap:.6rem;
+  overflow:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory;
+  padding-bottom:.25rem;
+}
+.curso-page .related__card{
+  scroll-snap-align:start; background:#fff; border:1px solid var(--line);
+  border-radius:1rem; overflow:hidden; box-shadow:var(--shadow);
+  filter:none; opacity:1; transition:box-shadow .2s, transform .2s;
+}
+.curso-page .related__card{ text-decoration:none; color:inherit; display:block; }
+/* Hover efecto para tarjetas relacionadas */
+.curso-page .related__card:hover {
+  box-shadow: 0 4px 16px rgba(106,87,165,.12);
+  transform: translateY(-2px) scale(1.03);
+}
+.curso-page .related__thumb{ aspect-ratio:16/9; background:#f4f0ff }
+.curso-page .related__thumb.color-1{
+  background:
+    radial-gradient(9rem 9rem at 20% 30%, #d9c9ef99, transparent 60%),
+    radial-gradient(10rem 10rem at 80% 70%, #f4d9e699, transparent 60%),
+    linear-gradient(180deg, #faf7ff, #fff);
+}
+.curso-page .related__thumb.color-2{
+  background:
+    radial-gradient(9rem 9rem at 80% 30%, #f4d9e699, transparent 60%),
+    radial-gradient(10rem 10rem at 20% 70%, #d9c9ef99, transparent 60%),
+    linear-gradient(180deg, #fff, #faf7ff);
+}
+.curso-page .related__thumb.color-3{
+  background:
+    radial-gradient(9rem 9rem at 50% 20%, #ffe2a699, transparent 60%),
+    radial-gradient(10rem 10rem at 50% 80%, #d9c9ef99, transparent 60%),
+    linear-gradient(180deg, #fff8ee, #fff);
+}
+.curso-page .related__body{ padding:.6rem .7rem }
+.curso-page .related__body h4{ margin:.1rem 0 .25rem; font-size:1rem }
+.curso-page .related__body p{ margin:0; color:#6d6675; font-size:.9rem }
+
+/* ======== PEQUEÑAS MEJORAS DE ESPACIADO GENERAL ======== */
+.curso-page .section.solo-una-col{ gap:.75rem; }         /* un poco más de aire */
+.curso-page .card__hd{ align-items:center; }             /* alinear títulos */
+
+/* ======== Footer guard (curso page) ======== */
+@media (min-width:64.0625rem){
+  .curso-page .site-footer .footer-inner{
+    display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:1.25rem; text-align: initial; justify-items: normal;
+  }
+  .curso-page .site-footer .f-links{ justify-content:flex-start; }
+  .curso-page .site-footer .f-contact{ align-items:flex-end; }
+}
+
+/* Footer links wrapping — limit no-wrap to course page on desktop only */
+@media (min-width:64.0625rem){
+  .curso-page .site-footer .f-links{ flex-wrap: nowrap; }
+}
+
+.card.section {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 60rem;
+}
