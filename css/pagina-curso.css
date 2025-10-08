@@ -1,3 +1,22 @@
+/* Centrado y ancho limitado para Preguntas frecuentes igual que Relacionados */
+.curso-page .section.faq {
+  max-width: 60rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* Limitar ancho de FAQ y Relacionados para que no ocupen toda la pantalla */
+.curso-page .section.related {
+  max-width: 60rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.curso-page .section {
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 60rem;
+  margin-left: auto;
+  margin-right: auto;
+}
 /* limpiado: bloques legacy de .leccion (flex) y .check-done eliminados */
 /* ===== Player dentro de la página ===== */
 .player-wrap{
@@ -243,7 +262,6 @@
 
 .curso-page .card__hd{
   padding: .6rem .7rem;
-  border-bottom: 1px solid var(--line);
   font-weight: 800;
   font-size: 1rem;
 }
@@ -468,6 +486,8 @@
   border: 1px solid var(--line);
   border-radius: var(--radius);
   font-size: .95em;
+  filter: none;
+  opacity: 1;
 }
 
 .curso-page .faq summary{
@@ -524,7 +544,6 @@
   display: none !important;
 }
 
-.curso-page.is-owned [data-owned-only]{ display: block !important; }
 
 
 /* =========================================================
@@ -929,8 +948,14 @@
 .curso-page .related__card{
   scroll-snap-align:start; background:#fff; border:1px solid var(--line);
   border-radius:1rem; overflow:hidden; box-shadow:var(--shadow);
+  filter:none; opacity:1; transition:box-shadow .2s, transform .2s;
 }
 .curso-page .related__card{ text-decoration:none; color:inherit; display:block; }
+/* Hover efecto para tarjetas relacionadas */
+.curso-page .related__card:hover {
+  box-shadow: 0 4px 16px rgba(106,87,165,.12);
+  transform: translateY(-2px) scale(1.03);
+}
 .curso-page .related__thumb{ aspect-ratio:16/9; background:#f4f0ff }
 .curso-page .related__thumb.color-1{
   background:
@@ -970,4 +995,10 @@
 /* Footer links wrapping — limit no-wrap to course page on desktop only */
 @media (min-width:64.0625rem){
   .curso-page .site-footer .f-links{ flex-wrap: nowrap; }
+}
+
+.card.section {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 60rem;
 }
