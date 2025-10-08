@@ -215,6 +215,11 @@ input:focus, .coupon input:focus{
   background: linear-gradient(135deg, rgba(223,209,248,.9), rgba(247,234,242,.9));
 }
 
+/* Estados de pasos */
+.co-step[hidden]{ display:none; }
+.actions{ display:flex; gap:.5rem; margin-top:.75rem; }
+.actions .btn-primary{ flex:1; }
+
 /* ============ ULTRA SOFT PASS (tipografía + bordes + focus) ============ */
 
 /* Colores más suaves y menos contraste */

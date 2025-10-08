@@ -64,10 +64,10 @@
 
   <!-- Progreso -->
   <nav class="co-steps" aria-label="Progreso">
-    <ol>
-      <li class="is-active"><span>1</span> Datos</li>
-      <li><span>2</span> Pago</li>
-      <li><span>3</span> Confirmación</li>
+    <ol id="steps">
+      <li class="is-active" data-step-indicator="1"><span>1</span> Datos</li>
+      <li data-step-indicator="2"><span>2</span> Pago</li>
+      <li data-step-indicator="3"><span>3</span> Confirmación</li>
     </ol>
   </nav>
 
@@ -76,8 +76,8 @@
     <section class="card co-pane">
       <h2 class="section-title">Finalizá tu membresía</h2>
 
-      <!-- Datos -->
-      <form id="co-form" novalidate>
+      <!-- Paso 1: DATOS -->
+      <form id="co-form" class="co-step" data-step="1" novalidate>
         <fieldset class="block">
           <legend class="block-title">Datos de facturación</legend>
 
@@ -102,26 +102,21 @@
             </div>
           </div>
 
-          
-
-        <!-- Métodos de pago (placeholder) -->
-        <fieldset class="block">
-          <legend class="block-title">Método de pago</legend>
-          <div class="pay-list" role="group" aria-label="Elige un medio de pago">
-            <label class="pay-item">
-              <input type="radio" name="pay" value="card" required>
-              <span>Tarjeta de crédito / débito</span>
-            </label>
-            <label class="pay-item">
-              <input type="radio" name="pay" value="transfer">
-              <span>Transferencia / débito bancario</span>
-            </label>
-            <label class="pay-item">
-              <input type="radio" name="pay" value="paypal">
-              <span>PayPal</span>
-            </label>
+          <div class="toggle-line">
+            <input type="checkbox" id="need-invoice">
+            <label for="need-invoice">Necesito factura con datos fiscales</label>
           </div>
-          <p class="secure-note">Pago seguro • Encriptado • No almacenamos tu tarjeta</p>
+
+          <div id="invoice-fields" class="invoice-fields" hidden>
+            <div class="form-row">
+              <label for="doc">Documento / CUIT</label>
+              <input id="doc" name="doc" type="text">
+            </div>
+            <div class="form-row">
+              <label for="addr">Dirección</label>
+              <input id="addr" name="addr" type="text" autocomplete="street-address">
+            </div>
+          </div>
         </fieldset>
 
         <!-- Políticas -->
@@ -138,12 +133,50 @@
           <p id="terms-help" class="terms-help">Debés aceptar para continuar.</p>
         </section>
 
-        <button id="btn-pagar" class="btn-primary" disabled aria-disabled="true">Pagar ahora</button>
-        <p class="tiny-muted">Al continuar te redirigimos al medio de pago seguro.</p>
+        <div class="actions">
+          <button id="to-step-2" class="btn-primary" type="button" disabled>Continuar a pago</button>
+          <p class="tiny-muted">Guardamos tus datos para no perder progreso.</p>
+        </div>
       </form>
+
+      <!-- Paso 2: PAGO -->
+      <section class="co-step" data-step="2" hidden>
+        <fieldset class="block">
+          <legend class="block-title">Método de pago</legend>
+          <div class="pay-list" role="group" aria-label="Elige un medio de pago">
+            <label class="pay-item"><input type="radio" name="pay" value="card" required> <span>Tarjeta de crédito / débito</span></label>
+            <label class="pay-item"><input type="radio" name="pay" value="transfer"> <span>Transferencia bancaria</span></label>
+            <label class="pay-item"><input type="radio" name="pay" value="paypal"> <span>PayPal</span></label>
+          </div>
+          <p class="secure-note">Pago seguro • Encriptado • No almacenamos tu tarjeta</p>
+        </fieldset>
+
+        <!-- Contenedor del widget/inputs de la pasarela -->
+        <div id="gateway-container" class="card" aria-live="polite">
+          <p class="tiny-muted">Seleccioná un método para cargar el formulario de pago.</p>
+        </div>
+
+        <div class="actions">
+          <button class="btn-ghost" type="button" data-back>Volver a datos</button>
+          <button id="pay-now" class="btn-primary" type="button" disabled>Pagar ahora</button>
+        </div>
+      </section>
+
+      <!-- Paso 3: CONFIRMACIÓN -->
+      <section class="co-step" data-step="3" hidden aria-live="polite">
+        <div class="card" style="border-style:dashed">
+          <h3>¡Gracias! 🎉</h3>
+          <p>Tu pago fue procesado y activamos tu acceso.</p>
+          <p><strong id="order-id">#—</strong></p>
+          <p>Enviamos un email a <strong id="order-email">—</strong> con el recibo e instrucciones.</p>
+          <div class="actions">
+            <a href="/cursos" class="btn-primary">Ir a mis cursos</a>
+          </div>
+        </div>
+      </section>
     </section>
 
-    <!-- Columna derecha: resumen sticky -->
+    <!-- Columna derecha: Resumen sticky -->
     <aside class="card order card--sticky" aria-labelledby="sum-title">
       <h2 id="sum-title" class="section-title">Resumen</h2>
 
@@ -153,10 +186,9 @@
           <p class="title">Membresía Anual Espacio Paz</p>
           <p class="muted">Acceso a todo • Actualizaciones</p>
         </div>
-        <strong class="price">USD 99</strong>
+        <strong class="price" id="price-tag">USD 99</strong>
       </div>
 
-      <!-- Cupón -->
       <div class="coupon">
         <label for="coupon" class="sr-only">Cupón</label>
         <input id="coupon" type="text" placeholder="Código de cupón">

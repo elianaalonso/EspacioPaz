@@ -1,95 +1,259 @@
 (() => {
+  // --------- Elementos base
   const form = document.getElementById('co-form');
-  const check = document.getElementById('acepto-politicas');
-  const payBtn = document.getElementById('btn-pagar');
+  const step1 = document.querySelector('.co-step[data-step="1"]');
+  const step2 = document.querySelector('.co-step[data-step="2"]');
+  const step3 = document.querySelector('.co-step[data-step="3"]');
+  const toStep2Btn = document.getElementById('to-step-2');
+  const backBtn = step2?.querySelector('[data-back]');
+  const payNowBtn = document.getElementById('pay-now');
+  const steps = document.getElementById('steps');
   const needInv = document.getElementById('need-invoice');
   const invBox = document.getElementById('invoice-fields');
+  const checkPolicies = document.getElementById('acepto-politicas');
+
+  // Resumen / dinero
   const couponInput = document.getElementById('coupon');
   const couponBtn = document.getElementById('apply-coupon');
   const sub = document.getElementById('sub');
   const disc = document.getElementById('disc');
   const tot = document.getElementById('tot');
+  const priceTag = document.getElementById('price-tag');
 
-  // Estado monetario simple (mock)
-  let subtotal = 99, descuento = 0;
+  // Confirmación
+  const orderIdEl = document.getElementById('order-id');
+  const orderEmailEl = document.getElementById('order-email');
+
+  // Gateway
+  const gatewayContainer = document.getElementById('gateway-container');
+  const payRadios = step2?.querySelectorAll('input[name="pay"]') || [];
+
+  // --------- Estado
+  const STATE_KEY = 'espaciopaz.checkout';
+  let state = {
+    name: '', email: '', country: '', city: '',
+    invoice: false, doc: '', addr: '',
+    method: '', subtotal: 99, descuento: 0, total: 99, coupon: ''
+  };
+
+  // Cargar de localStorage
+  try{
+    const saved = JSON.parse(localStorage.getItem(STATE_KEY) || '{}');
+    state = { ...state, ...saved };
+    // Repintar campos si vuelven
+    if (form?.name) form.name.value = state.name || '';
+    if (form?.email) form.email.value = state.email || '';
+    if (form?.country) form.country.value = state.country || '';
+    if (form?.city) form.city.value = state.city || '';
+    if (needInv) needInv.checked = !!state.invoice;
+    if (needInv?.checked && invBox) invBox.hidden = false;
+    if (form?.doc) form.doc.value = state.doc || '';
+    if (form?.addr) form.addr.value = state.addr || '';
+    if (couponInput) couponInput.value = state.coupon || '';
+  }catch{}
+
+  // Helpers
+  const save = () => localStorage.setItem(STATE_KEY, JSON.stringify(state));
+  const money = n => `USD ${n}`;
+
   function renderMoney(){
-    sub.textContent = `USD ${subtotal}`;
-    disc.textContent = descuento ? `- USD ${descuento}` : '—';
-    tot.textContent = `USD ${Math.max(subtotal - descuento, 0)}`;
+    if (sub) sub.textContent = money(state.subtotal);
+    if (disc) disc.textContent = state.descuento ? `- ${money(state.descuento)}` : '—';
+    state.total = Math.max(state.subtotal - state.descuento, 0);
+    if (tot) tot.textContent = money(state.total);
+    if (priceTag) priceTag.textContent = money(state.subtotal);
   }
   renderMoney();
 
-  // Habilitar pago cuando es válido + acepta políticas
-  function togglePay(){
-    const basicValid = form.name.value.trim() && form.email.validity.valid && form.country.value.trim();
-    const ok = basicValid && check?.checked && form.pay?.value;
-    payBtn.disabled = !ok;
-    payBtn.setAttribute('aria-disabled', String(!ok));
+  // --------- Validación paso 1
+  function isStep1Valid(){
+    if (!form) return false;
+    const basic = form.name?.value.trim() && form.email?.validity.valid && form.country?.value.trim() && checkPolicies?.checked;
+    // Si pidió factura, validar extras
+    const invOk = !needInv?.checked || (form.doc?.value.trim() && form.addr?.value.trim());
+    return basic && invOk;
   }
-  form.addEventListener('input', togglePay);
-  check?.addEventListener('change', togglePay);
-  document.addEventListener('DOMContentLoaded', togglePay);
-
-  // Toggle factura
-  needInv?.addEventListener('change', () => {
-    const show = needInv.checked;
-    invBox.hidden = !show;
-    if(!show){ form.doc.value=''; form.addr.value=''; }
+  function onStep1Change(){
+    if (!form) return;
+    state.name = form.name?.value.trim() || '';
+    state.email = form.email?.value.trim() || '';
+    state.country = form.country?.value.trim() || '';
+    state.city = form.city?.value.trim() || '';
+    state.invoice = !!needInv?.checked;
+    state.doc = form.doc?.value.trim() || '';
+    state.addr = form.addr?.value.trim() || '';
+    save();
+    if (toStep2Btn) toStep2Btn.disabled = !isStep1Valid();
+  }
+  if (form) form.addEventListener('input', onStep1Change);
+  if (checkPolicies) checkPolicies.addEventListener('change', onStep1Change);
+  if (needInv) needInv.addEventListener('change', () => {
+    if (invBox) invBox.hidden = !needInv.checked;
+    onStep1Change();
   });
+  document.addEventListener('DOMContentLoaded', onStep1Change);
 
-  // Cupón (ejemplo: PAZ10 -> USD 10 de descuento)
-  couponBtn?.addEventListener('click', (e)=>{
+  // --------- Navegación de pasos
+  function goTo(stepNumber){
+    [step1, step2, step3].forEach(s => s && (s.hidden = true));
+    const targetStep = document.querySelector(`.co-step[data-step="${stepNumber}"]`);
+    if (targetStep) targetStep.hidden = false;
+    // Progreso
+    if (steps) {
+      steps.querySelectorAll('[data-step-indicator]').forEach(li => {
+        const n = Number(li.getAttribute('data-step-indicator'));
+        li.classList.toggle('is-active', n === stepNumber);
+      });
+    }
+    // Botones
+    if (stepNumber === 2 && payNowBtn) {
+      payNowBtn.disabled = !state.method;
+    }
+  }
+
+  if (toStep2Btn) toStep2Btn.addEventListener('click', () => {
+    if(!isStep1Valid()) return;
+    goTo(2);
+  });
+  if (backBtn) backBtn.addEventListener('click', () => goTo(1));
+
+  // --------- Cupón
+  if (couponBtn) couponBtn.addEventListener('click', (e)=>{
     e.preventDefault();
-    const code = couponInput.value.trim().toUpperCase();
-    if(!code) return;
-    if(code === 'PAZ10'){ descuento = 10; } 
-    else if(code === 'PAZ25'){ descuento = 25; }
-    else { descuento = 0; }
-    renderMoney();
+    const code = couponInput?.value.trim().toUpperCase() || '';
+    state.coupon = code;
+    state.descuento = 0;
+    if(code === 'PAZ10') state.descuento = 10;
+    if(code === 'PAZ25') state.descuento = 25;
+    save(); renderMoney();
   });
 
-  // Modal de políticas
+  // --------- Métodos de pago (mock + hooks)
+  payRadios.forEach(r => {
+    r.addEventListener('change', () => {
+      state.method = r.value; save();
+      loadGatewayUI(state.method);
+      if (payNowBtn) payNowBtn.disabled = false;
+    });
+  });
+
+  function loadGatewayUI(method){
+    // Limpia contenedor
+    if (!gatewayContainer) return;
+    gatewayContainer.innerHTML = '';
+    if(method === 'card'){
+      gatewayContainer.innerHTML = `
+        <div class="form-grid-2">
+          <div class="form-row">
+            <label>Número de tarjeta</label>
+            <input id="card-number" inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456">
+          </div>
+          <div class="form-row">
+            <label>Vencimiento</label>
+            <input id="card-exp" placeholder="MM/AA" inputmode="numeric" autocomplete="cc-exp">
+          </div>
+          <div class="form-row">
+            <label>Nombre en la tarjeta</label>
+            <input id="card-name" autocomplete="cc-name" placeholder="Como figura en la tarjeta">
+          </div>
+          <div class="form-row">
+            <label>CVV</label>
+            <input id="card-cvv" inputmode="numeric" autocomplete="cc-csc" placeholder="***">
+          </div>
+        </div>
+        <p class="tiny-muted">Demo local. Reemplazá por el widget de tu pasarela.</p>
+      `;
+      // HOOK Stripe/Mercado Pago:
+      // Aquí podrías montar Elements (Stripe) o CardForm (Mercado Pago).
+    } else if(method === 'transfer'){
+      gatewayContainer.innerHTML = `
+        <p>Te mostraremos los datos de transferencia al confirmar. Acreditamos dentro de 24–48 h hábiles.</p>
+      `;
+    } else if(method === 'paypal'){
+      gatewayContainer.innerHTML = `
+        <p>Serás redirigida a PayPal para completar el pago.</p>
+      `;
+    }
+  }
+  if(state.method) loadGatewayUI(state.method);
+
+  // --------- Pagar
+  if (payNowBtn) payNowBtn.addEventListener('click', async () => {
+    payNowBtn.disabled = true;
+    payNowBtn.textContent = 'Procesando…';
+
+    try{
+      // 1) Crear "orden" en tu backend (HOOK)
+      // const { checkoutUrl, orderId } = await fetch('/api/checkout', {method:'POST', body: JSON.stringify(state)}).then(r=>r.json());
+
+      // 2) Dependiendo del método:
+      if(state.method === 'paypal'){
+        // window.location.href = checkoutUrl; (redirigir a PayPal)
+      } else if(state.method === 'transfer'){
+        // Mostrar instrucciones y marcar como "pendiente"
+        fakeConfirm('PEND-' + Date.now());
+        return;
+      } else {
+        // Tarjeta: tokenizar con pasarela y confirmar pago (HOOK)
+        // const token = await gatewayTokenizeCard();
+        // await fetch('/api/pay', {method:'POST', body: JSON.stringify({orderId, token})});
+      }
+
+      // DEMO: confirmación inmediata
+      fakeConfirm('ORD-' + Math.floor(Math.random()*999999));
+    }catch(err){
+      alert('Hubo un problema con el pago. Intentá nuevamente.');
+      console.error(err);
+      payNowBtn.disabled = false;
+      payNowBtn.textContent = 'Pagar ahora';
+    }
+  });
+
+  function fakeConfirm(id){
+    // Guardar "compra" y limpiar estado de cupón (opcional)
+    state.orderId = id; save();
+    if (orderIdEl) orderIdEl.textContent = '#' + id;
+    if (orderEmailEl) orderEmailEl.textContent = state.email || '';
+    goTo(3);
+    // Limpieza ligera
+    if (payNowBtn) payNowBtn.textContent = 'Pagar ahora';
+  }
+
+  // --------- Modal de Políticas (igual que antes)
   const modal = document.getElementById('politicas-modal');
   const policyLinks = document.querySelectorAll('[data-open="politicas-modal"]');
   let lastFocused = null;
 
-  policyLinks.forEach(a => {
-    a.addEventListener('click', (e) => {
-      e.preventDefault();
-      openModal();
-    });
-  });
-
+  policyLinks.forEach(a => a.addEventListener('click', (e)=>{ e.preventDefault(); openModal(); }));
   function openModal(){
     if (!modal) return;
     lastFocused = document.activeElement;
-    modal.hidden = false;
-    document.body.classList.add('modal-open');
-    const title = modal.querySelector('#modal-title');
-    title?.setAttribute('tabindex','-1');
-    title?.focus();
+    modal.hidden = false; document.body.classList.add('modal-open');
+    const title = modal.querySelector('#modal-title'); 
+    if (title) { title.setAttribute('tabindex','-1'); title.focus(); }
     document.addEventListener('keydown', onEscClose);
     modal.addEventListener('click', onLightDismiss);
     document.addEventListener('focus', trapFocus, true);
   }
   function closeModal(){
-    modal.hidden = true;
-    document.body.classList.remove('modal-open');
+    if (!modal) return;
+    modal.hidden = true; document.body.classList.remove('modal-open');
     document.removeEventListener('keydown', onEscClose);
     modal.removeEventListener('click', onLightDismiss);
     document.removeEventListener('focus', trapFocus, true);
-    lastFocused?.focus?.();
+    if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
   }
   function onEscClose(e){ if(e.key==='Escape') closeModal(); }
   function onLightDismiss(e){
     if (e.target.matches('[data-close]')) return closeModal();
     if (e.target.classList.contains('modal__backdrop')) return closeModal();
   }
-  function trapFocus(e){
-    if (modal.hidden) return;
-    if (!modal.contains(e.target)){
-      e.stopPropagation();
-      modal.querySelector('.modal__close, #modal-title, .modal__footer .btn-primary')?.focus();
-    }
+  function trapFocus(e){ 
+    if (!modal || modal.hidden) return; 
+    if (!modal.contains(e.target)){ 
+      e.stopPropagation(); 
+      const focusable = modal.querySelector('.modal__close, #modal-title, .modal__footer .btn-primary');
+      if (focusable) focusable.focus();
+    } 
   }
 })();
