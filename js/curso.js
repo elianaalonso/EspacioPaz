@@ -248,6 +248,7 @@ window.addEventListener('DOMContentLoaded', () => {
     if(localStorage.getItem(OWNED_KEY)==='1'){
       body.classList.add('is-owned');
       unlockLessonsIfOwned();
+      updateResourceLockStateStrict();
     }
   }catch{}
 });
