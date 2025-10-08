@@ -888,6 +888,8 @@
   font-weight:800; color:#5b4569;
 }
 .curso-page .res-meta{ margin-left:auto; font-size:.85rem; color:#6d6675; }
+/* Minimal icon sizing inside resource badge */
+.curso-page .res-ico svg{ width:1.15rem; height:1.15rem; display:block; }
 
 /* ======== BANNER MEMBRESÍA / CERT (ligero) ======== */
 .curso-page .membership-banner{
@@ -928,7 +930,26 @@
   scroll-snap-align:start; background:#fff; border:1px solid var(--line);
   border-radius:1rem; overflow:hidden; box-shadow:var(--shadow);
 }
+.curso-page .related__card{ text-decoration:none; color:inherit; display:block; }
 .curso-page .related__thumb{ aspect-ratio:16/9; background:#f4f0ff }
+.curso-page .related__thumb.color-1{
+  background:
+    radial-gradient(9rem 9rem at 20% 30%, #d9c9ef99, transparent 60%),
+    radial-gradient(10rem 10rem at 80% 70%, #f4d9e699, transparent 60%),
+    linear-gradient(180deg, #faf7ff, #fff);
+}
+.curso-page .related__thumb.color-2{
+  background:
+    radial-gradient(9rem 9rem at 80% 30%, #f4d9e699, transparent 60%),
+    radial-gradient(10rem 10rem at 20% 70%, #d9c9ef99, transparent 60%),
+    linear-gradient(180deg, #fff, #faf7ff);
+}
+.curso-page .related__thumb.color-3{
+  background:
+    radial-gradient(9rem 9rem at 50% 20%, #ffe2a699, transparent 60%),
+    radial-gradient(10rem 10rem at 50% 80%, #d9c9ef99, transparent 60%),
+    linear-gradient(180deg, #fff8ee, #fff);
+}
 .curso-page .related__body{ padding:.6rem .7rem }
 .curso-page .related__body h4{ margin:.1rem 0 .25rem; font-size:1rem }
 .curso-page .related__body p{ margin:0; color:#6d6675; font-size:.9rem }
@@ -936,3 +957,17 @@
 /* ======== PEQUEÑAS MEJORAS DE ESPACIADO GENERAL ======== */
 .curso-page .section.solo-una-col{ gap:.75rem; }         /* un poco más de aire */
 .curso-page .card__hd{ align-items:center; }             /* alinear títulos */
+
+/* ======== Footer guard (curso page) ======== */
+@media (min-width:64.0625rem){
+  .curso-page .site-footer .footer-inner{
+    display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:1.25rem; text-align: initial; justify-items: normal;
+  }
+  .curso-page .site-footer .f-links{ justify-content:flex-start; }
+  .curso-page .site-footer .f-contact{ align-items:flex-end; }
+}
+
+/* Footer links wrapping — limit no-wrap to course page on desktop only */
+@media (min-width:64.0625rem){
+  .curso-page .site-footer .f-links{ flex-wrap: nowrap; }
+}
