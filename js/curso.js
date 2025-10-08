@@ -1,3 +1,35 @@
+// ========== Bloqueo de recursos y recursos adicionales ========== 
+function updateResourceLockState() {
+  const owned = document.body.classList.contains('is-owned');
+  document.querySelectorAll('.res-card[data-resource]').forEach(card => {
+    if (owned) {
+      card.style.pointerEvents = '';
+      card.style.color = '';
+      card.style.textDecoration = '';
+      card.removeAttribute('tabindex');
+      card.classList.remove('locked-resource');
+    } else {
+      card.style.pointerEvents = 'none';
+      card.style.color = '#aaa';
+      card.style.textDecoration = 'none';
+      card.setAttribute('tabindex', '-1');
+      card.classList.add('locked-resource');
+    }
+  });
+}
+
+// Ejecutar al cargar y al cambiar estado de compra/sesión
+window.addEventListener('DOMContentLoaded', updateResourceLockState);
+window.addEventListener('logout', updateResourceLockState);
+window.addEventListener('login', updateResourceLockState);
+window.addEventListener('unlock', updateResourceLockState);
+
+// Si se compra el curso, desbloquear recursos
+function unlockAllIfOwned() {
+  unlockLessonsIfOwned();
+  updateResourceLockState();
+}
+window.unlockAllIfOwned = unlockAllIfOwned;
 
 
 // Checklist visual en cada lección y barra de progreso por módulo
@@ -317,10 +349,10 @@ $$('.js-comprar').forEach(b => b.addEventListener('click', (e) => {
   }
 
   if(confirm('¿Simular compra y desbloquear el curso?')){
-    body.classList.add('is-owned');
-    try{ localStorage.setItem(OWNED_KEY,'1'); }catch{}
-    unlockLessonsIfOwned();
-    alert('¡Listo! Contenido desbloqueado.');
+  body.classList.add('is-owned');
+  try{ localStorage.setItem(OWNED_KEY,'1'); }catch{}
+  unlockAllIfOwned();
+  alert('¡Listo! Contenido desbloqueado.');
   }
 }));
 
