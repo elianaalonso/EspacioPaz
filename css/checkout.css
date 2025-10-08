@@ -90,3 +90,244 @@ input:focus{ outline:3px solid var(--lavanda); border-color:var(--lila); }
 .modal__body p{ margin:0 0 .75rem; }
 .modal__footer{ display:flex; justify-content:flex-end; gap:.5rem; padding-top:.5rem; border-top:1px solid rgba(0,0,0,.06); }
 body.modal-open{ overflow:hidden; }
+
+/* ====== SOFT THEME — Ajustes delicados ====== */
+
+/* Paleta y radios un toque más suaves */
+:root{
+  --lila:#bfa8e0;          /* un pelín más pastel */
+  --lavanda:#e7ddf6;       /* más clara */
+  --rosa:#f7eaf2;          /* más suave */
+  --marfil:#fbf9ff;        /* fondo etéreo */
+  --dorado:#c8a553;
+  --text:#2f2736;
+  --muted:#7a7182;
+  --card:#ffffff;
+  --radius:1.5rem;         /* más redondeado */
+  --shadow:0 6px 18px rgba(22,14,26,.06);
+}
+
+/* Fondo con brillo sutil */
+.checkout-page{
+  background:
+    radial-gradient(120rem 40rem at 50% -10%, rgba(239,231,253,.55), transparent 60%),
+    linear-gradient(180deg, #fdfcff, var(--marfil));
+}
+
+/* Cards más “airy” */
+.card{
+  border:1px solid rgba(60,20,80,.05);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:1.1rem;
+}
+
+/* Títulos menos pesados */
+.section-title{ font-weight:700; letter-spacing:.2px; }
+.block-title{ font-weight:600; }
+
+/* Steps chip tipo Domestika pero más pastel */
+.co-steps li{
+  background:#fff;
+  border-color:rgba(60,20,80,.08);
+  color:var(--muted);
+}
+.co-steps li span{
+  background:var(--lavanda);
+  box-shadow: inset 0 0 0 2px #fff;
+}
+.co-steps li.is-active{
+  border-color:rgba(60,20,80,.14);
+  color:var(--text);
+}
+.co-steps li.is-active span{
+  background: linear-gradient(135deg, var(--lila), var(--rosa));
+}
+
+/* Inputs más finos y focus suave translúcido */
+input[type="text"], input[type="email"], .coupon input{
+  border:1px solid #eee8f7;
+  background:#fff;
+  height:2.8rem;
+  border-radius:1rem;
+}
+input:focus, .coupon input:focus{
+  outline:3px solid rgba(191,168,224,.35);  /* lila translúcido */
+  border-color:#d9c9ef;
+}
+
+/* Radio/checkbox con feeling pastel */
+.pay-item{ border-color:#ede6f8; }
+.pay-item:hover{ border-color:#d9c9ef; background: #fcfbff; }
+.terms-row input[type="checkbox"],
+.pay-item input{ accent-color:#c7b0e6; }
+
+/* Pills y badges más livianas */
+.pill{
+  background:rgba(217,201,239,.6);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.04);
+}
+
+/* Resumen sticky con borde y sombra ínfimos */
+.card--sticky{
+  top:1.25rem;
+  box-shadow: 0 8px 24px rgba(22,14,26,.05);
+  border:1px solid rgba(60,20,80,.06);
+}
+
+/* Botón principal más etéreo (gradiente clarito) */
+.btn-primary{
+  min-height:3rem;
+  border-radius:1rem;
+  background: linear-gradient(135deg, #cfbdf0, #f2ddea);
+  color:#22172b;
+  box-shadow: 0 6px 18px rgba(22,14,26,.06);
+}
+.btn-primary:hover{ transform: translateY(-1px); box-shadow: 0 10px 28px rgba(22,14,26,.08); }
+.btn-primary[disabled]{ opacity:.55; box-shadow:none; }
+
+/* Botón ghost más fino */
+.btn-ghost{
+  border:1px solid rgba(60,20,80,.12);
+  background:#fff;
+}
+.btn-ghost:hover{ background:#fbf9ff; }
+
+/* Cupón: bordes y espaciado suaves */
+.coupon{ gap:.4rem; }
+.coupon input{ padding:.55rem .8rem; }
+
+/* Separadores con menos contraste */
+.sep{ background: rgba(60,20,80,.08); }
+
+/* Modal más vaporoso */
+.modal__dialog{
+  border:1px solid rgba(60,20,80,.06);
+  box-shadow: 0 10px 36px rgba(22,14,26,.08);
+}
+.modal__backdrop{ background: rgba(32,16,48,.35); backdrop-filter: blur(3px); }
+
+/* Textos auxiliares más sutiles */
+.secure-note, .tiny-muted, .meta .muted, .terms-help{ color:#8a8093; }
+
+/* Mini thumbs con degradé muy leve */
+.thumb{
+  background: linear-gradient(135deg, rgba(223,209,248,.9), rgba(247,234,242,.9));
+}
+
+/* ============ ULTRA SOFT PASS (tipografía + bordes + focus) ============ */
+
+/* Colores más suaves y menos contraste */
+:root{
+  --text:#3a3042;          /* más suave que el actual */
+  --muted:#8f8599;
+  --line:rgba(60,20,80,.08); /* líneas muy leves */
+  --line-soft:rgba(60,20,80,.06);
+  --radius:1.6rem;         /* esquinas más redondas */
+  --shadow:0 8px 22px rgba(22,14,26,.05);
+}
+
+/* 1) Tipografía: bajar negritas */
+h1,h2,h3,.section-title{ font-weight:600; }
+.block-title{ font-weight:600; }
+label, .order-line.total, .price, .pill, .btn-primary{ font-weight:600; }
+strong, b{ font-weight:600; }   /* en lugar de 700 */
+.meta .title{ font-weight:600; }
+
+/* 2) Quitar “cuadros” y marcos pesados */
+.card{
+  border:1px solid var(--line-soft);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+fieldset{
+  border:1px solid var(--line);      /* reemplaza el borde gris fuerte */
+  border-radius:1.2rem;
+  padding:1rem;
+}
+.sep{ background:var(--line); }
+
+/* 3) Inputs delicados (sin bordes duros ni “cuadro negro”) */
+input[type="text"], input[type="email"], .coupon input{
+  border:1px solid #eee8f7;
+  background:#fff;
+  height:2.75rem;
+  border-radius:1.1rem;
+}
+input:hover, .coupon input:hover{ border-color:#e7ddf6; }
+input:focus, .coupon input:focus{
+  outline:2px solid rgba(191,168,224,.35);
+  border-color:#d9c9ef;
+}
+/* Autofill (evita “cuadro” de color) */
+input:-webkit-autofill{
+  -webkit-box-shadow: 0 0 0px 1000px #fff inset !important;
+  -webkit-text-fill-color: var(--text) !important;
+}
+
+/* 4) Chips/pildoras más livianas */
+.pill{
+  background: rgba(217,201,239,.35);
+  box-shadow: none;
+  border: 1px solid rgba(60,20,80,.08);
+}
+
+/* 5) Steps más etéreos (sin bloque marcado) */
+.co-steps li{
+  background:#fff;
+  border:1px solid var(--line);
+  color:var(--muted);
+}
+.co-steps li span{
+  background:linear-gradient(135deg, #e9e0f7, #f6eaf3);
+  box-shadow:none;
+}
+.co-steps li.is-active{ color:var(--text); border-color:rgba(60,20,80,.12); }
+.co-steps li.is-active span{
+  background:linear-gradient(135deg, #cdb9ee, #f0dbe9);
+}
+
+/* 6) Radios/checkbox sin “cuadro negro” (Windows) */
+.pay-item input,
+.terms-row input[type="checkbox"]{
+  accent-color:#c7b0e6; /* lila pastel */
+}
+
+/* 7) Tarjetas y resumen sin “bloque” oscuro */
+.card--sticky{
+  border:1px solid var(--line);
+  box-shadow:0 10px 28px rgba(22,14,26,.05);
+}
+
+/* 8) Botones suaves */
+.btn-primary{
+  border-radius:1.1rem;
+  background:linear-gradient(135deg, #cfbdf0, #f2ddea);
+  color:#251a2c;
+  box-shadow:0 6px 18px rgba(22,14,26,.06);
+}
+.btn-primary:hover{ transform:translateY(-1px); box-shadow:0 10px 26px rgba(22,14,26,.08); }
+.btn-primary[disabled]{ opacity:.5; box-shadow:none; }
+
+.btn-ghost{
+  border:1px solid var(--line);
+  background:#fff;
+}
+.btn-ghost:hover{ background:#fbf9ff; }
+
+/* 9) Quitamos placeholders “duros” (thumbs) */
+.thumb{
+  background: linear-gradient(135deg, rgba(223,209,248,.6), rgba(247,234,242,.6));
+  border:1px solid var(--line);
+  border-radius:1rem;
+}
+
+/* 10) Modal vaporoso y focus amable */
+.modal__dialog{
+  border:1px solid var(--line);
+  box-shadow:0 14px 36px rgba(22,14,26,.08);
+}
+.modal__backdrop{ background:rgba(32,16,48,.3); backdrop-filter:blur(3px); }
+
+/* 11) Textos de ayuda más claros */
+.secure-note, .tiny-muted, .meta .muted, .terms-help{ color:#9188a0; }
