@@ -563,16 +563,23 @@ document.addEventListener('DOMContentLoaded', updateCartBadge);
         <div class="cart-info">
           <strong>${it.name}</strong>
         </div>
-        <div class="cart-qty">
+        <div class="cart-qty" style="justify-content: flex-start;">
           <button type="button" class="q minus" aria-label="Quitar uno">−</button>
-          <input type="text" value="${it.qty}" inputmode="numeric" aria-label="Cantidad">
+          <input type="text" value="${it.qty}" inputmode="numeric" aria-label="Cantidad" style="text-align:center; margin-left:0;">
           <button type="button" class="q plus" aria-label="Agregar uno">+</button>
         </div>
         <div class="cart-price">${formatUSD(it.price)}</div>
-        <button type="button" class="cart-remove" aria-label="Eliminar">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m5 0V4a2 2 0 0 1 2-2h0a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+        <button type="button" class="cart-remove" aria-label="Eliminar" style="padding:0; background:none; border:none;">
+          <svg class="trash-animated" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 48 48">
+            <path fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="3" d="M29.5,11.5V11c0-3-2.5-5.5-5.5-5.5S18.5,8,18.5,11v0.5"></path>
+            <line x1="7.5" x2="40.5" y1="11.5" y2="11.5" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3"></line>
+            <line x1="36.5" x2="38" y1="27" y2="11.5" fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3"></line>
+            <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M10.7,18.6l2,20.3c0.2,2.1,1.9,3.6,4,3.6h14.7c2.1,0,3.8-1.6,4-3.6l0.5-4.8"></path>
+          </svg>
         </button>
       `;
+      li.style.display = 'grid';
+      li.style.gridTemplateColumns = '72px 1fr 160px 120px 60px';
 
       // handlers
       li.querySelector('.minus').addEventListener('click', () => {
