@@ -125,3 +125,176 @@
   .cart-subtotal { grid-column: 3 / 4; }
   .cart-remove { grid-column: 3 / 4; }
 }
+/* ====== CARRITO — SOFT UI ====== */
+:root{
+  --lila:#bfa8e0; --lavanda:#e7ddf6; --rosa:#f7eaf2; --marfil:#fbf9ff; --dorado:#c8a553;
+  --text:#3a3042; --muted:#8f8599; --line:rgba(60,20,80,.08); --line-soft:rgba(60,20,80,.06);
+  --radius:1.4rem; --shadow:0 8px 22px rgba(22,14,26,.05);
+}
+
+/* Layout 2 columnas en desktop: lista + resumen */
+.cart-wrap{ display:grid; gap:1rem; }
+@media (min-width: 56rem){ .cart-wrap{ grid-template-columns:minmax(0,1fr) 22rem; align-items:start; } }
+
+/* Item */
+.cart-item{
+  display:grid; grid-template-columns:auto 1fr auto; gap:.9rem; align-items:center;
+  background:#fff; border:1px solid var(--line-soft); border-radius:var(--radius); box-shadow:var(--shadow);
+  padding:.8rem .9rem;
+}
+.cart-item + .cart-item{ margin-top:.75rem; }
+.cart-thumb{
+  inline-size:3.25rem; block-size:3.25rem; border-radius:.9rem; overflow:hidden; border:1px solid var(--line);
+  background:linear-gradient(135deg, rgba(223,209,248,.55), rgba(247,234,242,.55));
+  display:grid; place-items:center;
+}
+.cart-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+/* Texto */
+.cart-meta .title{ margin:0; font-weight:600; color:var(--text); }
+.cart-meta .sub{ margin:.15rem 0 0; color:var(--muted); font-size:.9rem; }
+
+/* Controls derecha: stepper + precio + remove */
+.cart-controls{ display:flex; align-items:center; gap:.5rem; }
+.stepper{ display:inline-flex; align-items:center; gap:.25rem; border:1px solid #eee8f7; background:#fff; border-radius:.7rem; padding:.15rem; }
+.stepper button{
+  inline-size:2rem; block-size:2rem; border:1px solid #eee8f7; border-radius:.55rem; background:#fff; cursor:pointer;
+}
+.stepper button:hover{ background:#fbf9ff; border-color:#e7ddf6; }
+.stepper .qty{ min-inline-size:2.2rem; text-align:center; font-weight:600; color:var(--text); }
+
+.price{ font-weight:600; color:var(--text); padding:.25rem .5rem; background:rgba(217,201,239,.35); border:1px solid var(--line); border-radius:.6rem; }
+.remove{
+  inline-size:2rem; block-size:2rem; border-radius:.55rem; border:1px solid #eee8f7; background:#fff; cursor:pointer;
+}
+.remove:hover{ background:#fff0; border-color:#e7ddf6; }
+
+/* Resumen */
+.cart-summary{
+  background:#fff; border:1px solid var(--line-soft); border-radius:var(--radius); box-shadow:var(--shadow);
+  padding:1rem; position:sticky; top:1rem;
+}
+.cart-summary .row{ display:flex; justify-content:space-between; margin:.35rem 0; color:var(--text); }
+.cart-summary .total{ font-weight:700; margin-top:.25rem; }
+.cart-actions{ display:flex; gap:.5rem; margin-top:.6rem; }
+.btn-ghost{
+  padding:.7rem 1rem; border-radius:.9rem; border:1px solid var(--line); background:#fff; color:var(--text); font-weight:600;
+}
+.btn-ghost:hover{ background:#fbf9ff; }
+.btn-pay{
+  flex:1; display:inline-flex; justify-content:center; align-items:center; min-height:2.9rem;
+  border:0; border-radius:1rem; background:linear-gradient(135deg,#cfbdf0,#f2ddea); color:#251a2c; font-weight:700;
+  box-shadow:0 6px 18px rgba(22,14,26,.06);
+}
+.btn-pay:hover{ transform:translateY(-1px); box-shadow:0 10px 26px rgba(22,14,26,.08); }
+
+/* Bloque “Total” grande que mostrabas: lo afinamos */
+.total-box{
+  background:linear-gradient(180deg,#fdfcff,var(--marfil)); border:1px solid var(--line-soft);
+  border-radius:1.1rem; box-shadow:var(--shadow); padding:.85rem 1rem;
+}
+
+/* Estado vacío */
+.cart-empty{
+  text-align:center; padding:2rem; color:var(--muted);
+  border:1px dashed var(--line); border-radius:var(--radius);
+  background:linear-gradient(180deg,#fff, #fbf9ff);
+}
+.cart-empty .btn-pay{ margin-top:.75rem; }
+
+/* Accesibilidad y detalles */
+.cart small, .muted{ color:var(--muted); }
+button:focus-visible{ outline:2px solid rgba(191,168,224,.45); outline-offset:2px; border-color:#d9c9ef; }
+
+/* ====== CARRITO — SOFT UI (compatible con tu HTML actual) ====== */
+:root{
+  --lila:#bfa8e0; --lavanda:#e7ddf6; --rosa:#f7eaf2; --marfil:#fbf9ff; --dorado:#c8a553;
+  --text:#3a3042; --muted:#8f8599; --line:rgba(60,20,80,.08); --line-soft:rgba(60,20,80,.06);
+  --radius:1.4rem; --shadow:0 8px 22px rgba(22,14,26,.05);
+}
+
+/* Contenedor general (dos columnas en desktop) */
+.cart{ display:grid; gap:1rem; }
+@media (min-width:56rem){
+  .cart{ grid-template-columns:minmax(0,1fr) 22rem; align-items:start; }
+}
+
+/* Lista */
+.cart-list{ list-style:none; margin:0; padding:0; display:grid; gap:.75rem; }
+
+/* Cada item (soporta tu <li> directo) */
+.cart-list > li{
+  display:grid; grid-template-columns:auto 1fr auto; gap:.9rem; align-items:center;
+  background:#fff; border:1px solid var(--line-soft); border-radius:var(--radius); box-shadow:var(--shadow);
+  padding:.85rem .95rem;
+}
+
+/* Mini thumb si tenés <img> como primer hijo */
+.cart-list > li > img{
+  inline-size:3.25rem; block-size:3.25rem; border-radius:.9rem;
+  object-fit:cover; border:1px solid var(--line);
+  background:linear-gradient(135deg, rgba(223,209,248,.55), rgba(247,234,242,.55));
+}
+
+/* Texto (ultra tolerante: toma el <div> central) */
+.cart-list > li > :nth-child(2){
+  min-width:0;
+}
+.cart-list .title{ margin:0; font-weight:600; color:var(--text); }
+.cart-list .sub{ margin:.15rem 0 0; color:var(--muted); font-size:.9rem; }
+
+/* Controles a la derecha (usa cualquier contenedor final) */
+.cart-list > li > :last-child{ display:flex; align-items:center; gap:.5rem; }
+
+/* Stepper */
+.stepper{ display:inline-flex; align-items:center; gap:.25rem; border:1px solid #eee8f7; background:#fff; border-radius:.7rem; padding:.15rem; }
+.stepper button{
+  inline-size:2rem; block-size:2rem; border:1px solid #eee8f7; border-radius:.55rem; background:#fff; cursor:pointer;
+}
+.stepper button:hover{ background:#fbf9ff; border-color:#e7ddf6; }
+.stepper .qty{ min-inline-size:2.2rem; text-align:center; font-weight:600; color:var(--text); }
+
+/* Precio y eliminar */
+.price{ font-weight:600; color:var(--text); padding:.25rem .55rem; background:rgba(217,201,239,.35); border:1px solid var(--line); border-radius:.6rem; }
+.remove{
+  inline-size:2rem; block-size:2rem; border-radius:.55rem; border:1px solid #eee8f7; background:#fff; cursor:pointer;
+}
+.remove:hover{ background:#fff0; border-color:#e7ddf6; }
+
+/* Resumen (columna derecha) */
+.cart-summary{
+  background:#fff; border:1px solid var(--line-soft); border-radius:var(--radius); box-shadow:var(--shadow);
+  padding:1rem; position:sticky; top:1rem;
+}
+.cart-row{ display:flex; justify-content:space-between; align-items:center; margin:.35rem 0; color:var(--text); }
+.cart-row strong{ font-weight:700; }
+
+/* Acciones */
+.cart-actions{ display:flex; gap:.5rem; margin-top:.6rem; }
+.btn-ghost{
+  padding:.7rem 1rem; border-radius:.9rem; border:1px solid var(--line); background:#fff; color:var(--text); font-weight:600;
+}
+.btn-ghost:hover{ background:#fbf9ff; }
+.btn.btn-primary{
+  flex:1; display:inline-flex; justify-content:center; align-items:center; min-height:2.9rem;
+  border:0; border-radius:1rem; background:linear-gradient(135deg,#cfbdf0,#f2ddea); color:#251a2c; font-weight:700;
+  box-shadow:0 6px 18px rgba(22,14,26,.06);
+}
+.btn.btn-primary:hover{ transform:translateY(-1px); box-shadow:0 10px 26px rgba(22,14,26,.08); }
+
+/* Caja “Total” grande si la usás dentro del summary */
+.total-box{
+  background:linear-gradient(180deg,#fdfcff,var(--marfil)); border:1px solid var(--line-soft);
+  border-radius:1.1rem; box-shadow:var(--shadow); padding:.85rem 1rem; margin:.35rem 0;
+}
+
+/* Estado vacío (por si el carrito queda sin items) */
+.cart-empty{
+  text-align:center; padding:2rem; color:var(--muted);
+  border:1px dashed var(--line); border-radius:var(--radius);
+  background:linear-gradient(180deg,#fff,#fbf9ff);
+}
+.cart-empty .btn.btn-primary{ margin-top:.75rem; }
+
+/* Accesibilidad: focus ring suave */
+button:focus-visible, a:focus-visible{ outline:2px solid rgba(191,168,224,.45); outline-offset:2px; }

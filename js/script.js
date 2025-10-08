@@ -609,8 +609,15 @@ document.addEventListener('DOMContentLoaded', updateCartBadge);
   });
 
   document.getElementById('checkoutBtn')?.addEventListener('click', () => {
-    // Acá integrarías Stripe/MercadoPago/lo que uses
-    renderToast('Redirigiendo a pago… (demo)');
+    // Verificar que hay items en el carrito
+    const cart = readCart();
+    if (!cart.length) {
+      renderToast('El carrito está vacío');
+      return;
+    }
+    
+    // Redirigir al checkout
+    window.location.href = 'checkout.html';
   });
 
   function renderToast(msg){
