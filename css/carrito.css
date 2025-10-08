@@ -298,3 +298,81 @@ button:focus-visible{ outline:2px solid rgba(191,168,224,.45); outline-offset:2p
 
 /* Accesibilidad: focus ring suave */
 button:focus-visible, a:focus-visible{ outline:2px solid rgba(191,168,224,.45); outline-offset:2px; }
+/* ===== Carrito COMPACT ===== */
+:root{
+  --line: rgba(60,20,80,.08);
+  --line-soft: rgba(60,20,80,.06);
+  --muted: #8f8599;
+  --text: #3a3042;
+}
+
+/* Cards más chicas y aireadas */
+.cart-list > li{
+  padding: .6rem .75rem;
+  gap: .7rem;
+  border-radius: 1rem;
+  box-shadow: 0 6px 18px rgba(22,14,26,.04);
+}
+
+/* Mini-thumb más chica */
+.cart-list > li > img{
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  border-radius: .7rem;
+}
+
+/* Tipos: menos bold, tamaños más chicos */
+.cart-list .title{
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0 0 .1rem;
+  color: var(--text);
+}
+.cart-list .sub{
+  font-size: .9rem;
+  color: var(--muted);
+}
+
+/* Controles compactos */
+.stepper{
+  padding: .1rem;
+  border-radius: .6rem;
+  gap: .2rem;
+}
+.stepper button{
+  inline-size: 1.8rem;
+  block-size: 1.8rem;
+  border-radius: .5rem;
+}
+.stepper .qty{ min-inline-size: 1.9rem; }
+
+/* Precio de ÍTEM: neutral (sin “pastilla”), tamaño normal */
+.price{
+  padding: 0;
+  background: transparent;
+  border: 0;
+  font-weight: 600;         /* no 700 */
+  font-size: .95rem;        /* más chico que el total */
+  color: var(--text);
+}
+
+/* Si quedó algún precio grande “badge” insertado por estilos viejos */
+.cart-list > li .price-badge,
+.cart-list > li .price--big{ display:none !important; }
+
+/* Separación entre items más corta */
+.cart-list > li + li{ margin-top: .5rem; }
+
+/* Summary (total) se mantiene protagonista */
+.cart-summary{
+  border: 1px solid var(--line-soft);
+  box-shadow: 0 8px 22px rgba(22,14,26,.05);
+}
+.cart-row strong{ font-weight: 700; font-size: 1.05rem; }
+
+/* Botones */
+.btn.btn-primary{
+  min-height: 2.6rem;
+  border-radius: .9rem;
+}
+.btn-ghost{ border-radius: .8rem; }

@@ -117,8 +117,51 @@
     `).join('');
   }
   
-  renderMoney();
-  renderCartItems();
+  // Función para actualizar todo
+  function updateCheckout() {
+    const { cart, subtotal } = calculateCartTotals();
+    state.subtotal = subtotal;
+    // Mantener descuento proporcional si había uno
+    if (state.descuento > 0) {
+      state.descuento = Math.min(state.descuento, subtotal);
+    }
+    state.total = Math.max(subtotal - state.descuento, 0);
+    renderMoney();
+    renderCartItems();
+  }
+
+  // Actualizar cuando el usuario vuelve a la pestaña
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+      updateCheckout();
+    }
+  });
+
+  // Actualizar cuando la ventana recibe foco
+  window.addEventListener('focus', updateCheckout);
+
+  // Escuchar cambios en localStorage (si agregas desde otra pestaña)
+  window.addEventListener('storage', (e) => {
+    if (e.key === CART_KEY) {
+      updateCheckout();
+    }
+  });
+
+  // Botón actualizar manual
+  const refreshBtn = document.getElementById('refresh-cart');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => {
+      updateCheckout();
+      // Feedback visual
+      refreshBtn.textContent = '✓ Actualizado';
+      setTimeout(() => {
+        refreshBtn.textContent = '↻ Actualizar';
+      }, 1500);
+    });
+  }
+
+  // Render inicial
+  updateCheckout();
 
   // --------- Validación paso 1
   function isStep1Valid(){
@@ -153,6 +196,10 @@
     [step1, step2, step3].forEach(s => s && (s.hidden = true));
     const targetStep = document.querySelector(`.co-step[data-step="${stepNumber}"]`);
     if (targetStep) targetStep.hidden = false;
+    
+    // Actualizar carrito cuando cambias de paso
+    updateCheckout();
+    
     // Progreso
     if (steps) {
       steps.querySelectorAll('[data-step-indicator]').forEach(li => {
