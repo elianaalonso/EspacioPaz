@@ -19,10 +19,30 @@ function updateResourceLockState() {
 }
 
 // Ejecutar al cargar y al cambiar estado de compra/sesión
-window.addEventListener('DOMContentLoaded', updateResourceLockState);
+// window.addEventListener('DOMContentLoaded', updateResourceLockState); // Desactivado: no bloquear al recargar
 window.addEventListener('logout', updateResourceLockState);
-window.addEventListener('login', updateResourceLockState);
-window.addEventListener('unlock', updateResourceLockState);
+// Solo desbloquear recursos si el curso está comprado
+function updateResourceLockStateStrict() {
+  const owned = document.body.classList.contains('is-owned');
+  document.querySelectorAll('.res-card[data-resource]').forEach(card => {
+    if (owned) {
+      card.style.pointerEvents = '';
+      card.style.color = '';
+      card.style.textDecoration = '';
+      card.removeAttribute('tabindex');
+      card.classList.remove('locked-resource');
+    } else {
+      card.style.pointerEvents = 'none';
+      card.style.color = '#aaa';
+      card.style.textDecoration = 'none';
+      card.setAttribute('tabindex', '-1');
+      card.classList.add('locked-resource');
+    }
+  });
+}
+window.addEventListener('DOMContentLoaded', updateResourceLockStateStrict);
+window.addEventListener('logout', updateResourceLockStateStrict);
+window.addEventListener('unlockAllIfOwned', updateResourceLockStateStrict);
 
 // Si se compra el curso, desbloquear recursos
 function unlockAllIfOwned() {
