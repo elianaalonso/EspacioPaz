@@ -850,3 +850,89 @@
 .curso-page .lecciones .leccion a{ order: 3 !important; min-width: 0 !important; }
 .curso-page .lecciones .leccion .time{ order: 4 !important; }
 .curso-page .lecciones .leccion > span:not(.ic):not(.time){ order: 3 !important; min-width: 0 !important; }
+
+/* ======== FEATURES (Proyecto / Materiales / Certificación) ======== */
+.curso-page .features{ display:grid; gap:.75rem; }
+@media (min-width:50rem){ .curso-page .features{ grid-template-columns:repeat(3,1fr); } }
+
+.curso-page .features .card{ border-radius:1rem; }
+.curso-page .features .card__hd{
+  display:flex; align-items:center; gap:.55rem;
+  font-weight:800; letter-spacing:.01em;
+}
+.curso-page .features .ico{
+  width:1.05rem; height:1.05rem; flex:0 0 auto;
+  color:#5b4569; opacity:.9;
+}
+.curso-page .features .card__body{ color:#4b3d5f; }
+
+/* ======== RECURSOS (tarjetas simples, responsive) ======== */
+.curso-page .resource-list{
+  display:grid; gap:.6rem; grid-template-columns:1fr;
+}
+@media (min-width:46rem){
+  .curso-page .resource-list{ grid-template-columns:repeat(3,1fr); }
+}
+.curso-page .res-card{
+  display:flex; align-items:center; gap:.6rem;
+  padding:.65rem .75rem; border:1px solid var(--line);
+  border-radius:.85rem; background:#fff; color:var(--texto);
+  text-decoration:none; transition:transform .12s ease, box-shadow .15s ease;
+}
+.curso-page .res-card:hover{
+  transform:translateY(-1px); box-shadow:0 10px 22px rgba(0,0,0,.06);
+}
+.curso-page .res-ico{
+  width:2.2rem; height:2.2rem; border-radius:.55rem;
+  border:1px solid #eee; background:#faf7ff; display:grid; place-items:center;
+  font-weight:800; color:#5b4569;
+}
+.curso-page .res-meta{ margin-left:auto; font-size:.85rem; color:#6d6675; }
+
+/* ======== BANNER MEMBRESÍA / CERT (ligero) ======== */
+.curso-page .membership-banner{
+  margin:.9rem 0; padding:1rem; border-radius:1rem; border:1px solid #efe9f7;
+  background:linear-gradient(180deg,#faf7ff,#fff);
+  display:flex; align-items:center; gap:.75rem; justify-content:space-between;
+}
+.curso-page .membership-banner p{ margin:0; color:#4b3d5f }
+.curso-page .membership-banner .btn{ box-shadow:none; border:1px solid #e9e1f8; }
+
+/* ======== FAQ: 2 columnas + caret minimal ======== */
+.curso-page .faq{ gap:.6rem; }
+.curso-page .faq details{ overflow:hidden }
+.curso-page .faq summary{
+  display:flex; align-items:center; gap:.55rem;
+}
+.curso-page .faq summary::before{
+  content:""; width:.55rem; height:.55rem;
+  border:2px solid #b69bd6; border-left-color:transparent; border-bottom-color:transparent;
+  transform:rotate(45deg); transition:transform .2s ease;
+}
+.curso-page .faq details[open] summary::before{ transform:rotate(135deg); }
+
+@media (min-width:50rem){
+  .curso-page .faq{
+    display:grid; grid-template-columns:1fr 1fr; gap:.6rem;
+  }
+}
+
+/* ======== RELACIONADOS: carrusel horizontal sin JS ======== */
+.curso-page .related{ margin:1rem 0; }
+.curso-page .related__row{
+  display:grid; grid-auto-flow:column; grid-auto-columns:16rem; gap:.6rem;
+  overflow:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory;
+  padding-bottom:.25rem;
+}
+.curso-page .related__card{
+  scroll-snap-align:start; background:#fff; border:1px solid var(--line);
+  border-radius:1rem; overflow:hidden; box-shadow:var(--shadow);
+}
+.curso-page .related__thumb{ aspect-ratio:16/9; background:#f4f0ff }
+.curso-page .related__body{ padding:.6rem .7rem }
+.curso-page .related__body h4{ margin:.1rem 0 .25rem; font-size:1rem }
+.curso-page .related__body p{ margin:0; color:#6d6675; font-size:.9rem }
+
+/* ======== PEQUEÑAS MEJORAS DE ESPACIADO GENERAL ======== */
+.curso-page .section.solo-una-col{ gap:.75rem; }         /* un poco más de aire */
+.curso-page .card__hd{ align-items:center; }             /* alinear títulos */
