@@ -1,3 +1,25 @@
+/* Botón delicado debajo del carrito */
+.cart-cursos-link {
+  display: flex;
+  justify-content: center;
+  margin: 1.2rem 0 0.5rem 0;
+}
+.btn-cursos-soft {
+  background: #f6f2ff;
+  color: #6a5e7c;
+  border: 1px solid #e7ddf6;
+  border-radius: 1.2em;
+  padding: 0.55em 1.5em;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(60,40,80,0.04);
+  transition: background 0.18s, color 0.18s;
+}
+.btn-cursos-soft:hover {
+  background: #e7ddf6;
+  color: #3a3042;
+}
 /* ===== Carrito (página) ===== */
 .cart {
   display: grid;
@@ -423,7 +445,7 @@ body{ background:var(--sand); }
 }
 
 /* -------- Tabla izquierda -------- */
-.cart-table{ background:#fff; border:1px solid var(--line); }
+.cart-table{ background:#fff; border:1px solid var(--line); border-radius:1.2rem; }
 
 /* Cabecera */
 .cart-head{
@@ -491,7 +513,7 @@ body{ background:var(--sand); }
 .sum-row{ display:flex; justify-content:space-between; padding:.5rem 0; border-bottom:1px solid var(--line); color:var(--ink); }
 .sum-total{
   display:flex; justify-content:space-between; align-items:center;
-  background:#efe7da; border:1px solid var(--line); padding:.6rem .75rem; margin:.5rem 0 .75rem;
+  background:rgba(60, 20, 80, .06); border:1px solid var(--line); padding:.6rem .75rem; margin:.5rem 0 .75rem;
   font-weight:700;
 }
 .cart-actions{ display:flex; gap:.5rem; }
@@ -501,7 +523,7 @@ body{ background:var(--sand); }
 .btn-ghost:hover{ filter:brightness(0.98); }
 .btn-primary{
   width:100%; min-height:2.75rem; border:0; border-radius:0;
-  background:#151015; color:#fff; font-weight:600; letter-spacing:.2px;
+  background:#cfacff; color:#fff; font-weight:600; letter-spacing:.2px;
 }
 .btn-primary:hover{ filter:brightness(1.05); }
 .sum-note{ font-size:.85rem; color:var(--muted); margin-top:.5rem; }

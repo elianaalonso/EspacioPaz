@@ -512,6 +512,10 @@ function addToCartFromCard(btn){
     btn.classList.remove('added');
     btn.textContent = prev;
   }, 900);
+  // Si estamos en la página de carrito, actualiza la vista
+  if (document.getElementById('cartList') && typeof window.draw === 'function') {
+    window.draw();
+  }
 }
 
 // Bind a los botones "Agregar al carrito"
@@ -536,17 +540,17 @@ document.addEventListener('DOMContentLoaded', updateCartBadge);
     const cart = readCart();
     list.innerHTML = '';
 
+    const emptyMsg = document.getElementById('cartEmptyMsg');
     if (!cart.length){
-      list.innerHTML = `
-        <div class="cart-empty">
-          <p>Tu carrito está vacío.</p>
-          <a class="btn btn-ghost" href="../html/cursos.html">Ver cursos</a>
-        </div>`;
+      list.innerHTML = '';
+      if (emptyMsg) emptyMsg.style.display = 'block';
       document.getElementById('cartTotal').textContent = formatUSD(0);
       document.getElementById('sumCount').textContent = '0 productos';
       document.getElementById('sumSubtotal').textContent = 'USD 0';
       updateCartBadge();
       return;
+    } else {
+      if (emptyMsg) emptyMsg.style.display = 'none';
     }
 
     let total = 0;
@@ -613,6 +617,7 @@ document.addEventListener('DOMContentLoaded', updateCartBadge);
     updateCartBadge();
   }
 
+  window.draw = draw; // Make draw accessible globally
   draw();
 
   document.getElementById('clearCart')?.addEventListener('click', () => {
