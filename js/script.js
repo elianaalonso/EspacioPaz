@@ -839,7 +839,7 @@ function renderAuthUI(){
         </svg>
       </button>
       <div class="user-dropdown" role="menu">
-  <a href="/html/mi-cuenta.html" role="menuitem">${iconUser}<span>Mi cuenta</span></a>
+  <a href="/html/cuenta.html" role="menuitem">${iconUser}<span>Mi cuenta</span></a>
   <a href="/html/favoritos.html" role="menuitem" class="user-fav">${iconHeart}<span>Favoritos</span></a>
         <a href="/html/membresia.html" role="menuitem">${iconStar}<span>Membresía</span></a>
         <a href="/html/compras.html" role="menuitem">${iconBag}<span>Compras</span></a>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mi cuenta — Espacio Paz</title>
+  <meta name="description" content="Gestioná tu perfil, pedidos, cursos y seguridad.">
+
+  <!-- Base del sitio -->
+  <link rel="stylesheet" href="../css/estilo.css">
+  <link rel="stylesheet" href="../css/cuenta.css">
+
+  
+</head>
+<body>
+  <!-- NAVBAR original -->
+  <header class="nav-wrap">
+      <nav class="nav" aria-label="Navegación principal">
+        <div class="brand">
+          <img src="../img/logo.png" alt="Espacio Paz" class="logo">
+          <span>Espacio Paz</span>
+        </div>
+        <button class="icon-btn hamburger" type="button" aria-label="Abrir menú" aria-expanded="false" id="hamburgerBtn">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <div class="nav-links" id="navLinks">
+          <a href="../index.html">Inicio</a>
+          <div class="dropdown" id="ddCursos">
+              <a href="../html/cursos.html" class="dropdown-toggle" role="button">Cursos
+              <svg viewBox="0 0 24 24" fill="none" style="width:16px;height:16px">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              </a>
+            <div class="dropdown-menu">
+              <a href="../html/cursos/reiki.html">🔆 Reiki</a>
+              <a href="../html/cursos/meditaciones.html">🧘 Meditaciones</a>
+              <a href="../html/cursos/biodecodificacion.html">🌿 Biodecodificación</a>
+              <a href="../html/cursos/rituales.html">🔮 Rituales</a>
+            </div>
+          </div>
+          <a href="../html/membresia.html" class="cta">Unirme a la membresía</a>
+          <a href="../html/sobre-paz.html">Sobre Paz</a>
+          <a href="../html/blog.html">Blog</a>
+          <a href="contacto.html" aria-current="page">Contacto</a>
+          <div class="search-wrap" id="searchWrap">
+            <input id="searchInput" type="search" placeholder="Buscar cursos… (ej: reiki, luna, chakras)" aria-label="Buscar cursos">
+            <button class="icon-btn" type="button" id="searchToggle" aria-label="Abrir buscador">
+              <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor">
+                <circle cx="11" cy="11" r="7" stroke-width="2"/>
+                <path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+            <div id="searchResults" class="search-results" aria-live="polite"></div>
+          </div>
+          <div class="auth" id="authArea"></div>
+          <a class="icon-btn cart-btn" href="../html/carrito.html" aria-label="Carrito" id="cartButton">
+            <svg viewBox="0 0 24 24" fill="none" width="22" height="22" stroke="currentColor" aria-hidden="true">
+              <circle cx="9" cy="21" r="1.5"/>
+              <circle cx="19" cy="21" r="1.5"/>
+              <path d="M2.5 3h2l2.5 13h11l2-8H6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="cart-badge" id="cartBadge" aria-live="polite">0</span>
+          </a>
+        </div>
+      </nav>
+    </header>
+
+
+  <main id="main" class="account container">
+    <h1 class="account__title">Mi cuenta</h1>
+
+    <div class="account__layout" data-js="account-layout">
+      <!-- Sidebar -->
+      <aside class="account__sidebar" aria-label="Menú de cuenta">
+        <div class="account-user">
+          <button class="avatar-btn" id="avatarBtn" type="button" aria-haspopup="dialog">
+            <img id="avatarImg" src="../img/usuario-default.jpg" alt="Avatar de usuario" class="avatar">
+            <span class="avatar-edit">Cambiar</span>
+          </button>
+          <div class="account-user__meta">
+            <strong id="userName">Eli</strong>
+            <span id="userEmail" class="muted">eli@espaciopaz.com</span>
+          </div>
+        </div>
+
+        <nav class="account-nav" aria-label="Secciones de cuenta">
+          <a href="#resumen" class="account-nav__link is-active" data-tab="resumen">Resumen</a>
+          <a href="#perfil" class="account-nav__link" data-tab="perfil">Perfil</a>
+          <a href="#pedidos" class="account-nav__link" data-tab="pedidos">Pedidos</a>
+          <a href="#direcciones" class="account-nav__link" data-tab="direcciones">Direcciones</a>
+          <a href="#cursos" class="account-nav__link" data-tab="cursos">Cursos</a>
+          <a href="#membresia" class="account-nav__link" data-tab="membresia">Membresía</a>
+          <a href="#pagos" class="account-nav__link" data-tab="pagos">Pagos</a>
+          <a href="#seguridad" class="account-nav__link" data-tab="seguridad">Seguridad</a>
+          <a href="#notificaciones" class="account-nav__link" data-tab="notificaciones">Notificaciones</a>
+          <a href="#sesiones" class="account-nav__link" data-tab="sesiones">Sesiones activas</a>
+          <a href="#descargas" class="account-nav__link" data-tab="descargas">Descargas</a>
+        </nav>
+
+        <div class="account-actions">
+          <button id="btnLogout" class="btn btn--ghost" type="button">Cerrar sesión</button>
+          <button id="btnDelete" class="btn btn--danger" type="button">Eliminar cuenta</button>
+        </div>
+      </aside>
+
+      <!-- Contenido -->
+      <section class="account__content" aria-live="polite">
+        <!-- Resumen -->
+        <section id="tab-resumen" class="tab is-visible" role="region" aria-labelledby="Resumen">
+          <div class="grid-3">
+            <article class="card">
+              <h2 class="card__title">Estado de membresía</h2>
+              <p id="summaryMembership" class="muted">—</p>
+              <div class="card__actions">
+                <a href="#membresia" class="btn btn--light" data-tab-link>Ver detalles</a>
+              </div>
+            </article>
+            <article class="card">
+              <h2 class="card__title">Último pedido</h2>
+              <p id="summaryLastOrder" class="muted">—</p>
+              <div class="card__actions">
+                <a href="#pedidos" class="btn btn--light" data-tab-link>Ver pedidos</a>
+              </div>
+            </article>
+            <article class="card">
+              <h2 class="card__title">Cursos activos</h2>
+              <p id="summaryCourses" class="muted">—</p>
+              <div class="card__actions">
+                <a href="#cursos" class="btn btn--light" data-tab-link>Ir a cursos</a>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Perfil -->
+        <section id="tab-perfil" class="tab" role="region">
+          <form id="formProfile" class="form card" novalidate>
+            <h2 class="card__title">Datos personales</h2>
+            <div class="form__grid">
+              <label class="field">
+                <span>Nombre</span>
+                <input type="text" name="name" id="name" autocomplete="name" required>
+              </label>
+              <label class="field">
+                <span>Apellido</span>
+                <input type="text" name="lastname" id="lastname" autocomplete="family-name" required>
+              </label>
+              <label class="field">
+                <span>Email</span>
+                <input type="email" name="email" id="email" autocomplete="email" required>
+              </label>
+              <label class="field">
+                <span>Teléfono</span>
+                <input type="tel" name="phone" id="phone" autocomplete="tel">
+              </label>
+              <label class="field field--full">
+                <span>Bio (opcional)</span>
+                <textarea name="bio" id="bio" rows="4" placeholder="Contá algo sobre vos…"></textarea>
+              </label>
+            </div>
+            <div class="card__actions">
+              <button class="btn" type="submit">Guardar cambios</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Pedidos -->
+        <section id="tab-pedidos" class="tab" role="region">
+          <article class="card">
+            <h2 class="card__title">Historial de pedidos</h2>
+            <div id="ordersWrap" class="table-wrap"></div>
+          </article>
+        </section>
+
+        <!-- Direcciones -->
+        <section id="tab-direcciones" class="tab" role="region">
+          <article class="card">
+            <h2 class="card__title">Direcciones</h2>
+            <div id="addressesList" class="addresses"></div>
+            <div class="card__actions">
+              <button class="btn" id="btnAddAddress" type="button">Agregar dirección</button>
+            </div>
+          </article>
+        </section>
+
+        <!-- Cursos -->
+        <section id="tab-cursos" class="tab" role="region">
+          <article class="card">
+            <h2 class="card__title">Mis cursos</h2>
+            <div id="coursesGrid" class="courses-grid"></div>
+          </article>
+        </section>
+
+        <!-- Membresía -->
+        <section id="tab-membresia" class="tab" role="region">
+          <article class="card">
+            <h2 class="card__title">Membresía</h2>
+            <p id="membershipStatus" class="muted">—</p>
+            <div class="card__actions">
+              <button class="btn" id="btnManageMembership" type="button">Gestionar plan</button>
+            </div>
+          </article>
+        </section>
+
+        <!-- Pagos -->
+        <section id="tab-pagos" class="tab" role="region">
+          <article class="card">
+            <h2 class="card__title">Métodos de pago</h2>
+            <div id="paymentsList" class="payments"></div>
+            <div class="card__actions">
+              <button class="btn" id="btnAddCard" type="button">Agregar tarjeta</button>
+            </div>
+          </article>
+        </section>
+
+        <!-- Seguridad -->
+        <section id="tab-seguridad" class="tab" role="region">
+          <form id="formPassword" class="form card" novalidate>
+            <h2 class="card__title">Cambiar contraseña</h2>
+            <div class="form__grid">
+              <label class="field">
+                <span>Contraseña actual</span>
+                <input type="password" name="current" id="pwdCurrent" required autocomplete="current-password">
+              </label>
+              <label class="field">
+                <span>Nueva contraseña</span>
+                <input type="password" name="new" id="pwdNew" required autocomplete="new-password" minlength="8">
+              </label>
+              <label class="field">
+                <span>Repetir nueva</span>
+                <input type="password" name="repeat" id="pwdRepeat" required autocomplete="new-password" minlength="8">
+              </label>
+            </div>
+            <div class="card__actions">
+              <button class="btn" type="submit">Actualizar contraseña</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Notificaciones -->
+        <section id="tab-notificaciones" class="tab" role="region">
+          <form id="formNotifications" class="form card">
+            <h2 class="card__title">Preferencias</h2>
+            <fieldset class="switches">
+              <label class="switch">
+                <input type="checkbox" name="promo" checked>
+                <span>Promos y lanzamientos</span>
+              </label>
+              <label class="switch">
+                <input type="checkbox" name="updates" checked>
+                <span>Novedades de cursos</span>
+              </label>
+              <label class="switch">
+                <input type="checkbox" name="reminders">
+                <span>Recordatorios de clases</span>
+              </label>
+            </fieldset>
+            <div class="card__actions">
+              <button class="btn" type="submit">Guardar preferencias</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Sesiones -->
+        <section id="tab-sesiones" class="tab" role="region">
+          <article class="card">
+            <h2 class="card__title">Sesiones activas</h2>
+            <div id="sessionsList" class="sessions"></div>
+          </article>
+        </section>
+
+        <!-- Descargas -->
+        <section id="tab-descargas" class="tab" role="region">
+          <article class="card">
+            <h2 class="card__title">Mis descargas</h2>
+            <div id="downloadsList" class="downloads"></div>
+          </article>
+        </section>
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER original -->
+  <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="f-brand">
+          <img src="../img/logo.png" alt="Espacio Paz" class="f-logo">
+          <div>
+            <strong>Espacio Paz</strong>
+            <small>Terapias · Reiki · Biodecodificación · Meditaciones</small>
+          </div>
+        </div>
+        <nav class="f-links">
+          <a href="../index.html">Inicio</a>
+          <a href="../html/cursos.html">Cursos</a>
+          <a href="../html/membresia.html">Membresías</a>
+          <a href="../html/sobre-paz.html">Sobre mí</a>
+          <a href="contacto.html">Contacto</a>
+        </nav>
+        <div class="f-contact">
+          <a href="mailto:hola@espaciopaz.com">hola@espaciopaz.com</a>
+          <div class="f-social">
+            <a href="#" aria-label="Instagram">IG</a>
+            <a href="#" aria-label="YouTube">YT</a>
+            <a href="#" aria-label="TikTok">TT</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <small>© 2025 Espacio Paz — Todos los derechos reservados.</small>
+      </div>
+    </footer>
+
+    <!-- ===== MODAL AUTH ===== -->
+<div class="auth-backdrop" id="authBackdrop" aria-hidden="true"></div>
+<section class="auth-modal" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle" hidden>
+  <button class="auth-close" id="authClose" aria-label="Cerrar" type="button">×</button>
+
+  <header class="auth-tabs">
+    <button class="auth-tab" data-tab="login" id="tabLogin" aria-controls="panelLogin" aria-selected="true" type="button">Iniciar sesión</button>
+    <button class="auth-tab" data-tab="register" id="tabRegister" aria-controls="panelRegister" aria-selected="false" type="button">Registrarse</button>
+  </header>
+
+  <!-- Login -->
+  <form class="auth-panel" id="panelLogin">
+    <h3 id="authTitle" class="auth-title">¡Hola de nuevo!</h3>
+    <label class="auth-field">
+      <span>Email</span>
+      <input type="email" id="loginEmail" autocomplete="email" required>
+    </label>
+    <label class="auth-field">
+      <span>Contraseña</span>
+      <input type="password" id="loginPass" autocomplete="current-password" required>
+    </label>
+    <div class="auth-actions">
+      <label class="auth-remember"><input type="checkbox"> Recordarme</label>
+      <a href="#" class="auth-link">Olvidé mi contraseña</a>
+    </div>
+    <button class="auth-btn" type="submit">Entrar</button>
+    <p class="auth-msg" id="loginMsg" aria-live="polite"></p>
+  </form>
+
+  <!-- Register -->
+  <form class="auth-panel" id="panelRegister" hidden>
+    <h3 class="auth-title">Crear cuenta</h3>
+    <label class="auth-field">
+      <span>Nombre</span>
+      <input type="text" id="regName" autocomplete="name" required>
+    </label>
+    <label class="auth-field">
+      <span>Email</span>
+      <input type="email" id="regEmail" autocomplete="email" required>
+    </label>
+    <label class="auth-field">
+      <span>Contraseña</span>
+      <input type="password" id="regPass" autocomplete="new-password" minlength="6" required>
+    </label>
+    <button class="auth-btn" type="submit">Crear cuenta</button>
+    <p class="auth-msg" id="regMsg" aria-live="polite"></p>
+  </form>
+</section>
+
+  <!-- Diálogos / modales accesibles -->
+  <dialog id="dialogAddress" class="modal">
+    <form method="dialog" id="formAddress" class="form card">
+      <h3 class="card__title">Dirección</h3>
+      <div class="form__grid">
+        <label class="field"><span>Nombre completo</span><input name="fullName" required></label>
+        <label class="field"><span>Teléfono</span><input name="phone" type="tel"></label>
+        <label class="field field--full"><span>Calle y número</span><input name="street" required></label>
+        <label class="field"><span>Ciudad</span><input name="city" required></label>
+        <label class="field"><span>Departamento/Provincia</span><input name="state" required></label>
+        <label class="field"><span>Código postal</span><input name="zip" required></label>
+        <label class="switch field--full"><input type="checkbox" name="isDefault"><span>Usar como principal</span></label>
+      </div>
+      <div class="card__actions">
+        <button class="btn btn--light" value="cancel">Cancelar</button>
+        <button class="btn" id="saveAddressBtn" value="default">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="dialogConfirm" class="modal">
+    <form method="dialog" class="card">
+      <h3 class="card__title" id="confirmTitle">Confirmar</h3>
+      <p id="confirmMessage" class="muted">¿Seguro?</p>
+      <div class="card__actions">
+        <button class="btn btn--light" value="cancel">Cancelar</button>
+        <button class="btn btn--danger" id="confirmOkBtn" value="ok">Sí, continuar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Scripts -->
+   <script src="../js/script.js" defer></script>
+   <script src="../js/cuenta.js" defer></script>
+</body>
+</html>
