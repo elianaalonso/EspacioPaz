@@ -231,8 +231,35 @@
     // Email
     if (!form.email.value.trim() || !isEmailValid(form.email.value.trim())) {
       valid = false;
-      if (showMsgs) showError(form.email, 'Email inválido');
-    } else { clearError(form.email); }
+      if (showMsgs) {
+        // Solo cartelito coqueto al lado, no debajo
+        let sideMsg = form.email.parentNode.querySelector('.side-msg');
+        if (!sideMsg) {
+          sideMsg = document.createElement('span');
+          sideMsg.className = 'side-msg';
+          sideMsg.style.marginLeft = '10px';
+          sideMsg.style.color = '#e48bb2';
+          sideMsg.style.fontSize = '0.98em';
+          sideMsg.style.background = '#fff0fa';
+          sideMsg.style.padding = '2px 10px';
+          sideMsg.style.borderRadius = '8px';
+          sideMsg.style.verticalAlign = 'middle';
+          form.email.parentNode.appendChild(sideMsg);
+        }
+  sideMsg.textContent = 'Ingresá un correo válido';
+      }
+      // Eliminar mensaje de error debajo si existe
+      let err = form.email.parentNode.querySelector('.error-msg');
+      if (err) err.textContent = '';
+      form.email.classList.remove('has-error');
+    } else {
+      // Limpiar ambos mensajes
+      let sideMsg = form.email.parentNode.querySelector('.side-msg');
+      if (sideMsg) sideMsg.textContent = '';
+      let err = form.email.parentNode.querySelector('.error-msg');
+      if (err) err.textContent = '';
+      form.email.classList.remove('has-error');
+    }
     // País
     if (!form.country.value.trim()) {
       valid = false;
@@ -272,6 +299,15 @@
     if (toStep2Btn) toStep2Btn.disabled = !isStep1Valid();
   }
   if (form) form.addEventListener('input', onStep1Change);
+  // Validación en tiempo real para email
+  if (form && form.email) {
+    form.email.addEventListener('input', function() {
+      isStep1Valid(true);
+    });
+    form.email.addEventListener('blur', function() {
+      isStep1Valid(true);
+    });
+  }
   if (form) form.addEventListener('blur', onStep1Change, true);
   if (checkPolicies) checkPolicies.addEventListener('change', onStep1Change);
   if (needInv) needInv.addEventListener('change', () => {
