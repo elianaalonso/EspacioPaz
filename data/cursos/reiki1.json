@@ -1,0 +1,8 @@
+{
+  "id": "reiki1",
+  "nombre": "Reiki Nivel 1",
+  "precio": 25.00,
+  "imagen": "../img/reiki1.jpg",
+  "descripcion": "Aprendé los fundamentos del Reiki y cómo aplicarlo en tu vida diaria.",
+  "descuento": 5.00
+}

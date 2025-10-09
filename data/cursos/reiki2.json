@@ -1,0 +1,8 @@
+{
+  "id": "reiki2",
+  "nombre": "Reiki Nivel 2",
+  "precio": 35.00,
+  "imagen": "img/cursos/reiki2.png",
+  "descripcion": "Profundizá tu práctica de Reiki y aprendé nuevas técnicas avanzadas.",
+  "descuento": 7.00
+}

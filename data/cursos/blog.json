@@ -1,0 +1,8 @@
+{
+  "id": "blog",
+  "nombre": "Blog Espacio Paz",
+  "precio": 0.00,
+  "imagen": "img/logo.png",
+  "descripcion": "Artículos, reflexiones y novedades sobre bienestar y energía.",
+  "descuento": 0.00
+}

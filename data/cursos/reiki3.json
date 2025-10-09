@@ -1,0 +1,8 @@
+{
+  "id": "reiki3",
+  "nombre": "Reiki Nivel 3 - Maestría",
+  "precio": 50.00,
+  "imagen": "img/cursos/reiki3.png",
+  "descripcion": "Convertite en maestro/a de Reiki y llevá tu energía al máximo nivel.",
+  "descuento": 10.00
+}
