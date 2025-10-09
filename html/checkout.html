@@ -147,13 +147,16 @@
             <label class="pay-item"><input type="radio" name="pay" value="card" required> <span>Tarjeta de crédito / débito</span></label>
             <label class="pay-item"><input type="radio" name="pay" value="transfer"> <span>Transferencia bancaria</span></label>
             <label class="pay-item"><input type="radio" name="pay" value="paypal"> <span>PayPal</span></label>
+            <label class="pay-item"><input type="radio" name="pay" value="mercadopago"> <span>MercadoPago</span></label>
           </div>
           <p class="secure-note">Pago seguro • Encriptado • No almacenamos tu tarjeta</p>
         </fieldset>
 
         <!-- Contenedor del widget/inputs de la pasarela -->
         <div id="gateway-container" class="card" aria-live="polite">
-          <p class="tiny-muted">Seleccioná un método para cargar el formulario de pago.</p>
+          <p class="tiny-muted">Seleccioná un método para cargar el formulario de pago.<br>
+          <span id="gateway-hint" style="font-size:0.95em;color:#a77fc7"></span></p>
+          <div id="gateway-widget"></div>
         </div>
 
         <div class="actions">
