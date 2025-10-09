@@ -249,6 +249,9 @@ if (ddCursos) {
     modal.hidden = true;
   }
 
+  // Exponer globalmente para otros scripts
+  window.openAuth = openModal;
+
   // ✅ Delegación: cualquier elemento con data-open="login" o "register" abre el modal
   document.addEventListener('click', (e) => {
     const trigger = e.target.closest('[data-open]');
@@ -698,9 +701,71 @@ document.addEventListener('DOMContentLoaded', updateCartBadge);
       renderToast('El carrito está vacío');
       return;
     }
-    
-    // Redirigir al checkout
-    window.location.href = 'checkout.html';
+    // Verificar usuario logueado
+    const u = readUser();
+    if (!u || !u.email) {
+      // Mostrar cartelito coqueto antes del modal
+      let msgModal = document.getElementById('loginMsgModal');
+      if (!msgModal) {
+        msgModal = document.createElement('div');
+        msgModal.id = 'loginMsgModal';
+        msgModal.style.position = 'fixed';
+        msgModal.style.top = 0;
+        msgModal.style.left = 0;
+        msgModal.style.width = '100vw';
+        msgModal.style.height = '100vh';
+        msgModal.style.background = 'rgba(255,255,255,0.85)';
+        msgModal.style.display = 'flex';
+        msgModal.style.alignItems = 'center';
+        msgModal.style.justifyContent = 'center';
+        msgModal.style.zIndex = 9999;
+        msgModal.innerHTML = `
+          <div style="background:#fff;border-radius:18px;box-shadow:0 8px 32px #e48bb299;padding:2em 2.5em;text-align:center;max-width:340px;">
+            <h3 style="color:#e48bb2;font-size:1.3em;margin-bottom:0.7em;">¡Hola! 🌸</h3>
+            <p style="font-size:1.1em;margin-bottom:1.2em;">Para finalizar tu compra y acceder a los cursos, primero iniciá sesión o creá tu cuenta.<br><br><span style="color:#e48bb2;font-weight:bold">¡Tu carrito está guardado!</span></p>
+            <button id="loginMsgOk" style="background:#c7a4e7;color:#fff;border:none;border-radius:8px;padding:0.7em 1.5em;font-size:1em;cursor:pointer;">Iniciar sesión</button>
+          </div>
+        `;
+        document.body.appendChild(msgModal);
+        document.getElementById('loginMsgOk').onclick = function(){
+          msgModal.remove();
+          window.openAuth && window.openAuth('login');
+        };
+      }
+      return;
+    }
+    // Si está logueada, mostrar loader y luego redirigir
+    let loader = document.getElementById('cartLoader');
+    if (!loader) {
+      loader = document.createElement('div');
+      loader.id = 'cartLoader';
+      loader.style.position = 'fixed';
+      loader.style.top = 0;
+      loader.style.left = 0;
+      loader.style.width = '100vw';
+      loader.style.height = '100vh';
+      loader.style.background = 'rgba(255,255,255,0.85)';
+      loader.style.display = 'flex';
+      loader.style.flexDirection = 'column';
+      loader.style.alignItems = 'center';
+      loader.style.justifyContent = 'center';
+      loader.style.zIndex = 9999;
+      loader.innerHTML = `
+        <div class="loader" style="width:48px;height:48px;border:6px solid #e48bb2;border-top:6px solid #fff;border-radius:50%;animation:spin 1s linear infinite;margin-bottom:1em;"></div>
+        <p style="font-size:1.2em;color:#e48bb2;text-align:center;">Preparando tu checkout…</p>
+      `;
+      document.body.appendChild(loader);
+      if (!document.getElementById('loaderStyle')) {
+        const style = document.createElement('style');
+        style.id = 'loaderStyle';
+        style.textContent = `@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}`;
+        document.head.appendChild(style);
+      }
+    }
+    setTimeout(() => {
+      loader.remove();
+      window.location.href = 'checkout.html';
+    }, 1200);
   });
 
   function renderToast(msg){

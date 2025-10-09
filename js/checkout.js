@@ -55,7 +55,45 @@
   const { cart, subtotal } = calculateCartTotals();
   state.subtotal = subtotal;
   state.total = subtotal;
-  
+
+  // --------- RESTRICCIÓN: solo usuarios logueados pueden acceder al checkout
+  // Suponemos que el usuario logueado está en localStorage bajo "espaciopaz_user_v1" y tiene email
+  let user = null;
+  try {
+    user = JSON.parse(localStorage.getItem("espaciopaz_user_v1") || "null");
+  } catch {}
+  // Solo mostrar el cartel/modal si NO está logueado
+  if (!user || !user.email) {
+    // Si ya existe el modal, no lo muestres de nuevo
+    if (!document.getElementById('loginMsgModal')) {
+      const msgModal = document.createElement('div');
+      msgModal.id = 'loginMsgModal';
+      msgModal.style.position = 'fixed';
+      msgModal.style.top = 0;
+      msgModal.style.left = 0;
+      msgModal.style.width = '100vw';
+      msgModal.style.height = '100vh';
+      msgModal.style.background = 'rgba(255,255,255,0.85)';
+      msgModal.style.display = 'flex';
+      msgModal.style.alignItems = 'center';
+      msgModal.style.justifyContent = 'center';
+      msgModal.style.zIndex = 9999;
+      msgModal.innerHTML = `
+        <div style="background:#fff;border-radius:18px;box-shadow:0 8px 32px #e48bb299;padding:2em 2.5em;text-align:center;max-width:340px;">
+          <h3 style="color:#e48bb2;font-size:1.3em;margin-bottom:0.7em;">¡Hola! 🌸</h3>
+          <p style="font-size:1.1em;margin-bottom:1.2em;">Para finalizar tu compra y acceder a los cursos, primero iniciá sesión o creá tu cuenta.<br><br><span style="color:#e48bb2;font-weight:bold">¡Tu carrito está guardado!</span></p>
+          <button id="loginMsgOk" style="background:#c7a4e7;color:#fff;border:none;border-radius:8px;padding:0.7em 1.5em;font-size:1em;cursor:pointer;">Iniciar sesión</button>
+        </div>
+      `;
+      document.body.appendChild(msgModal);
+      document.getElementById('loginMsgOk').onclick = function(){
+        msgModal.remove();
+        window.openAuth && window.openAuth('login');
+      };
+    }
+    return;
+  }
+
   // Verificar que hay productos en el carrito
   if (!cart.length) {
     alert('Tu carrito está vacío. Te redirigimos a los cursos.');
@@ -163,13 +201,63 @@
   // Render inicial
   updateCheckout();
 
-  // --------- Validación paso 1
-  function isStep1Valid(){
+  // --------- Validación paso 1 mejorada y mensajes de error
+  function showError(input, msg) {
+    let err = input.parentNode.querySelector('.error-msg');
+    if (!err) {
+      err = document.createElement('div');
+      err.className = 'error-msg';
+      input.parentNode.appendChild(err);
+    }
+    err.textContent = msg;
+    input.classList.add('has-error');
+  }
+  function clearError(input) {
+    let err = input.parentNode.querySelector('.error-msg');
+    if (err) err.textContent = '';
+    input.classList.remove('has-error');
+  }
+  function isEmailValid(email) {
+    return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+  }
+  function isStep1Valid(showMsgs = false){
     if (!form) return false;
-    const basic = form.name?.value.trim() && form.email?.validity.valid && form.country?.value.trim() && checkPolicies?.checked;
-    // Si pidió factura, validar extras
-    const invOk = !needInv?.checked || (form.doc?.value.trim() && form.addr?.value.trim());
-    return basic && invOk;
+    let valid = true;
+    // Nombre
+    if (!form.name.value.trim()) {
+      valid = false;
+      if (showMsgs) showError(form.name, 'Ingresá tu nombre');
+    } else { clearError(form.name); }
+    // Email
+    if (!form.email.value.trim() || !isEmailValid(form.email.value.trim())) {
+      valid = false;
+      if (showMsgs) showError(form.email, 'Email inválido');
+    } else { clearError(form.email); }
+    // País
+    if (!form.country.value.trim()) {
+      valid = false;
+      if (showMsgs) showError(form.country, 'Ingresá tu país');
+    } else { clearError(form.country); }
+    // Políticas
+    if (!checkPolicies.checked) {
+      valid = false;
+      if (showMsgs) showError(checkPolicies, 'Debés aceptar las políticas');
+    } else { clearError(checkPolicies); }
+    // Factura
+    if (needInv.checked) {
+      if (!form.doc.value.trim()) {
+        valid = false;
+        if (showMsgs) showError(form.doc, 'Ingresá tu documento/CUIT');
+      } else { clearError(form.doc); }
+      if (!form.addr.value.trim()) {
+        valid = false;
+        if (showMsgs) showError(form.addr, 'Ingresá tu dirección');
+      } else { clearError(form.addr); }
+    } else {
+      if (form.doc) clearError(form.doc);
+      if (form.addr) clearError(form.addr);
+    }
+    return valid;
   }
   function onStep1Change(){
     if (!form) return;
@@ -184,6 +272,7 @@
     if (toStep2Btn) toStep2Btn.disabled = !isStep1Valid();
   }
   if (form) form.addEventListener('input', onStep1Change);
+  if (form) form.addEventListener('blur', onStep1Change, true);
   if (checkPolicies) checkPolicies.addEventListener('change', onStep1Change);
   if (needInv) needInv.addEventListener('change', () => {
     if (invBox) invBox.hidden = !needInv.checked;
@@ -214,7 +303,7 @@
   }
 
   if (toStep2Btn) toStep2Btn.addEventListener('click', () => {
-    if(!isStep1Valid()) return;
+    if(!isStep1Valid(true)) return;
     goTo(2);
   });
   if (backBtn) backBtn.addEventListener('click', () => goTo(1));
@@ -228,15 +317,31 @@
     
     // Aplicar descuentos basados en el subtotal actual
     if(code === 'PAZ10') state.descuento = Math.min(10, state.subtotal);
-    if(code === 'PAZ25') state.descuento = Math.min(25, state.subtotal);
-    if(code === 'PAZ50') state.descuento = Math.min(50, state.subtotal);
-    
+    else if(code === 'PAZ25') state.descuento = Math.min(25, state.subtotal);
+    else if(code === 'PAZ50') state.descuento = Math.min(50, state.subtotal);
+    else state.descuento = 0;
     save(); renderMoney();
-    
-    // Feedback visual
+    // Feedback visual y mensaje si cupón no válido
     if (state.descuento > 0) {
       couponInput.style.borderColor = '#22c55e';
+      couponInput.setCustomValidity('');
+      let msg = couponInput.parentNode.querySelector('.error-msg');
+      if (msg) msg.textContent = '';
       setTimeout(() => couponInput.style.borderColor = '', 2000);
+    } else if (code) {
+      couponInput.style.borderColor = '#ef4444';
+      couponInput.setCustomValidity('Cupón inválido');
+      let msg = couponInput.parentNode.querySelector('.error-msg');
+      if (!msg) {
+        msg = document.createElement('div');
+        msg.className = 'error-msg';
+        couponInput.parentNode.appendChild(msg);
+      }
+      msg.textContent = 'Cupón inválido';
+      setTimeout(() => {
+        couponInput.style.borderColor = '';
+        msg.textContent = '';
+      }, 2500);
     }
   });
 
@@ -293,17 +398,26 @@
   if (payNowBtn) payNowBtn.addEventListener('click', async () => {
     payNowBtn.disabled = true;
     payNowBtn.textContent = 'Procesando…';
-
+    // Loader visual
+    payNowBtn.classList.add('loading');
     try{
-      // 1) Crear "orden" en tu backend (HOOK)
+      // 1) Validar datos antes de pagar
+      if (!isStep1Valid(true)) {
+        payNowBtn.disabled = false;
+        payNowBtn.textContent = 'Pagar ahora';
+        payNowBtn.classList.remove('loading');
+        return;
+      }
+      // 2) Crear "orden" en tu backend (HOOK)
       // const { checkoutUrl, orderId } = await fetch('/api/checkout', {method:'POST', body: JSON.stringify(state)}).then(r=>r.json());
 
-      // 2) Dependiendo del método:
+      // 3) Dependiendo del método:
       if(state.method === 'paypal'){
         // window.location.href = checkoutUrl; (redirigir a PayPal)
       } else if(state.method === 'transfer'){
         // Mostrar instrucciones y marcar como "pendiente"
         fakeConfirm('PEND-' + Date.now());
+        payNowBtn.classList.remove('loading');
         return;
       } else {
         // Tarjeta: tokenizar con pasarela y confirmar pago (HOOK)
@@ -312,12 +426,16 @@
       }
 
       // DEMO: confirmación inmediata
-      fakeConfirm('ORD-' + Math.floor(Math.random()*999999));
+      setTimeout(() => {
+        fakeConfirm('ORD-' + Math.floor(Math.random()*999999));
+        payNowBtn.classList.remove('loading');
+      }, 1200);
     }catch(err){
       alert('Hubo un problema con el pago. Intentá nuevamente.');
       console.error(err);
       payNowBtn.disabled = false;
       payNowBtn.textContent = 'Pagar ahora';
+      payNowBtn.classList.remove('loading');
     }
   });
 
