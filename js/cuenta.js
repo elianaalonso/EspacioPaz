@@ -257,31 +257,30 @@ function bindDialogs(){
   if (formAvatar) {
     formAvatar.addEventListener('submit', (e) => {
       e.preventDefault();
-      // Si se subió una imagen, usarla
       let newAvatar = null;
+      const updateAvatar = (src) => {
+        avatarImg.src = src;
+        state.user.avatar = src;
+        try {
+          localStorage.setItem('espaciopaz_user_v1', JSON.stringify(state.user));
+        } catch {}
+        if (window.renderAuthUI) window.renderAuthUI();
+        avatarModal.close();
+      };
       if (avatarFile && avatarFile.files && avatarFile.files[0]) {
         const file = avatarFile.files[0];
         const reader = new FileReader();
         reader.onload = function(evt) {
-          newAvatar = evt.target.result;
-          avatarImg.src = newAvatar;
-          state.user.avatar = newAvatar;
-          actualizarAvatarNavbar(newAvatar);
-          guardarUsuarioLocal();
-          avatarModal.close();
+          updateAvatar(evt.target.result);
         };
         reader.readAsDataURL(file);
       } else {
-        // Si se seleccionó un avatar predeterminado
         const selected = formAvatar.querySelector('input[name="avatar"]:checked');
         if (selected) {
-          newAvatar = selected.value;
-          avatarImg.src = newAvatar;
-          state.user.avatar = newAvatar;
-          actualizarAvatarNavbar(newAvatar);
-          guardarUsuarioLocal();
+          updateAvatar(selected.value);
+        } else {
+          avatarModal.close();
         }
-        avatarModal.close();
       }
 // Actualiza el avatar en la navbar
 function actualizarAvatarNavbar(src) {
