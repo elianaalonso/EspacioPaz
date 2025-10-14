@@ -845,10 +845,10 @@ function renderAuthUI(){
         </svg>
       </button>
       <div class="user-dropdown" role="menu">
-  <a href="/html/cuenta.html" role="menuitem">${iconUser}<span>Mi cuenta</span></a>
-  <a href="/html/favoritos.html" role="menuitem" class="user-fav">${iconHeart}<span>Favoritos</span></a>
+        <a href="/html/cuenta.html#resumen" role="menuitem">${iconUser}<span>Mi cuenta</span></a>
+        <a href="/html/cuenta.html#favoritos" role="menuitem" class="user-fav">${iconHeart}<span>Favoritos</span></a>
         <a href="/html/membresia.html" role="menuitem">${iconStar}<span>Membresía</span></a>
-        <a href="/html/compras.html" role="menuitem">${iconBag}<span>Compras</span></a>
+  <a href="/html/cuenta.html#pedidos" role="menuitem">${iconBag}<span>Compras</span></a>
         <button type="button" id="btnLogout" role="menuitem">${iconLogout}<span>Cerrar sesión</span></button>
       </div>
     </div>
