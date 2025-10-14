@@ -1,3 +1,10 @@
+// Redirigir si no está logueado
+document.addEventListener('DOMContentLoaded', () => {
+  const userLS = localStorage.getItem('espaciopaz_user_v1');
+  if (!userLS) {
+    window.location.href = '/html/login.html'; // Cambia la ruta si tu login está en otro archivo
+  }
+});
 /* =========================================
    Mi Cuenta — JS vanilla (tabs, mock data, modales)
 ========================================= */
@@ -63,10 +70,15 @@ function renderAll(){
   try {
     userLS = JSON.parse(localStorage.getItem('espaciopaz_user_v1'));
   } catch {}
-  if (userLS && userLS.avatar) {
-    state.user.avatar = userLS.avatar;
+  if (userLS) {
+    state.user = {
+      ...state.user,
+      ...userLS
+    };
   }
-  $('#userName').textContent = `${state.user.name} ${state.user.lastname??''}`.trim();
+  // Mostrar solo las primeras 3-4 letras del nombre
+  let nombreCorto = state.user.name ? (state.user.name.length > 4 ? state.user.name.slice(0,4) : state.user.name) : 'Usuario';
+  $('#userName').textContent = nombreCorto;
   $('#userEmail').textContent = state.user.email;
   $('#avatarImg').src = state.user.avatar;
 
@@ -203,6 +215,11 @@ function bindForms(){
     const fd = new FormData(e.currentTarget);
     state.user = { ...state.user,
       name: fd.get('name'), lastname: fd.get('lastname'), email: fd.get('email'), phone: fd.get('phone'), bio: fd.get('bio') };
+    // Guardar en localStorage con la misma clave que usa la navbar
+    try {
+      localStorage.setItem('espaciopaz_user_v1', JSON.stringify(state.user));
+    } catch {}
+    if (window.renderAuthUI) window.renderAuthUI();
     renderAll();
     toast('Perfil actualizado');
   });
@@ -286,7 +303,8 @@ function guardarUsuarioLocal() {
     openConfirm('Cerrar sesión','¿Seguro que querés cerrar sesión?', ()=>{
       // TODO: llamar API logout
       toast('Sesión cerrada');
-      location.href = '/login';
+      localStorage.removeItem('espaciopaz_user_v1');
+      location.href = '/index.html';
     });
   $('#btnDelete').onclick = ()=>
     openConfirm('Eliminar cuenta','Esta acción no se puede deshacer. ¿Seguro?', ()=>{

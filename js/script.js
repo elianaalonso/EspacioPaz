@@ -874,6 +874,7 @@ function renderAuthUI(){
   menu.querySelector('#btnLogout')?.addEventListener('click', ()=>{
     clearUser();
     renderAuthUI();
+    window.location.href = '/index.html';
   });
 }
 
