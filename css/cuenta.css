@@ -1,3 +1,18 @@
+#avatarModal {
+  border: none;
+  padding: 0;
+  background: transparent;
+}
+#avatarModal .form.card {
+  background: linear-gradient(135deg, #f7f3fa 0%, #fbeaf3 100%);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(180, 138, 213, 0.18);
+  border: 2.5px solid #d9c9ef;
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 370px;
+  margin: 0 auto;
+  position: relative;
+}
 /* =========================================
    Mi Cuenta — estilos específicos
    NO pisa navbar ni estilos globales del sitio.
@@ -15,6 +30,86 @@
   --radius-lg: 1.5rem;
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-fast: all 0.15s ease-out;
+}
+/* Modal avatar coqueto */
+#avatarModal .form.card {
+  background: linear-gradient(135deg, #f7f3fa 0%, #fbeaf3 100%);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(180, 138, 213, 0.12);
+  border: 2px solid #e9d7f7;
+  padding: 2.5rem 2rem 2rem 2rem;
+  max-width: 370px;
+  margin: 0 auto;
+  position: relative;
+}
+#avatarModal h3.card__title {
+  color: #b48ad5;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+#avatarModal .avatar-options {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-bottom: 1.2rem;
+}
+#avatarModal .avatar-options label {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #e9d7f7;
+  padding: .5rem .7rem;
+  transition: box-shadow .2s;
+  cursor: pointer;
+  border: 2px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+}
+#avatarModal .avatar-options input[type="radio"]:checked + img {
+  box-shadow: 0 0 0 3px #b48ad5;
+  border-color: #b48ad5;
+}
+#avatarModal .avatar-options label:hover {
+  box-shadow: 0 4px 16px #d6c1e7;
+  border-color: #b48ad5;
+}
+#avatarModal .avatar-options img.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #f7f3fa;
+  border: 2px solid #e9d7f7;
+  box-shadow: 0 2px 8px #e9d7f7;
+  transition: box-shadow .2s, border-color .2s;
+}
+#avatarModal .avatar-options span {
+  font-size: .9em;
+  color: #b48ad5;
+  margin-top: .2rem;
+}
+#avatarModal .avatar-upload {
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+#avatarModal .avatar-upload label {
+  color: #b48ad5;
+  font-weight: 500;
+}
+#avatarModal .card__actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+#avatarModal .btn {
+  min-width: 110px;
+  font-size: 1rem;
+  border-radius: 999px;
+  padding: .6rem 1.2rem;
 }
 
 html{scroll-behavior:smooth}

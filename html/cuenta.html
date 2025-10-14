@@ -77,6 +77,25 @@
             <img id="avatarImg" src="../img/usuario-default.jpg" alt="Avatar de usuario" class="avatar">
             <span class="avatar-edit">Cambiar</span>
           </button>
+          <!-- Modal para seleccionar/cargar avatar -->
+          <dialog id="avatarModal" class="modal">
+            <form method="dialog" id="formAvatar" class="form card">
+              <h3 class="card__title">Elegí tu avatar</h3>
+              <div class="avatar-options">
+                <label><input type="radio" name="avatar" value="../img/bio.png" checked><img src="../img/bio.png" class="avatar"></label>
+                <label><input type="radio" name="avatar" value="../img/reiki1.jpg"><img src="../img/reiki1.jpg" class="avatar"></label>
+                <label><input type="radio" name="avatar" value="../img/reiki2.png"><img src="../img/reiki2.png" class="avatar"></label>
+              </div>
+              <div class="avatar-upload">
+                <label for="avatarFile">O subí una foto:</label>
+                <input type="file" id="avatarFile" accept="image/*">
+              </div>
+              <div class="card__actions">
+                <button class="btn btn--light" value="cancel">Cancelar</button>
+                <button class="btn" id="saveAvatarBtn" value="default">Guardar</button>
+              </div>
+            </form>
+          </dialog>
           <div class="account-user__meta">
             <strong id="userName">Eli</strong>
             <span id="userEmail" class="muted">eli@espaciopaz.com</span>

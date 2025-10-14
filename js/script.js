@@ -828,11 +828,17 @@ function renderAuthUI(){
   const iconBag = `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M6 2l1.5 4h9L18 2"/><rect x="3" y="6" width="18" height="16" rx="2"/><path d="M16 10a4 4 0 01-8 0"/></svg>`;
   const iconLogout = `<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>`;
 
-  const initials = initialsFromName(u.name || u.email);
+  let avatarHtml = '';
+  if (u.avatar) {
+    avatarHtml = `<span class="user-avatar"><img src="${u.avatar}" alt="Avatar" style="width:32px;height:32px;border-radius:50%;object-fit:cover;"></span>`;
+  } else {
+    const initials = initialsFromName(u.name || u.email);
+    avatarHtml = `<span class="user-avatar">${initials}</span>`;
+  }
   mount.innerHTML = `
     <div class="user-menu" id="userMenu">
       <button class="user-toggle" type="button" aria-haspopup="menu" aria-expanded="false">
-        <span class="user-avatar">${initials}</span>
+        ${avatarHtml}
         <span>${u.name || u.email}</span>
         <svg viewBox="0 0 24 24" fill="none" width="16" height="16" aria-hidden="true">
           <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>

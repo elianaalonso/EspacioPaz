@@ -58,6 +58,14 @@ function initTabs(){
 
 function renderAll(){
   // Header user
+  // Mantener avatar desde localStorage si existe
+  let userLS = null;
+  try {
+    userLS = JSON.parse(localStorage.getItem('espaciopaz_user_v1'));
+  } catch {}
+  if (userLS && userLS.avatar) {
+    state.user.avatar = userLS.avatar;
+  }
   $('#userName').textContent = `${state.user.name} ${state.user.lastname??''}`.trim();
   $('#userEmail').textContent = state.user.email;
   $('#avatarImg').src = state.user.avatar;
@@ -216,10 +224,64 @@ function bindForms(){
 // Address dialog
 let editingAddressId = null;
 function bindDialogs(){
-  $('#avatarBtn').addEventListener('click', ()=>{
-    // En producción: usar <input type="file"> oculto y subir avatar
-    toast('Subí tu avatar desde Perfil (próximo paso)');
-  });
+  // Selector de avatar: abre modal
+  const avatarBtn = document.getElementById('avatarBtn');
+  const avatarModal = document.getElementById('avatarModal');
+  const avatarImg = document.getElementById('avatarImg');
+  const formAvatar = document.getElementById('formAvatar');
+  const avatarFile = document.getElementById('avatarFile');
+
+  if (avatarBtn && avatarModal) {
+    avatarBtn.addEventListener('click', () => {
+      avatarModal.showModal();
+    });
+  }
+
+  if (formAvatar) {
+    formAvatar.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Si se subió una imagen, usarla
+      let newAvatar = null;
+      if (avatarFile && avatarFile.files && avatarFile.files[0]) {
+        const file = avatarFile.files[0];
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          newAvatar = evt.target.result;
+          avatarImg.src = newAvatar;
+          state.user.avatar = newAvatar;
+          actualizarAvatarNavbar(newAvatar);
+          guardarUsuarioLocal();
+          avatarModal.close();
+        };
+        reader.readAsDataURL(file);
+      } else {
+        // Si se seleccionó un avatar predeterminado
+        const selected = formAvatar.querySelector('input[name="avatar"]:checked');
+        if (selected) {
+          newAvatar = selected.value;
+          avatarImg.src = newAvatar;
+          state.user.avatar = newAvatar;
+          actualizarAvatarNavbar(newAvatar);
+          guardarUsuarioLocal();
+        }
+        avatarModal.close();
+      }
+// Actualiza el avatar en la navbar
+function actualizarAvatarNavbar(src) {
+  const navbarAvatar = document.querySelector('.user-avatar img');
+  if (navbarAvatar) {
+    navbarAvatar.src = src;
+  }
+}
+
+// Guarda el usuario actualizado en localStorage
+function guardarUsuarioLocal() {
+  try {
+    localStorage.setItem('espaciopaz_user_v1', JSON.stringify(state.user));
+  } catch {}
+}
+    });
+  }
   $('#btnLogout').onclick = ()=>
     openConfirm('Cerrar sesión','¿Seguro que querés cerrar sesión?', ()=>{
       // TODO: llamar API logout
