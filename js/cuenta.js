@@ -88,6 +88,9 @@ function renderAll(){
   renderSessions();
   // Descargas
   renderDownloads();
+
+  // Favoritos
+  renderFavorites();
 }
 
 function renderOrders(){
@@ -322,4 +325,79 @@ function openConfirm(title, msg, onOk){
   dlg.showModal();
   $('#confirmOkBtn').onclick = ()=>{ dlg.close(); onOk?.(); };
 }
+
+/* =====================
+   Favoritos (Mi cuenta)
+   Lee/escribe la misma clave usada en paginas de curso (curso.js)
+===================== */
+// Clave de storage usada por curso.js
+const FAV_STORAGE_KEY = 'espaciopaz_favs_v1';
+
+function readFavIds(){
+  try{ return JSON.parse(localStorage.getItem(FAV_STORAGE_KEY)) || []; }
+  catch{ return []; }
+}
+function writeFavIds(ids){
+  try{ localStorage.setItem(FAV_STORAGE_KEY, JSON.stringify(ids)); }catch{}
+}
+
+// Mapea IDs -> metadatos para mostrar (completalo a medida que sumes cursos)
+const FAV_META = {
+  'bio-fundamentos': { title: 'Biodescodificación — Fundamentos', kind:'course', href: 'curso-reiki1.html' },
+};
+
+function favsToObjects(ids){
+  return (ids||[]).map(id => {
+    const meta = FAV_META[id] || {};
+    return {
+      id,
+      title: meta.title || (id || 'Favorito'),
+      kind: meta.kind || 'course',
+      href: meta.href || 'cursos.html'
+    };
+  });
+}
+
+function renderFavorites(){
+  const grid = $('#favsGrid');
+  if(!grid) return;
+  const ids = readFavIds();
+  const favs = favsToObjects(ids);
+
+  if(!favs.length){
+    grid.innerHTML = `
+      <div class="placeholder">
+        <div class="placeholder__row">Aún no agregaste favoritos.</div>
+        <div class="placeholder__row">Tocá el corazón en un curso para guardarlo acá.</div>
+        <a class="btn" href="cursos.html">Ver cursos</a>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = favs.map(f => `
+    <article class="favorite">
+      <div class="favorite__media" role="img" aria-label="${f.title}"></div>
+      <div class="favorite__body">
+        <h3 class="favorite__title">${f.title}</h3>
+        <div class="favorite__meta">
+          <span>${f.kind==='course' ? 'Curso' : 'Recurso'}</span>
+          <div>
+            ${f.href ? `<a class="btn btn--light" href="${f.href}">Abrir</a>` : ''}
+            <button class="btn btn--ghost" data-unfav="${f.id}">Quitar</button>
+          </div>
+        </div>
+      </div>
+    </article>
+  `).join('');
+}
+
+// Quitar desde la pestaña Favoritos
+addEventListener('click', (e)=>{
+  const btn = e.target.closest?.('[data-unfav]');
+  if(!btn) return;
+  const id = btn.getAttribute('data-unfav');
+  const ids = readFavIds().filter(x => String(x) !== String(id));
+  writeFavIds(ids);
+  renderFavorites();
+});
 

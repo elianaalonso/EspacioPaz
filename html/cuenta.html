@@ -84,17 +84,21 @@
         </div>
 
         <nav class="account-nav" aria-label="Secciones de cuenta">
-          <a href="#resumen" class="account-nav__link is-active" data-tab="resumen">Resumen</a>
-          <a href="#perfil" class="account-nav__link" data-tab="perfil">Perfil</a>
-          <a href="#pedidos" class="account-nav__link" data-tab="pedidos">Pedidos</a>
-          <a href="#direcciones" class="account-nav__link" data-tab="direcciones">Direcciones</a>
-          <a href="#cursos" class="account-nav__link" data-tab="cursos">Cursos</a>
-          <a href="#membresia" class="account-nav__link" data-tab="membresia">Membresía</a>
-          <a href="#pagos" class="account-nav__link" data-tab="pagos">Pagos</a>
-          <a href="#seguridad" class="account-nav__link" data-tab="seguridad">Seguridad</a>
+          <a href="#resumen"    class="account-nav__link is-active" data-tab="resumen">Resumen</a>
+          <a href="#perfil"     class="account-nav__link" data-tab="perfil">Perfil</a>
+          <a href="#pedidos"    class="account-nav__link" data-tab="pedidos">Pedidos</a>
+          <a href="#direcciones"class="account-nav__link" data-tab="direcciones">Direcciones</a>
+          <a href="#cursos"     class="account-nav__link" data-tab="cursos">Cursos</a>
+
+          <!-- NUEVA: pestaña Favoritos -->
+          <a href="#favoritos"  class="account-nav__link" data-tab="favoritos">Favoritos</a>
+
+          <a href="#membresia"  class="account-nav__link" data-tab="membresia">Membresía</a>
+          <a href="#pagos"      class="account-nav__link" data-tab="pagos">Pagos</a>
+          <a href="#seguridad"  class="account-nav__link" data-tab="seguridad">Seguridad</a>
           <a href="#notificaciones" class="account-nav__link" data-tab="notificaciones">Notificaciones</a>
-          <a href="#sesiones" class="account-nav__link" data-tab="sesiones">Sesiones activas</a>
-          <a href="#descargas" class="account-nav__link" data-tab="descargas">Descargas</a>
+          <a href="#sesiones"   class="account-nav__link" data-tab="sesiones">Sesiones activas</a>
+          <a href="#descargas"  class="account-nav__link" data-tab="descargas">Descargas</a>
         </nav>
 
         <div class="account-actions">
@@ -134,6 +138,7 @@
 
         <!-- Perfil -->
         <section id="tab-perfil" class="tab" role="region">
+          
           <form id="formProfile" class="form card" novalidate>
             <h2 class="card__title">Datos personales</h2>
             <div class="form__grid">
@@ -162,12 +167,24 @@
               <button class="btn" type="submit">Guardar cambios</button>
             </div>
           </form>
+          <!-- al comienzo de #tab-perfil .card -->
+<p class="helper">Estos datos sólo se usan dentro de tu cuenta. Podés actualizarlos cuando quieras.</p>
+<div class="divider"></div>
+
         </section>
 
         <!-- Pedidos -->
         <section id="tab-pedidos" class="tab" role="region">
           <article class="card">
             <h2 class="card__title">Historial de pedidos</h2>
+            <!-- arriba de #ordersWrap -->
+<div class="kpis">
+  <div class="kpi"><div class="kpi__value">12</div><div class="kpi__label">Pedidos totales</div></div>
+  <div class="kpi"><div class="kpi__value">1</div><div class="kpi__label">En curso</div></div>
+  <div class="kpi"><div class="kpi__value">$2.970</div><div class="kpi__label">Gastado este año</div></div>
+</div>
+<div class="divider"></div>
+
             <div id="ordersWrap" class="table-wrap"></div>
           </article>
         </section>
@@ -187,18 +204,51 @@
         <section id="tab-cursos" class="tab" role="region">
           <article class="card">
             <h2 class="card__title">Mis cursos</h2>
+            <!-- encima de #coursesGrid -->
+<p class="helper">Continuá donde quedaste o explorá nuevos contenidos.</p>
+<div class="divider"></div>
+
             <div id="coursesGrid" class="courses-grid"></div>
+          </article>
+        </section>
+        <!-- NUEVO: Favoritos -->
+        <section id="tab-favoritos" class="tab" role="region">
+          <article class="card">
+            <div class="section-header">
+              <div>
+                <h2 class="card__title">Favoritos</h2>
+                <p class="helper">Guardá tus cursos o recursos preferidos para entrar más rápido.</p>
+              </div>
+            </div>
+            
+            <div id="favsGrid" class="favorites-grid"></div>
           </article>
         </section>
 
         <!-- Membresía -->
         <section id="tab-membresia" class="tab" role="region">
+          
           <article class="card">
             <h2 class="card__title">Membresía</h2>
             <p id="membershipStatus" class="muted">—</p>
             <div class="card__actions">
               <button class="btn" id="btnManageMembership" type="button">Gestionar plan</button>
             </div>
+            <!-- dentro de #tab-membresia .card -->
+<div class="rows">
+  <div class="row"><span class="row__label">Estado</span><span class="row__value pill pill--ok">Activa</span></div>
+  <div class="row"><span class="row__label">Plan</span><span class="row__value">Mensual</span></div>
+  <div class="row"><span class="row__label">Próxima renovación</span><span class="row__value">9/11/2025</span></div>
+</div>
+<div class="divider"></div>
+<div class="kpis">
+  <div class="kpi"><div class="kpi__value">3</div><div class="kpi__label">Meses al día</div></div>
+  <div class="kpi"><div class="kpi__value">2</div><div class="kpi__label">Cupones activos</div></div>
+  <div class="kpi"><div class="kpi__value">∞</div><div class="kpi__label">Acceso a cursos</div></div>
+</div>
+<div class="divider"></div>
+<div class="callout callout--info">Podés cambiar tu plan cuando quieras. El cambio impacta en el próximo ciclo.</div>
+
           </article>
         </section>
 
@@ -206,6 +256,13 @@
         <section id="tab-pagos" class="tab" role="region">
           <article class="card">
             <h2 class="card__title">Métodos de pago</h2>
+            <!-- antes de #paymentsList -->
+<div class="meta">
+  <div class="meta__k">Predeterminado</div><div class="meta__v">Tarjeta Visa •••• 1234</div>
+  <div class="meta__k">Facturación</div><div class="meta__v">Mensual</div>
+</div>
+<div class="divider"></div>
+
             <div id="paymentsList" class="payments"></div>
             <div class="card__actions">
               <button class="btn" id="btnAddCard" type="button">Agregar tarjeta</button>
@@ -215,6 +272,10 @@
 
         <!-- Seguridad -->
         <section id="tab-seguridad" class="tab" role="region">
+          <!-- arriba del formulario -->
+<div class="callout callout--warn">Consejo: usá una contraseña de al menos 12 caracteres y activá el guardado en tu navegador.</div>
+<div class="divider"></div>
+
           <form id="formPassword" class="form card" novalidate>
             <h2 class="card__title">Cambiar contraseña</h2>
             <div class="form__grid">
@@ -265,6 +326,10 @@
         <section id="tab-sesiones" class="tab" role="region">
           <article class="card">
             <h2 class="card__title">Sesiones activas</h2>
+            <!-- arriba de #sessionsList -->
+<p class="helper">Si no reconocés alguna sesión, cierrala.</p>
+<div class="divider"></div>
+
             <div id="sessionsList" class="sessions"></div>
           </article>
         </section>
@@ -273,6 +338,10 @@
         <section id="tab-descargas" class="tab" role="region">
           <article class="card">
             <h2 class="card__title">Mis descargas</h2>
+            <!-- arriba de #downloadsList -->
+<p class="helper">Tus materiales descargables estarán disponibles aquí.</p>
+<div class="divider"></div>
+
             <div id="downloadsList" class="downloads"></div>
           </article>
         </section>
@@ -394,5 +463,6 @@
   <!-- Scripts -->
    <script src="../js/script.js" defer></script>
    <script src="../js/cuenta.js" defer></script>
+   <script src="../js/cuenta.enhance.js" defer></script>
 </body>
 </html>
