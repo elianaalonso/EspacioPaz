@@ -1255,8 +1255,70 @@ body::before {
 }
 
 @media (max-width: 480px) {
+  .container {
+    padding: 0.5rem 0.25rem;
+  }
+  
+  .account__title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* Grid de navegación más compacto en pantallas muy pequeñas */
+  .account-nav {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.2rem !important;
+    padding: 0.4rem !important;
+  }
+  
+  .account-nav__link {
+    padding: 0.4rem 0.15rem !important;
+    font-size: 0.6rem !important;
+  }
+  
+  .account-nav__link::before {
+    font-size: 0.85rem !important;
+    margin-bottom: 0.1rem !important;
+  }
+  
+  /* Usuario aún más compacto */
+  .account-user {
+    padding: 0.5rem !important;
+    gap: 0.5rem !important;
+  }
+  
+  .avatar {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  .account-user__meta strong {
+    font-size: 0.9rem !important;
+  }
+  
+  .account-user__meta span {
+    font-size: 0.75rem !important;
+  }
+  
+  .account-actions .btn {
+    font-size: 0.7rem !important;
+    padding: 0.35rem 0.5rem !important;
+  }
+  
   .favorites-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .favorite {
+    max-width: none;
+  }
+  
+  .favorite__body {
+    padding: 0.5rem;
+  }
+  
+  .favorite__title {
+    font-size: 0.85rem;
   }
 }
 
@@ -1455,24 +1517,124 @@ body::before {
   background-size: cover;
 }
 
+/* ===== NAVEGACIÓN RESPONSIVE ===== */
+/* Navegación para desktop - sidebar */
+@media (min-width: 769px) {
+  .account__layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 2rem;
+  }
+}
+
+/* Navegación para móvil - horizontal */
+@media (max-width: 768px) {
+  .account__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 0;
+  }
+  
+  .account__sidebar {
+    order: 1;
+  }
+  
+  .account__content {
+    order: 2;
+  }
+  
+  .account-nav {
+    display: flex;
+    overflow-x: auto;
+    gap: 0;
+    padding: 0.75rem 0.5rem;
+    background: rgba(248, 245, 240, 0.95);
+    border-bottom: 1px solid rgba(217, 201, 239, 0.3);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .account-nav::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .account-nav__link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+    text-align: center;
+    white-space: nowrap;
+    border-radius: 0.4rem;
+    line-height: 1.2;
+    flex-shrink: 0;
+    transition: all 0.2s ease;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  
+  .account-nav__link:hover {
+    background: rgba(217, 201, 239, 0.2);
+    color: var(--lila);
+  }
+  
+  .account-nav__link.is-active {
+    background: var(--lila);
+    color: white;
+  }
+}
+
 /* Mejor responsive para dispositivos móviles */
 @media (max-width: 768px) {
   .container {
-    padding: 1rem 0.75rem;
+    padding: 0.75rem 0.5rem;
   }
   
   .account__layout {
     gap: 1rem;
   }
   
-  .account__sidebar {
-    position: static;
-    padding: 1rem;
+  .account__title {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 0.75rem;
   }
   
-  .account__title {
-    font-size: 1.75rem;
-    text-align: left;
+  /* Sidebar compacto para móvil */
+  .account__sidebar {
+    position: static;
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+  
+  /* Usuario más compacto */
+  .account-user {
+    padding: 0.75rem;
+    gap: 0.75rem;
+  }
+  
+  .avatar {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .account-user__meta strong {
+    font-size: 1rem;
+  }
+  
+  .account-user__meta span {
+    font-size: 0.85rem;
+  }
+  
+  /* Acciones más compactas */
+  .account-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .account-actions .btn {
+    flex: 1;
+    font-size: 0.8rem;
+    padding: 0.5rem 0.75rem;
   }
   
   .card {
