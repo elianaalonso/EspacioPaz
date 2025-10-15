@@ -51,7 +51,23 @@
 		ch.classList.add('is-active');
 		applyFilter(ch.dataset.filter);
 	}));
-	applyFilter('todos');
+	
+	// Leer parámetro URL y aplicar filtro automáticamente
+	const urlParams = new URLSearchParams(window.location.search);
+	const categoryFromURL = urlParams.get('cat');
+	if(categoryFromURL){
+		// Buscar el chip correspondiente y activarlo
+		const targetChip = chips.find(ch => ch.dataset.filter === categoryFromURL);
+		if(targetChip){
+			chips.forEach(c=>c.classList.remove('is-active'));
+			targetChip.classList.add('is-active');
+			applyFilter(categoryFromURL);
+		} else {
+			applyFilter('todos');
+		}
+	} else {
+		applyFilter('todos');
+	}
 
 	// Ordenar
 	const select = $('#orden');
