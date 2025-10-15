@@ -170,9 +170,10 @@
 .course-card{
   background:var(--card); border-radius:1.5rem;
   box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column;
+  min-height:370px;
 }
-.course-card__link{ text-decoration:none; color:inherit; display:flex; flex-direction:column; }
-.course-card__media{ aspect-ratio:16/9; }
+.course-card__link{ text-decoration:none; color:inherit; display:flex; flex-direction:column; height:100%; }
+.course-card__media{ aspect-ratio:16/9; background:#e8e2ef; display:flex; align-items:center; justify-content:center; }
 
 /* Colores sólidos para visualizar sin imágenes */
 .color-1{ background:#c8a553; } /* dorado */
@@ -180,10 +181,20 @@
 .color-3{ background:#f4d9e6; } /* rosa pastel */
 .color-4{ background:#d9c9ef; } /* lavanda */
 
-.course-card__body{ padding:1rem; }
-.course-card__title{ font-size:1rem; margin:.2rem 0 .25rem; }
-.course-card__desc{ margin:0 0 .75rem; color:var(--muted); }
-.course-card__meta{ display:flex; justify-content:space-between; align-items:center; }
+.course-card__body{ padding:1rem; flex:1 1 auto; display:flex; flex-direction:column; }
+.course-card__title{ font-size:1rem; margin:.2rem 0 .25rem; font-weight:600; }
+.course-card__desc{ 
+  margin:0 0 .75rem; color:var(--muted); 
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex:1 0 auto;
+  line-height:1.4;
+}
+.course-card__meta{ display:flex; justify-content:space-between; align-items:center; margin-top:auto; }
 .price{ font-weight:700; color:#1f1a1f; }
 
 /* ---------- Newsletter ---------- */

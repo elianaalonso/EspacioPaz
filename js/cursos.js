@@ -34,75 +34,137 @@
 
 	// Filtros por categoría
 	const chips = $$('.chip');
-	const items = $$('#grid .course-card');
+	const grid = $('#grid');
 	const count = $('#count');
-	function updateCount(){
-		if(!count) return; const visible = items.filter(li=>li.style.display!== 'none').length; count.textContent = visible;
+	let allItems = [];
+	// Utilidad para cargar JSON
+	function fetchJSON(url){
+		return fetch(url).then(r=>r.json());
 	}
+	// Renderiza una card
+	function renderCard(item){
+		// Determinar categoría para el filtro
+		let cat = item.area || item.category || '';
+		if(item.category === 'meditacion') cat = 'meditaciones';
+		if(item.category === 'ritual') cat = 'rituales';
+		if(item.category === 'curso' && item.area === 'biodecodificacion') cat = 'biodecodificacion';
+		if(item.category === 'curso' && item.area === 'reiki') cat = 'reiki';
+		if(item.category === 'curso' && item.area === 'mentoria') cat = 'mentoria';
+		// Precio
+		let price = item.price ? (item.price.amount > 0 ? `$ ${item.price.amount}` : 'Gratis') : '';
+		// Imagen
+		let img = item.image && item.image.src ? `<img src="${item.image.src}" alt="${item.image.alt||''}">` : '';
+		// Badges
+		let badge = (item.badges && item.badges.length) ? `<span class="badge">${item.badges.join(', ')}</span>` : '';
+		// Link
+		let link = item.link || '#';
+		// Card
+		return `<li class="course-card" data-cats="${cat}" data-price="${item.price ? item.price.amount : ''}" data-pop="${item.badges && item.badges.includes('popular') ? 100 : ''}" data-date="" style="">
+			<a class="course-card__link" href="${link}">
+				<div class="course-card__media">${img}</div>
+				<div class="course-card__body">
+					${badge}
+					<h3 class="course-card__title">${item.title}</h3>
+					<p class="course-card__desc">${item.short_desc}</p>
+					<div class="course-card__meta">
+						<span class="price">${price}</span>
+						<button class="btn btn-ghost add-cart" data-id="${item.id}" type="button">Agregar al carrito</button>
+					</div>
+				</div>
+			</a>
+		</li>`;
+	}
+	// Renderiza todas las cards
+	function renderAll(){
+		if(!grid) return;
+		grid.innerHTML = allItems.map(renderCard).join('');
+		updateCount();
+		// Re-asignar eventos de carrito
+		$$('.add-cart').forEach(btn => btn.addEventListener('click', (e)=>{
+			e.preventDefault();
+			addToCartFromCard(btn);
+		}));
+	}
+	// Filtrado
 	function applyFilter(cat){
-		items.forEach(li=>{
+		$$('#grid .course-card').forEach(li=>{
 			const cats = (li.dataset.cats||'').split(',');
 			li.style.display = (cat==='todos' || cats.includes(cat)) ? '' : 'none';
 		});
 		updateCount();
 	}
+	function updateCount(){
+		if(!count) return;
+		const visible = $$('#grid .course-card').filter(li=>li.style.display!== 'none').length;
+		count.textContent = visible;
+	}
+	// Filtros
 	chips.forEach(ch=> ch.addEventListener('click', ()=>{
 		chips.forEach(c=>c.classList.remove('is-active'));
 		ch.classList.add('is-active');
 		applyFilter(ch.dataset.filter);
 	}));
-	
 	// Leer parámetro URL y aplicar filtro automáticamente
 	const urlParams = new URLSearchParams(window.location.search);
 	const categoryFromURL = urlParams.get('cat');
-	if(categoryFromURL){
-		// Buscar el chip correspondiente y activarlo
-		const targetChip = chips.find(ch => ch.dataset.filter === categoryFromURL);
-		if(targetChip){
-			chips.forEach(c=>c.classList.remove('is-active'));
-			targetChip.classList.add('is-active');
-			applyFilter(categoryFromURL);
+	function autoFilter(){
+		if(categoryFromURL){
+			const targetChip = chips.find(ch => ch.dataset.filter === categoryFromURL);
+			if(targetChip){
+				chips.forEach(c=>c.classList.remove('is-active'));
+				targetChip.classList.add('is-active');
+				applyFilter(categoryFromURL);
+			} else {
+				applyFilter('todos');
+			}
 		} else {
 			applyFilter('todos');
 		}
-	} else {
-		applyFilter('todos');
 	}
+	// Cargar todos los datos y renderizar
+	Promise.all([
+		fetchJSON('../datos/cursos.json'),
+		fetchJSON('../datos/meditaciones.json'),
+		fetchJSON('../datos/rituales.json')
+	]).then(([cursos, meditaciones, rituales])=>{
+		allItems = [...cursos, ...meditaciones, ...rituales];
+		renderAll();
+		autoFilter();
+	});
 
 	// Ordenar
 	const select = $('#orden');
 	function sortBy(value){
-		const grid = $('#grid');
-		const arr = items.slice().filter(li => li.style.display !== 'none');
+		const arr = $$('#grid .course-card').filter(li => li.style.display !== 'none');
 		const key = {
-			pop:      li => Number(li.dataset.pop||0) * -1, // descendente
-			new:      li => -new Date(li.dataset.date).getTime(),
+			pop:      li => Number(li.dataset.pop||0) * -1,
+			new:      li => 0, // No hay fecha en los JSON, se puede mejorar si se agrega
 			priceAsc: li => Number(li.dataset.price||0),
 			priceDesc:li => -Number(li.dataset.price||0)
 		}[value] || (li=>0);
 		arr.sort((a,b)=> key(a) - key(b));
 		arr.forEach(li=> grid.appendChild(li));
 	}
-	if(select){ select.addEventListener('change', ()=> sortBy(select.value)); sortBy(select.value); }
+	if(select){ select.addEventListener('change', ()=> sortBy(select.value)); }
 
-		// Buscar en hero (filtrado en vivo como en el index)
-		const form = $('.courses-hero__search');
-		const input = $('#q');
-		if(form && input){
-			function doSearch(){
-				const q = input.value.trim().toLowerCase();
-				items.forEach(li =>{
-					const text = li.textContent.toLowerCase();
-					li.style.display = text.includes(q) ? '' : 'none';
-				});
-				updateCount();
-			}
-			input.addEventListener('input', doSearch);
-			form.addEventListener('submit', (e)=>{
-				e.preventDefault();
-				doSearch();
+	// Buscar en hero (filtrado en vivo como en el index)
+	const form = $('.courses-hero__search');
+	const input = $('#q');
+	if(form && input){
+		function doSearch(){
+			const q = input.value.trim().toLowerCase();
+			$$('#grid .course-card').forEach(li =>{
+				const text = li.textContent.toLowerCase();
+				li.style.display = text.includes(q) ? '' : 'none';
 			});
+			updateCount();
 		}
+		input.addEventListener('input', doSearch);
+		form.addEventListener('submit', (e)=>{
+			e.preventDefault();
+			doSearch();
+		});
+	}
 
 
 		// Botón "Agregar al carrito" (real, igual que en index)
