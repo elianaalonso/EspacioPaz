@@ -13,7 +13,7 @@
   "includes": ["video", "pdf", "ejercicios"],
     "status": "publicado",
     "order": 1,
-    "link": "/cursos/biodecodificacion-emocional-nivel-1",
+    "link": "cursos/biodecodificacion-emocional-nivel-1.html",
     "tags": ["emociones","arbol","sanacion"]
   },
   {
@@ -30,7 +30,7 @@
     "includes": ["video", "pdf"],
     "status": "publicado",
     "order": 2,
-    "link": "/cursos/biodecodificacion-emocional-nivel-2",
+    "link": "cursos/biodecodificacion-emocional-nivel-2.html",
     "tags": ["transgeneracional","lealtades"]
   },
   {
@@ -47,7 +47,7 @@
     "includes": ["manual", "sintonizacion"],
     "status": "publicado",
     "order": 3,
-    "link": "/cursos/reiki-usui-nivel-1",
+    "link": "cursos/reiki-usui-nivel-1.html",
     "tags": ["energia","iniciacion"]
   },
   {
@@ -64,7 +64,7 @@
     "includes": ["manual", "sintonizacion"],
     "status": "publicado",
     "order": 4,
-    "link": "/cursos/reiki-usui-nivel-2",
+    "link": "cursos/reiki-usui-nivel-2.html",
     "tags": ["simbolos","distancia"]
   },
   {
@@ -81,7 +81,7 @@
     "includes": ["manual", "practicas-avanzadas"],
     "status": "publicado",
     "order": 5,
-    "link": "/cursos/reiki-usui-nivel-3",
+    "link": "cursos/reiki-usui-nivel-3.html",
     "tags": ["maestria-interna"]
   },
   {
@@ -98,7 +98,7 @@
   "includes": ["vivo", "grabaciones", "pdf"],
     "status": "publicado",
     "order": 6,
-    "link": "/cursos/mentoria-de-la-herida-al-alma",
+    "link": "cursos/mentoria-de-la-herida-al-alma.html",
     "tags": ["autoconocimiento","sanacion"]
   }
 ]
