@@ -30,7 +30,23 @@
         <a href="../sobre-paz.html">Sobre Paz</a>
         <a href="../blog.html">Blog</a>
         <a href="../contacto.html">Contacto</a>
+
+        <!-- BUSCADOR -->
+        <div class="search-wrap" id="searchWrap">
+          <input id="searchInput" type="search" placeholder="Buscar cursos… (ej: reiki, luna, chakras)" aria-label="Buscar cursos">
+          <button class="icon-btn" type="button" id="searchToggle" aria-label="Abrir buscador">
+            <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor">
+              <circle cx="11" cy="11" r="7" stroke-width="2"/>
+              <path d="M20 20l-3.5-3.5" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div id="searchResults" class="search-results" aria-live="polite"></div>
+        </div>
+
+        <!-- Auth area -->
         <div class="auth" id="authArea"></div>
+
+        <!-- Carrito -->
         <a class="icon-btn cart-btn" href="../carrito.html" aria-label="Carrito" id="cartButton">
           <svg viewBox="0 0 24 24" fill="none" width="22" height="22" stroke="currentColor"><circle cx="9" cy="21" r="1.5"/><circle cx="19" cy="21" r="1.5"/><path d="M2.5 3h2l2.5 13h11l2-8H6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span class="cart-badge" id="cartBadge" aria-live="polite">0</span>
@@ -59,6 +75,40 @@
       <p>Meditación guiada de 14 minutos para liberar el miedo y la ansiedad, recuperando tu tranquilidad interior.</p>
     </div></section></div></div>
   </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="f-brand">
+        <img src="../../img/logo.png" alt="Espacio Paz" class="f-logo">
+        <div>
+          <strong>Espacio Paz</strong>
+          <small>Terapias · Reiki · Biodecodificación · Meditaciones</small>
+        </div>
+      </div>
+
+      <nav class="f-links">
+        <a href="../../index.html">Inicio</a>
+        <a href="../cursos.html">Cursos</a>
+        <a href="../membresia.html">Membresías</a>
+        <a href="../sobre-paz.html">Sobre mí</a>
+        <a href="../contacto.html">Contacto</a>
+      </nav>
+
+      <div class="f-contact">
+        <a href="mailto:hola@espaciopaz.com">hola@espaciopaz.com</a>
+        <div class="f-social">
+          <a href="#" aria-label="Instagram" class="social-btn">IG</a>
+          <a href="#" aria-label="YouTube" class="social-btn">YT</a>
+          <a href="#" aria-label="TikTok" class="social-btn">TT</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <small>© 2025 Espacio Paz — Todos los derechos reservados.</small>
+    </div>
+  </footer>
+
   <script src="../../js/script.js"></script>
   <script src="../../js/carrito.js"></script>
 </body>
