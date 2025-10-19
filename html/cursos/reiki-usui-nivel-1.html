@@ -55,18 +55,25 @@
       <div class="curso-hero__bg"></div>
       <div class="curso-hero__inner">
         <div class="eyebrow">
-          <span class="badge">Reiki</span>
-          <span class="pill-ghost">Inicial</span>
+          <span class="badge">Reiki Usui</span>
+          <span class="pill-ghost">Nivel inicial</span>
+          <span class="pill-ghost">Actualizaciones incluidas</span>
         </div>
         <h1 id="curso-titulo" class="title">Reiki Usui — Nivel I</h1>
-        <p class="excerpt">Activá tus manos y aprendé a canalizar energía vital.</p>
+        <p class="excerpt">Conectá con la energía universal y aprendé a canalizarla. Activá tus manos y comenzá tu camino como practicante de Reiki.</p>
         <div class="meta" aria-label="Información del curso">
-          <span><strong>Duración:</strong> 3 módulos</span>
-          <span><strong>Incluye:</strong> manual, sintonización</span>
+          <span><strong>Duración:</strong> Se calcula automáticamente</span>
+          <span><strong>Clases:</strong> 9 lecciones</span>
+          <span><strong>Descargables:</strong> manual incluido</span>
           <span><strong>Acceso:</strong> ilimitado</span>
+          <span><strong>Certificado:</strong> con membresía</span>
         </div>
         <div class="cta-row">
           <button class="btn btn-primary cta-comprar js-comprar" data-course-id="curso-reiki-n1" data-price="5500">Comprar curso — $5500</button>
+          <div style="display:flex;align-items:center;gap:.7rem;">
+            <button class="btn btn-outline btn-fav">Agregar a favoritos ♡</button>
+            <span class="pct-global" id="pctGlobal" style="font-weight:800;color:#6a57a5;">Progreso: 0%</span>
+          </div>
         </div>
       </div>
     </section>
@@ -76,20 +83,154 @@
         <section class="card section">
           <div class="card__body">
             <h2 class="h2">Descripción</h2>
-            <p>Iniciación al Reiki Usui nivel 1. Aprendé a canalizar la energía universal a través de tus manos para uso personal y autocuidado.</p>
-            <h3 class="h3">Vas a lograr</h3>
-            <ul class="list-check">
-              <li>Activar tus manos como canal de energía</li>
-              <li>Realizar autotratamientos de Reiki</li>
-              <li>Comprender los principios del Reiki Usui</li>
-            </ul>
+            <p class="lead">Iniciación al Reiki Usui nivel 1. Aprendé a canalizar la energía universal a través de tus manos para uso personal, autocuidado y sanación energética básica.</p>
+            <div class="cols-3" style="margin-top:1rem">
+              <div>
+                <h3 class="h3">¿Para quién es?</h3>
+                <ul class="list-check">
+                  <li>Personas que quieren iniciarse en Reiki</li>
+                  <li>Quienes buscan herramientas de autocuidado</li>
+                  <li>Terapeutas que quieren sumar Reiki</li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="h3">Requisitos</h3>
+                <ul class="list-check">
+                  <li>No se requieren conocimientos previos</li>
+                  <li>Mente abierta y disponibilidad</li>
+                  <li>Compromiso con la práctica personal</li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="h3">Vas a lograr</h3>
+                <ul class="list-check">
+                  <li>Activar tus manos como canal</li>
+                  <li>Realizar autotratamientos</li>
+                  <li>Comprender los principios Reiki</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card section" aria-labelledby="contenido-heading">
+          <div class="card__hd" id="contenido-heading">Contenido del curso</div>
+          <div class="card__body">
+            <div class="progreso-curso" id="progresoCurso">
+              <div class="progreso-barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <span class="progreso-fill" style="width:0%"></span>
+              </div>
+              <small class="progreso-text">
+                <b class="prog-done">0</b>/<span class="prog-total">9</span> lecciones completadas • <span class="prog-pct">0%</span>
+              </small>
+            </div>
+
+            <ol class="modulos" role="list">
+              <li class="modulo" data-open>
+                <button class="modulo__hd" aria-expanded="true">
+                  <span><strong>Módulo 1</strong> · Fundamentos del Reiki</span>
+                  <span class="modulo__meta">3 lecciones</span>
+                </button>
+                <ol class="lecciones" role="list">
+                  <li class="leccion">
+                    <span class="ic ic--play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 6l10 6-10 6z"/></svg></span>
+                    <a href="#" data-preview data-youtube="">1. Qué es Reiki y sus principios</a>
+                    <span class="time"><span class="tag">Preview</span></span>
+                  </li>
+                  <li class="leccion locked">
+                    <span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span>
+                    <span>2. Historia y filosofía del método Usui</span>
+                    <span class="time"></span>
+                  </li>
+                  <li class="leccion locked">
+                    <span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span>
+                    <span>3. Preparación energética del canal</span>
+                    <span class="time"></span>
+                  </li>
+                </ol>
+              </li>
+
+              <li class="modulo">
+                <button class="modulo__hd" aria-expanded="false">
+                  <span><strong>Módulo 2</strong> · Iniciación y práctica personal</span>
+                  <span class="modulo__meta">3 lecciones</span>
+                </button>
+                <ol class="lecciones" role="list" hidden>
+                  <li class="leccion locked"><span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span><span>1. Proceso de sintonización</span><span class="time"></span></li>
+                  <li class="leccion locked"><span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span><span>2. Ejercicios de limpieza y protección energética</span><span class="time"></span></li>
+                  <li class="leccion locked"><span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span><span>3. Autotratamiento paso a paso</span><span class="time"></span></li>
+                </ol>
+              </li>
+
+              <li class="modulo">
+                <button class="modulo__hd" aria-expanded="false">
+                  <span><strong>Módulo 3</strong> · Sanación energética básica</span>
+                  <span class="modulo__meta">3 lecciones</span>
+                </button>
+                <ol class="lecciones" role="list" hidden>
+                  <li class="leccion locked"><span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span><span>1. Los siete chakras y su función</span><span class="time"></span></li>
+                  <li class="leccion locked"><span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span><span>2. Tratamiento a otra persona</span><span class="time"></span></li>
+                  <li class="leccion locked"><span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span><span>3. Ética y compromiso del practicante</span><span class="time"></span></li>
+                </ol>
+              </li>
+            </ol>
+            <p class="muted" style="margin-top:.75rem">La primera lección está abierta como preview.</p>
           </div>
         </section>
       </div>
+
+      <aside>
+        <section class="card section">
+          <div class="card__body">
+            <div class="badge soft">Curso online</div>
+            <div class="precio-linea">
+              <div class="precio-actual">$5.500</div>
+            </div>
+            <button class="btn btn-primary btn-block cta-comprar js-comprar" data-course-id="curso-reiki-n1" data-price="5500">Comprar curso</button>
+            <p class="muted" style="margin:.5rem 0 0">Pago único • Acceso de por vida</p>
+            <div class="sep"></div>
+            <ul class="ticks">
+              <li>Manual de Reiki Nivel 1 descargable</li>
+              <li>Proceso de sintonización incluido</li>
+              <li>Soporte básico por email</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="card section">
+          <div class="card__hd">Sobre Paz</div>
+          <div class="card__body profe">
+            <img src="../../img/sobre-mama/DSC_0770.JPG" alt="Paz" class="profe__foto" />
+            <p class="muted">Maestra de Reiki Usui. Comparto esta práctica con amor, respeto y dedicación desde hace años.</p>
+            <a class="btn btn-outline btn-sm" href="../cursos.html">Ver otros cursos</a>
+          </div>
+        </section>
+      </aside>
+    </div>
+
+    <div class="wrap">
+      <section class="card section">
+        <div class="card__hd">Preguntas frecuentes</div>
+        <div class="card__body faq">
+          <details>
+            <summary>¿Qué es la sintonización?</summary>
+            <div class="ans">Es el proceso energético que abre tu canal para canalizar Reiki. Se realiza de forma virtual durante el curso.</div>
+          </details>
+          <details>
+            <summary>¿Cuánto tiempo tengo acceso?</summary>
+            <div class="ans">Acceso ilimitado y a tu ritmo.</div>
+          </details>
+          <details>
+            <summary>¿El certificado está incluido?</summary>
+            <div class="ans">El certificado está disponible únicamente para miembros con <strong>membresía activa</strong>.</div>
+          </details>
+        </div>
+      </section>
     </div>
   </main>
 
-  <script src="../../js/script.js"></script>
+  <script type="module" src="../../js/curso.js"></script>
+  <script type="module" src="../../js/script.js"></script>
   <script src="../../js/carrito.js"></script>
 </body>
 </html>

@@ -42,30 +42,196 @@
     <section class="curso-hero" aria-labelledby="curso-titulo">
       <div class="curso-hero__bg"></div>
       <div class="curso-hero__inner">
-        <div class="eyebrow"><span class="badge">Mentoría</span><span class="pill-ghost">Para todos</span></div>
+        <div class="eyebrow"><span class="badge">Mentoría</span><span class="pill-ghost">Para todos los niveles</span><span class="pill-ghost">Actualizaciones incluidas</span></div>
         <h1 id="curso-titulo" class="title">Mentoría — De la herida al alma</h1>
-        <p class="excerpt">Proceso de 4 semanas para transformar el dolor en conciencia.</p>
-        <div class="meta" aria-label="Información del curso">
-          <span><strong>Duración:</strong> 4 semanas</span>
-          <span><strong>Incluye:</strong> vivo, grabaciones, pdf</span>
+        <p class="excerpt">Proceso de transformación emocional y espiritual en 4 semanas. Un viaje profundo desde el dolor hacia la luz del alma.</p>
+        <div class="meta" aria-label="Información del programa">
+          <span><strong>Duración:</strong> 4 semanas intensivas</span>
+          <span><strong>Clases:</strong> 12 sesiones</span>
+          <span><strong>Formato:</strong> Vivo + grabaciones</span>
+          <span><strong>Acceso:</strong> ilimitado a grabaciones</span>
+          <span><strong>Certificado:</strong> con membresía</span>
         </div>
         <div class="cta-row">
-          <button class="btn btn-primary cta-comprar js-comprar" data-course-id="programa-mentoria-herida-al-alma" data-price="12000">Comprar mentoría — $12000</button>
+          <button class="btn btn-primary cta-comprar js-comprar" data-course-id="programa-mentoria-herida-al-alma" data-price="12000">Comprar mentoría — $12.000</button>
+          <div style="display:flex;align-items:center;gap:.7rem;">
+            <button class="btn btn-outline btn-fav">Agregar a favoritos ♡</button>
+            <span class="pct-global" id="pctGlobal" style="font-weight:800;color:#6a57a5;">Progreso: 0%</span>
+          </div>
         </div>
       </div>
     </section>
-    <div class="wrap grid-2"><div><section class="card section"><div class="card__body">
-      <h2 class="h2">Descripción</h2>
-      <p>Proceso intensivo de 4 semanas para transformar el dolor en conciencia y reconectar con tu alma.</p>
-      <h3 class="h3">Vas a lograr</h3>
-      <ul class="list-check">
-        <li>Transformar el dolor en aprendizaje</li>
-        <li>Reconectar con tu esencia</li>
-        <li>Integrar la herida con amor</li>
-      </ul>
-    </div></section></div></div>
+
+    <div class="wrap grid-2">
+      <div>
+        <section class="card section">
+          <div class="card__body">
+            <h2 class="h2">Descripción</h2>
+            <p class="lead">Proceso intensivo de 4 semanas para transformar el dolor en conciencia, sanar las heridas del alma y reconectar con tu esencia. Acompañamiento profundo y amoroso en tiempo real.</p>
+            <div class="cols-3" style="margin-top:1rem">
+              <div>
+                <h3 class="h3">¿Para quién es?</h3>
+                <ul class="list-check">
+                  <li>Personas en proceso de sanación profunda</li>
+                  <li>Quienes buscan transformar su dolor</li>
+                  <li>Personas comprometidas con su evolución</li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="h3">Requisitos</h3>
+                <ul class="list-check">
+                  <li>Compromiso con el proceso de 4 semanas</li>
+                  <li>Disposición para trabajo interno profundo</li>
+                  <li>Cuaderno personal para registro</li>
+                </ul>
+              </div>
+              <div>
+                <h3 class="h3">Vas a lograr</h3>
+                <ul class="list-check">
+                  <li>Transformar el dolor en conciencia</li>
+                  <li>Sanar heridas del pasado</li>
+                  <li>Reconectar con tu alma</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card section" aria-labelledby="contenido-heading">
+          <div class="card__hd" id="contenido-heading">Contenido de la mentoría</div>
+          <div class="card__body">
+            <div class="progreso-curso" id="progresoCurso">
+              <div class="progreso-barra" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <span class="progreso-fill" style="width:0%"></span>
+              </div>
+              <small class="progreso-text">
+                <b class="prog-done">0</b>/<span class="prog-total">12</span> sesiones completadas • <span class="prog-pct">0%</span>
+              </small>
+            </div>
+
+            <ol class="modulos" role="list">
+              <li class="modulo" data-open>
+                <button class="modulo__hd" aria-expanded="true">
+                  <span><strong>Semana 1</strong> · La herida y la historia</span>
+                  <span class="modulo__meta">3 sesiones</span>
+                </button>
+                <ol class="lecciones" role="list">
+                  <li class="leccion">
+                    <span class="ic ic--play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 6l10 6-10 6z"/></svg></span>
+                    <a href="#" data-preview data-youtube="">1. Reconocer la herida principal</a>
+                    <span class="time"><span class="tag">Preview</span></span>
+                  </li>
+                  <li class="leccion locked">
+                    <span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span>
+                    <span>2. Comprender los patrones repetitivos</span>
+                    <span class="time"></span>
+                  </li>
+                  <li class="leccion locked">
+                    <span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span>
+                    <span>3. Práctica de autoobservación</span>
+                    <span class="time"></span>
+                  </li>
+                </ol>
+              </li>
+
+              <li class="modulo">
+                <button class="modulo__hd" aria-expanded="false">
+                  <span><strong>Semana 2</strong> · El clan y el niño interior</span>
+                  <span class="modulo__meta">3 sesiones</span>
+                </button>
+                <ol class="lecciones" role="list" hidden>
+                  <li class="leccion locked"><span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span><span>1. Sanación del vínculo familiar</span><span class="time"></span></li>
+                  <li class="leccion locked"><span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span><span>2. Trabajo con la infancia y la emoción primaria</span><span class="time"></span></li>
+                  <li class="leccion locked"><span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span><span>3. Ejercicio de reconexión interior</span><span class="time"></span></li>
+                </ol>
+              </li>
+
+              <li class="modulo">
+                <button class="modulo__hd" aria-expanded="false">
+                  <span><strong>Semana 3</strong> · El ego y la autopercepción</span>
+                  <span class="modulo__meta">3 sesiones</span>
+                </button>
+                <ol class="lecciones" role="list" hidden>
+                  <li class="leccion locked"><span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span><span>1. Reconocer personajes y máscaras</span><span class="time"></span></li>
+                  <li class="leccion locked"><span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span><span>2. Desidentificación del dolor</span><span class="time"></span></li>
+                  <li class="leccion locked"><span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span><span>3. Tapping y escritura terapéutica</span><span class="time"></span></li>
+                </ol>
+              </li>
+
+              <li class="modulo">
+                <button class="modulo__hd" aria-expanded="false">
+                  <span><strong>Semana 4</strong> · El alma y la integración</span>
+                  <span class="modulo__meta">3 sesiones</span>
+                </button>
+                <ol class="lecciones" role="list" hidden>
+                  <li class="leccion locked"><span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span><span>1. Reconciliación con la propia historia</span><span class="time"></span></li>
+                  <li class="leccion locked"><span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span><span>2. Ritual de cierre y renacimiento</span><span class="time"></span></li>
+                  <li class="leccion locked"><span class="ic ic--lock" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.5 11.5h11v8h-11z"/><path d="M9 11.5v-2.5a3 3 0 016 0v2.5"/></svg></span><span>3. Meditación final: volver a casa</span><span class="time"></span></li>
+                </ol>
+              </li>
+            </ol>
+            <p class="muted" style="margin-top:.75rem">La primera sesión está abierta como preview.</p>
+          </div>
+        </section>
+      </div>
+
+      <aside>
+        <section class="card section">
+          <div class="card__body">
+            <div class="badge soft">Mentoría en vivo</div>
+            <div class="precio-linea">
+              <div class="precio-actual">$12.000</div>
+            </div>
+            <button class="btn btn-primary btn-block cta-comprar js-comprar" data-course-id="programa-mentoria-herida-al-alma" data-price="12000">Comprar mentoría</button>
+            <p class="muted" style="margin:.5rem 0 0">4 semanas intensivas • Grabaciones incluidas</p>
+            <div class="sep"></div>
+            <ul class="ticks">
+              <li>Sesiones en vivo con Paz</li>
+              <li>Acceso ilimitado a grabaciones</li>
+              <li>Material descargable (PDF)</li>
+              <li>Grupo privado de acompañamiento</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="card section">
+          <div class="card__hd">Sobre Paz</div>
+          <div class="card__body profe">
+            <img src="../../img/sobre-mama/DSC_0770.JPG" alt="Paz" class="profe__foto" />
+            <p class="muted">Terapeuta holística. Acompaño procesos de transformación profunda con amor, respeto y dedicación.</p>
+            <a class="btn btn-outline btn-sm" href="../cursos.html">Ver otros cursos</a>
+          </div>
+        </section>
+      </aside>
+    </div>
+
+    <div class="wrap">
+      <section class="card section">
+        <div class="card__hd">Preguntas frecuentes</div>
+        <div class="card__body faq">
+          <details>
+            <summary>¿Cómo son las sesiones en vivo?</summary>
+            <div class="ans">Las sesiones son por videoconferencia, en grupo reducido, con espacio para compartir y trabajar en profundidad.</div>
+          </details>
+          <details>
+            <summary>¿Qué pasa si no puedo asistir a una sesión en vivo?</summary>
+            <div class="ans">Todas las sesiones quedan grabadas y disponibles para que las veas cuando puedas.</div>
+          </details>
+          <details>
+            <summary>¿Puedo hacerla a mi ritmo?</summary>
+            <div class="ans">El programa está diseñado para 4 semanas consecutivas, pero luego tendrás acceso ilimitado a las grabaciones.</div>
+          </details>
+          <details>
+            <summary>¿El certificado está incluido?</summary>
+            <div class="ans">El certificado está disponible únicamente para miembros con <strong>membresía activa</strong>.</div>
+          </details>
+        </div>
+      </section>
+    </div>
   </main>
-  <script src="../../js/script.js"></script>
+
+  <script type="module" src="../../js/curso.js"></script>
+  <script type="module" src="../../js/script.js"></script>
   <script src="../../js/carrito.js"></script>
 </body>
 </html>
