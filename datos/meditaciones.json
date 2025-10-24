@@ -51,20 +51,20 @@
     "tags": ["limpieza","proteccion","energia"]
   },
   {
-    "id": "med-ritual-nocturno",
-    "slug": "meditacion-ritual-nocturno-descanso",
-    "title": "Ritual nocturno: descansar en vos misma",
+    "id": "med-meditacion-nocturna",
+    "slug": "meditacion-nocturna",
+    "title": "Meditación nocturna",
     "short_desc": "Prepará tu energía para un descanso profundo y reparador.",
     "category": "meditacion",
     "area": "suenio",
     "level": "Para todos",
     "duration": "12 min",
     "price": { "amount": 0, "currency": "UYU" },
-    "image": { "src": "https://images.unsplash.com/photo-1511376777868-611b54f68947?w=800&q=80", "alt": "Meditación ritual nocturno" },
+  "image": { "src": "https://images.unsplash.com/photo-1511376777868-611b54f68947?w=800&q=80", "alt": "Meditación nocturna" },
     "includes": ["video", "audio", "checklist-noche"],
     "status": "publicado",
     "order": 4,
-    "link": "meditaciones/ritual-nocturno-descanso.html",
+  "link": "meditaciones/meditacion-nocturna.html",
     "tags": ["sueno","relajacion","noche"]
   },
   {

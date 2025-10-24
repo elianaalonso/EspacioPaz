@@ -12,5 +12,25 @@
     <p style="color:var(--texto-claro)">Ups, esta página no existe.</p>
     <a href="index.html" class="btn btn-primary" style="margin-top:12px; display:inline-flex">Volver al inicio</a>
   </main>
+  <script>
+    (function(){
+      try {
+        var path = location.pathname || '';
+        // Mapa de redirecciones antiguas -> nuevas
+        var redirects = {
+          '/html/meditaciones/ritual-nocturno-descanso.html': '/html/meditaciones/meditacion-nocturna.html',
+          'html/meditaciones/ritual-nocturno-descanso.html': 'html/meditaciones/meditacion-nocturna.html'
+        };
+        var target = redirects[path];
+        if (!target && /ritual-nocturno-descanso\.html$/.test(path)) {
+          target = '/html/meditaciones/meditacion-nocturna.html';
+        }
+        if (target) {
+          // Reemplaza el historial para que el back no regrese al 404
+          location.replace(target);
+        }
+      } catch(e) { /* noop */ }
+    })();
+  </script>
 </body>
 </html>
