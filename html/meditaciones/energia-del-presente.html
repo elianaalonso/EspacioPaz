@@ -7,6 +7,8 @@
   <meta name="description" content="Anclate en el aquí y ahora, calmando la mente y el cuerpo." />
   <link rel="stylesheet" href="../../css/estilo.css" />
   <link rel="stylesheet" href="../../css/pagina-curso.css" />
+  <link rel="stylesheet" href="../../css/conecta.css" />
+
 </head>
 <body class="curso-page" data-course-id="med-energia-presente">
   <header class="nav-wrap">
@@ -55,25 +57,207 @@
     </nav>
   </header>
   <main id="main" class="main" tabindex="-1">
-    <section class="curso-hero" aria-labelledby="curso-titulo">
-      <div class="curso-hero__bg"></div>
-      <div class="curso-hero__inner">
+    <section class="meditacion-hero meditacion-hero--presente" aria-labelledby="meditacion-titulo">
+      <div class="meditacion-hero__bg"></div>
+      <div class="meditacion-hero__inner">
         <div class="eyebrow"><span class="badge">Meditación</span><span class="pill-ghost">Gratis</span></div>
-        <h1 id="curso-titulo" class="title">Energía del presente</h1>
+        <h1 id="meditacion-titulo" class="title">Energía del presente</h1>
         <p class="excerpt">Anclate en el aquí y ahora, calmando la mente y el cuerpo.</p>
         <div class="meta" aria-label="Información">
           <span><strong>Duración:</strong> 10 min</span>
-          <span><strong>Incluye:</strong> audio, pdf</span>
-        </div>
-        <div class="cta-row">
-          <button class="btn btn-primary cta-comprar js-comprar" data-course-id="med-energia-presente" data-price="0">Acceder gratis</button>
+          <span><strong>Incluye:</strong> video, audio, pdf</span>
         </div>
       </div>
     </section>
-    <div class="wrap grid-2"><div><section class="card section"><div class="card__body">
-      <h2 class="h2">Descripción</h2>
-      <p>Meditación guiada de 10 minutos para anclarte en el momento presente y calmar la mente.</p>
-    </div></section></div></div>
+    
+    <div class="wrap meditacion-content-wrap">
+    
+    <!-- Intro -->
+    <section class="meditacion-intro-section">
+      <p class="intro-text">En un mundo donde la mente vive constantemente entre el pasado y el futuro, anclarte en el presente es un acto revolucionario de amor propio. Esta meditación de 10 minutos te guía suavemente a reconectar con el aquí y ahora, usando tu respiración como ancla y tu cuerpo como templo.</p>
+    </section>
+
+    <!-- Grid de 3 columnas: Cuándo usar | Beneficios | Recomendaciones -->
+    <div class="meditacion-three-col-grid">
+      <section class="meditacion-cuando-section card">
+        <div class="card__body">
+          <h3 class="h3">¿Cuándo usar esta meditación?</h3>
+          <ul>
+            <li>Por la mañana al despertar</li>
+            <li>En momentos de ansiedad</li>
+            <li>Durante el trabajo como pausa</li>
+            <li>Antes de decisiones importantes</li>
+            <li>Cuando te sentís desconectada</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="meditacion-beneficios-section card">
+        <div class="card__body">
+          <h3 class="h3">Beneficios</h3>
+          <ul>
+            <li>Calma la mente y reduce el estrés</li>
+            <li>Conecta con el momento presente</li>
+            <li>Mejora la concentración</li>
+            <li>Disminuye la ansiedad</li>
+            <li>Aumenta el bienestar</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="meditacion-recomendaciones-section card">
+        <div class="card__body">
+          <h3 class="h3">Recomendaciones</h3>
+          <ul>
+            <li>Lugar tranquilo y cómodo</li>
+            <li>Usa auriculares</li>
+            <li>Ten agua cerca</li>
+            <li>Libreta para anotar</li>
+            <li>Sin interrupciones</li>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <!-- Video/Audio Tabs -->
+    <section class="meditacion-media-section card">
+      <div class="card__body">
+        <div class="media-tabs">
+          <button class="media-tab active" data-tab="video">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            Ver meditación guiada
+          </button>
+          <button class="media-tab" data-tab="audio">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 18V5l12-2v13"></path>
+              <circle cx="6" cy="18" r="3"></circle>
+              <circle cx="18" cy="16" r="3"></circle>
+            </svg>
+            Solo audio
+          </button>
+        </div>
+        
+        <div class="media-content">
+          <div class="media-panel active" data-panel="video">
+            <div class="video-container">
+              <iframe 
+                width="100%" 
+                height="500" 
+                src="https://www.youtube.com/embed/VIDEO_ID_AQUI" 
+                title="Meditación: Energía del presente" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+              </iframe>
+            </div>
+            <p style="margin-top: 1rem; color: var(--muted); text-align: center;">
+              <em>Meditá conmigo en tiempo real. Sentite acompañada durante toda la práctica.</em>
+            </p>
+          </div>
+          
+          <div class="media-panel" data-panel="audio">
+            <audio controls style="width:100%; margin-bottom: 1rem;">
+              <source src="../../audio/energia-del-presente.mp3" type="audio/mpeg">
+              Tu navegador no soporta el elemento de audio.
+            </audio>
+            <p style="color: var(--muted); text-align: center;">
+              <em>Descargá el audio para llevarlo donde quieras</em>
+            </p>
+            <div class="cta-row" style="margin-top:1rem; text-align: center;">
+              <a href="../../pdf/energia-del-presente.pdf" class="btn btn-secondary" target="_blank">📄 Descargar PDF</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="meditacion-faq-section card">
+      <div class="card__body">
+        <h2 class="h2">Preguntas frecuentes</h2>
+        <details>
+          <summary>¿Puedo hacerla aunque nunca haya meditado?</summary>
+          <p>¡Absolutamente! Esta meditación está diseñada para principiantes. Te guío paso a paso y no necesitás ningún conocimiento previo.</p>
+        </details>
+        <details>
+          <summary>¿Qué hago si mi mente no para de pensar?</summary>
+          <p>Es completamente normal. La meditación no se trata de detener los pensamientos, sino de no engancharte con ellos. Cada vez que notes que te fuiste, volvés suavemente al presente. Eso ES la práctica.</p>
+        </details>
+        <details>
+          <summary>¿Puedo hacerla todos los días?</summary>
+          <p>Sí, es ideal para práctica diaria. Muchas personas la usan como ritual matutino o como pausa durante el día. La constancia es más importante que la duración.</p>
+        </details>
+        <details>
+          <summary>¿En qué posición debo estar?</summary>
+          <p>Podés estar sentada en una silla, en el suelo con un almohadón, o incluso acostada si tu cuerpo lo necesita. Lo importante es que estés cómoda y alerta.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- Meditaciones relacionadas -->
+    <section class="meditacion-relacionadas-section">
+      <h2 class="h2">Seguí explorando</h2>
+      <div class="carousel-container">
+        <button class="carousel-btn carousel-btn-prev" aria-label="Anterior">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+        
+        <div class="carousel-track-container">
+          <div class="carousel-track">
+            <a href="guia-interior.html" class="carousel-item">
+              <div class="carousel-item-image" style="background-image: url('https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?w=800&q=80');"></div>
+              <div class="carousel-item-content">
+                <div class="carousel-item-icon">🧘</div>
+                <h4>Guía interior</h4>
+                <p>Conectá con tu sabiduría interna y toma decisiones alineadas</p>
+                <span class="carousel-item-duration">15 min</span>
+              </div>
+            </a>
+            <a href="limpieza-energetica-proteccion.html" class="carousel-item">
+              <div class="carousel-item-image" style="background-image: url('https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&q=80');"></div>
+              <div class="carousel-item-content">
+                <div class="carousel-item-icon">✨</div>
+                <h4>Limpieza energética</h4>
+                <p>Liberá cargas densas y protegé tu campo energético</p>
+                <span class="carousel-item-duration">16 min</span>
+              </div>
+            </a>
+            <a href="ritual-nocturno-descanso.html" class="carousel-item">
+              <div class="carousel-item-image" style="background-image: url('https://images.unsplash.com/photo-1511376777868-611b54f68947?w=800&q=80');"></div>
+              <div class="carousel-item-content">
+                <div class="carousel-item-icon">🌙</div>
+                <h4>Ritual nocturno</h4>
+                <p>Prepará tu energía para un descanso profundo y reparador</p>
+                <span class="carousel-item-duration">12 min</span>
+              </div>
+            </a>
+            <a href="liberacion-miedo-ansiedad.html" class="carousel-item">
+              <div class="carousel-item-image" style="background-image: url('https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=800&q=80');"></div>
+              <div class="carousel-item-content">
+                <div class="carousel-item-icon">🕊️</div>
+                <h4>Liberación de miedo</h4>
+                <p>Suelta la ansiedad y recupera tu centro emocional</p>
+                <span class="carousel-item-duration">14 min</span>
+              </div>
+            </a>
+          </div>
+        </div>
+        
+        <button class="carousel-btn carousel-btn-next" aria-label="Siguiente">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="carousel-dots"></div>
+    </section>
+
+    </div><!-- cierre wrap -->
   </main>
 
   <footer class="site-footer">
@@ -111,5 +295,6 @@
 
   <script src="../../js/script.js"></script>
   <script src="../../js/carrito.js"></script>
+  <script src="../../js/meditacion.js"></script>
 </body>
 </html>

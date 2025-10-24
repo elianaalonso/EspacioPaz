@@ -7,6 +7,7 @@
   <meta name="description" content="Preparate para un sueño reparador y una noche en paz." />
   <link rel="stylesheet" href="../../css/estilo.css" />
   <link rel="stylesheet" href="../../css/pagina-curso.css" />
+  <link rel="stylesheet" href="../../css/conecta.css" />
 </head>
 <body class="curso-page" data-course-id="med-ritual-nocturno">
   <header class="nav-wrap">
@@ -55,25 +56,191 @@
     </nav>
   </header>
   <main id="main" class="main" tabindex="-1">
-    <section class="curso-hero" aria-labelledby="curso-titulo">
-      <div class="curso-hero__bg"></div>
-      <div class="curso-hero__inner">
+    <section class="meditacion-hero meditacion-hero--nocturno" aria-labelledby="meditacion-titulo">
+      <div class="meditacion-hero__bg"></div>
+      <div class="meditacion-hero__inner">
         <div class="eyebrow"><span class="badge">Meditación</span><span class="pill-ghost">Gratis</span></div>
-        <h1 id="curso-titulo" class="title">Ritual nocturno para un descanso profundo</h1>
-        <p class="excerpt">Preparate para un sueño reparador y una noche en paz.</p>
+        <h1 id="meditacion-titulo" class="title">Ritual nocturno</h1>
+        <p class="excerpt">Prepará tu energía para un descanso profundo y reparador.</p>
         <div class="meta" aria-label="Información">
           <span><strong>Duración:</strong> 12 min</span>
           <span><strong>Incluye:</strong> audio, pdf</span>
         </div>
-        <div class="cta-row">
-          <button class="btn btn-primary cta-comprar js-comprar" data-course-id="med-ritual-nocturno" data-price="0">Acceder gratis</button>
-        </div>
       </div>
     </section>
-    <div class="wrap grid-2"><div><section class="card section"><div class="card__body">
-      <h2 class="h2">Descripción</h2>
-      <p>Meditación guiada de 12 minutos para prepararte para un sueño reparador y una noche en paz.</p>
-    </div></section></div></div>
+    <div class="wrap meditacion-content-wrap">
+      <!-- Intro -->
+      <section class="meditacion-intro-section">
+        <p class="intro-text">Bajar revoluciones antes de dormir cambia la calidad del descanso. Este ritual te acompaña a soltar el día, relajar el cuerpo y entregarte al sueño con serenidad.</p>
+      </section>
+
+      <!-- Grid de 3 columnas -->
+      <div class="meditacion-three-col-grid">
+        <section class="meditacion-cuando-section card">
+          <div class="card__body">
+            <h3 class="h3">¿Cuándo usarla?</h3>
+            <ul>
+              <li>Antes de dormir, ya en la cama</li>
+              <li>Si te cuesta “apagar” la mente</li>
+              <li>Luego de días largos o estresantes</li>
+              <li>Cuando te despertás a mitad de la noche</li>
+              <li>Como ritual nocturno constante</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="meditacion-beneficios-section card">
+          <div class="card__body">
+            <h3 class="h3">Beneficios</h3>
+            <ul>
+              <li>Calma el sistema nervioso</li>
+              <li>Facilita la transición del día a la noche</li>
+              <li>Mejora la calidad y profundidad del sueño</li>
+              <li>Ayuda a soltar tensiones acumuladas</li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="meditacion-recomendaciones-section card">
+          <div class="card__body">
+            <h3 class="h3">Recomendaciones</h3>
+            <ul>
+              <li>Luz tenue o apagada, ambiente cálido</li>
+              <li>Evitar pantallas 20–30 minutos antes</li>
+              <li>Permitite dormirte durante la práctica</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- Video/Audio Tabs -->
+      <section class="meditacion-media-section card">
+        <div class="card__body">
+          <div class="media-tabs">
+            <button class="media-tab active" data-tab="video">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              Ver meditación guiada
+            </button>
+            <button class="media-tab" data-tab="audio">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18V5l12-2v13"></path>
+                <circle cx="6" cy="18" r="3"></circle>
+                <circle cx="18" cy="16" r="3"></circle>
+              </svg>
+              Solo audio
+            </button>
+          </div>
+
+          <div class="media-content">
+            <div class="media-panel active" data-panel="video">
+              <div class="video-container">
+                <iframe 
+                  width="100%" 
+                  height="500" 
+                  src="https://www.youtube.com/embed/VIDEO_ID_AQUI" 
+                  title="Meditación: Ritual nocturno" 
+                  frameborder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                  allowfullscreen>
+                </iframe>
+              </div>
+            </div>
+
+            <div class="media-panel" data-panel="audio">
+              <audio controls style="width:100%; margin-bottom: 1rem;">
+                <source src="../../audio/ritual-nocturno-descanso.mp3" type="audio/mpeg">
+                Tu navegador no soporta el elemento de audio.
+              </audio>
+              <div class="cta-row" style="margin-top:1rem; text-align: center;">
+                <a href="../../pdf/ritual-nocturno-descanso.pdf" class="btn btn-secondary" target="_blank">📄 Descargar PDF</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="meditacion-faq-section card">
+        <div class="card__body">
+          <h2 class="h2">Preguntas frecuentes</h2>
+          <details>
+            <summary>¿Y si me duermo?</summary>
+            <p>Está perfecto. El objetivo es descansar. Con el uso, cada vez llegarás más consciente al final.</p>
+          </details>
+          <details>
+            <summary>¿Puedo hacerla si me despierto de noche?</summary>
+            <p>Sí. Escuchala en volumen bajo y permití que el cuerpo vuelva a relajarse naturalmente.</p>
+          </details>
+          <details>
+            <summary>¿Cuánto dura el efecto?</summary>
+            <p>Vas a notar una transición más suave al sueño y un descanso más profundo. La práctica constante potencia los resultados.</p>
+          </details>
+        </div>
+      </section>
+      
+      <!-- Meditaciones relacionadas (dentro del wrap para igualar "Energía del presente") -->
+      <section class="meditacion-relacionadas-section">
+      <h2 class="h2">Seguí explorando</h2>
+      <div class="carousel-container">
+        <button class="carousel-btn carousel-btn-prev" aria-label="Anterior">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M15 18l-6-6 6-6"/>
+          </svg>
+        </button>
+        
+        <div class="carousel-track-container">
+          <div class="carousel-track">
+            <a href="energia-del-presente.html" class="carousel-item">
+              <div class="carousel-item-image" style="background-image: url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80');"></div>
+              <div class="carousel-item-content">
+                <div class="carousel-item-icon">✨</div>
+                <h4>Energía del presente</h4>
+                <p>Anclate en el aquí y ahora, calmando la mente y el cuerpo</p>
+                <span class="carousel-item-duration">10 min</span>
+              </div>
+            </a>
+            <a href="guia-interior.html" class="carousel-item">
+              <div class="carousel-item-image" style="background-image: url('https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?w=800&q=80');"></div>
+              <div class="carousel-item-content">
+                <div class="carousel-item-icon">🧘</div>
+                <h4>Guía interior</h4>
+                <p>Conectá con tu sabiduría interna y toma decisiones alineadas</p>
+                <span class="carousel-item-duration">15 min</span>
+              </div>
+            </a>
+            <a href="limpieza-energetica-proteccion.html" class="carousel-item">
+              <div class="carousel-item-image" style="background-image: url('https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&q=80');"></div>
+              <div class="carousel-item-content">
+                <div class="carousel-item-icon">✨</div>
+                <h4>Limpieza energética</h4>
+                <p>Liberá cargas densas y protegé tu campo energético</p>
+                <span class="carousel-item-duration">16 min</span>
+              </div>
+            </a>
+            <a href="liberacion-miedo-ansiedad.html" class="carousel-item">
+              <div class="carousel-item-image" style="background-image: url('https://images.unsplash.com/photo-1499209974431-9dddcece7f88?w=800&q=80');"></div>
+              <div class="carousel-item-content">
+                <div class="carousel-item-icon">🕊️</div>
+                <h4>Liberación de miedo</h4>
+                <p>Suelta la ansiedad y recupera tu centro emocional</p>
+                <span class="carousel-item-duration">14 min</span>
+              </div>
+            </a>
+          </div>
+        </div>
+        
+        <button class="carousel-btn carousel-btn-next" aria-label="Siguiente">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 18l6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+      
+      <div class="carousel-dots"></div>
+      </section>
+    </div>
   </main>
 
   <footer class="site-footer">
@@ -111,5 +278,6 @@
 
   <script src="../../js/script.js"></script>
   <script src="../../js/carrito.js"></script>
+  <script src="../../js/meditacion.js"></script>
 </body>
 </html>

@@ -7,6 +7,7 @@
   <meta name="description" content="Soltá el peso del miedo y recuperá tu tranquilidad interior." />
   <link rel="stylesheet" href="../../css/estilo.css" />
   <link rel="stylesheet" href="../../css/pagina-curso.css" />
+  <link rel="stylesheet" href="../../css/conecta.css" />
 </head>
 <body class="curso-page" data-course-id="med-liberacion-miedo">
   <header class="nav-wrap">
@@ -55,25 +56,193 @@
     </nav>
   </header>
   <main id="main" class="main" tabindex="-1">
-    <section class="curso-hero" aria-labelledby="curso-titulo">
-      <div class="curso-hero__bg"></div>
-      <div class="curso-hero__inner">
+    <section class="meditacion-hero meditacion-hero--liberacion" aria-labelledby="meditacion-titulo">
+      <div class="meditacion-hero__bg"></div>
+      <div class="meditacion-hero__inner">
         <div class="eyebrow"><span class="badge">Meditación</span><span class="pill-ghost">Gratis</span></div>
-        <h1 id="curso-titulo" class="title">Liberación del miedo y la ansiedad</h1>
+        <h1 id="meditacion-titulo" class="title">Liberación del miedo y la ansiedad</h1>
         <p class="excerpt">Soltá el peso del miedo y recuperá tu tranquilidad interior.</p>
         <div class="meta" aria-label="Información">
           <span><strong>Duración:</strong> 14 min</span>
           <span><strong>Incluye:</strong> audio, pdf</span>
         </div>
-        <div class="cta-row">
-          <button class="btn btn-primary cta-comprar js-comprar" data-course-id="med-liberacion-miedo" data-price="0">Acceder gratis</button>
-        </div>
       </div>
     </section>
-    <div class="wrap grid-2"><div><section class="card section"><div class="card__body">
-      <h2 class="h2">Descripción</h2>
-      <p>Meditación guiada de 14 minutos para liberar el miedo y la ansiedad, recuperando tu tranquilidad interior.</p>
-    </div></section></div></div>
+
+      <div class="wrap meditacion-content-wrap">
+        <!-- Intro -->
+        <section class="meditacion-intro-section">
+          <p class="intro-text">Cuando el miedo y la ansiedad se activan, tu cuerpo pide calma y contención. Esta meditación te guía paso a paso para soltar tensión emocional, regular tu respiración y volver a tu centro.</p>
+        </section>
+
+        <!-- Grid de 3 columnas: Cuándo usar | Beneficios | Recomendaciones -->
+        <div class="meditacion-three-col-grid">
+          <section class="meditacion-cuando-section card">
+            <div class="card__body">
+              <h3 class="h3">¿Cuándo usarla?</h3>
+              <ul>
+                <li>En picos de ansiedad</li>
+                <li>Antes de dormir si hay inquietud</li>
+                <li>Tras una situación que te desbordó</li>
+                <li>Cuando aparece miedo anticipatorio</li>
+                <li>Como pausa consciente durante el día</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="meditacion-beneficios-section card">
+            <div class="card__body">
+              <h3 class="h3">Beneficios</h3>
+              <ul>
+                <li>Libera tensiones emocionales acumuladas</li>
+                <li>Reduce la ansiedad y el miedo paralizante</li>
+                <li>Te ayuda a recuperar tu centro y tranquilidad</li>
+                <li>Fortalece tu confianza interna</li>
+              </ul>
+            </div>
+          </section>
+
+          <section class="meditacion-recomendaciones-section card">
+            <div class="card__body">
+              <h3 class="h3">Recomendaciones</h3>
+              <ul>
+                <li>Respirá profundo antes de comenzar</li>
+                <li>Permitite sentir lo que surja sin juzgarlo</li>
+                <li>Usá auriculares para mayor contención</li>
+                <li>Cerrá con un vaso de agua o una nota en tu diario</li>
+              </ul>
+            </div>
+          </section>
+        </div>
+
+        <!-- Video/Audio Tabs -->
+        <section class="meditacion-media-section card">
+          <div class="card__body">
+            <div class="media-tabs">
+              <button class="media-tab active" data-tab="video">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+                Ver meditación guiada
+              </button>
+              <button class="media-tab" data-tab="audio">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 18V5l12-2v13"></path>
+                  <circle cx="6" cy="18" r="3"></circle>
+                  <circle cx="18" cy="16" r="3"></circle>
+                </svg>
+                Solo audio
+              </button>
+            </div>
+          
+            <div class="media-content">
+              <div class="media-panel active" data-panel="video">
+                <div class="video-container">
+                  <iframe 
+                    width="100%" 
+                    height="500" 
+                    src="https://www.youtube.com/embed/VIDEO_ID_AQUI" 
+                    title="Meditación: Liberación del miedo y la ansiedad" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                  </iframe>
+                </div>
+              </div>
+            
+              <div class="media-panel" data-panel="audio">
+                <audio controls style="width:100%; margin-bottom: 1rem;">
+                  <source src="../../audio/liberacion-miedo-ansiedad.mp3" type="audio/mpeg">
+                  Tu navegador no soporta el elemento de audio.
+                </audio>
+                <div class="cta-row" style="margin-top:1rem; text-align: center;">
+                  <a href="../../pdf/liberacion-miedo-ansiedad.pdf" class="btn btn-secondary" target="_blank">📄 Descargar PDF</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ -->
+        <section class="meditacion-faq-section card">
+          <div class="card__body">
+            <h2 class="h2">Preguntas frecuentes</h2>
+            <details>
+              <summary>¿Sirve si estoy muy ansiosa ahora mismo?</summary>
+              <p>Sí. Podés poner play y dejar que la respiración guiada te vaya regulando. Si te ayuda, apoyá una mano en el pecho y otra en el abdomen.</p>
+            </details>
+            <details>
+              <summary>¿Qué hago si aparecen muchas emociones?</summary>
+              <p>Es normal. La propuesta es observar y permitir. Si algo se siente demasiado, abrí los ojos, respirá profundo y volvé cuando te sientas lista.</p>
+            </details>
+            <details>
+              <summary>¿Cada cuánto la hago?</summary>
+              <p>Podés usarla a demanda o incorporarla como ritual diario de 10–15 minutos.</p>
+            </details>
+          </div>
+        </section>
+        
+        <!-- Meditaciones relacionadas (dentro del wrap para igualar "Energía del presente") -->
+        <section class="meditacion-relacionadas-section">
+          <h2 class="h2">Seguí explorando</h2>
+          <div class="carousel-container">
+            <button class="carousel-btn carousel-btn-prev" aria-label="Anterior">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6"/>
+              </svg>
+            </button>
+            
+            <div class="carousel-track-container">
+              <div class="carousel-track">
+                <a href="guia-interior.html" class="carousel-item">
+                  <div class="carousel-item-image" style="background-image: url('https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?w=800&q=80');"></div>
+                  <div class="carousel-item-content">
+                    <div class="carousel-item-icon">🧘</div>
+                    <h4>Guía interior</h4>
+                    <p>Conectá con tu sabiduría interna y toma decisiones alineadas</p>
+                    <span class="carousel-item-duration">15 min</span>
+                  </div>
+                </a>
+                <a href="limpieza-energetica-proteccion.html" class="carousel-item">
+                  <div class="carousel-item-image" style="background-image: url('https://images.unsplash.com/photo-1545389336-cf090694435e?w=800&q=80');"></div>
+                  <div class="carousel-item-content">
+                    <div class="carousel-item-icon">✨</div>
+                    <h4>Limpieza energética</h4>
+                    <p>Liberá cargas densas y protegé tu campo energético</p>
+                    <span class="carousel-item-duration">16 min</span>
+                  </div>
+                </a>
+                <a href="ritual-nocturno-descanso.html" class="carousel-item">
+                  <div class="carousel-item-image" style="background-image: url('https://images.unsplash.com/photo-1511376777868-611b54f68947?w=800&q=80');"></div>
+                  <div class="carousel-item-content">
+                    <div class="carousel-item-icon">🌙</div>
+                    <h4>Ritual nocturno</h4>
+                    <p>Prepará tu energía para un descanso profundo y reparador</p>
+                    <span class="carousel-item-duration">12 min</span>
+                  </div>
+                </a>
+                <a href="energia-del-presente.html" class="carousel-item">
+                  <div class="carousel-item-image" style="background-image: url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&q=80');"></div>
+                  <div class="carousel-item-content">
+                    <div class="carousel-item-icon">🕊️</div>
+                    <h4>Energía del presente</h4>
+                    <p>Anclate en el aquí y ahora, calmando la mente y el cuerpo</p>
+                    <span class="carousel-item-duration">10 min</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+            
+            <button class="carousel-btn carousel-btn-next" aria-label="Siguiente">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
+          </div>
+          
+          <div class="carousel-dots"></div>
+        </section>
+      </div><!-- /wrap -->
   </main>
 
   <footer class="site-footer">
@@ -111,5 +280,6 @@
 
   <script src="../../js/script.js"></script>
   <script src="../../js/carrito.js"></script>
+  <script src="../../js/meditacion.js"></script>
 </body>
 </html>

@@ -1,0 +1,1033 @@
+/* =========================================
+   🌙 Estilo extendido — Página Meditaciones
+   Espacio Paz
+========================================= */
+
+/* ---------- Fondo general ---------- */
+body.curso-page {
+  background: var(--marfil);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ---------- Hero animado ---------- */
+.meditacion-hero {
+  position: relative;
+  background: 
+    linear-gradient(180deg, rgba(248,245,240,0.7) 0%, rgba(248,245,240,0.85) 70%, var(--marfil) 100%),
+    url('https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1920&q=80') center/cover;
+  text-align: center;
+  padding: 5rem 1.5rem 5rem;
+  border-bottom: none;
+  overflow: hidden;
+}
+
+.meditacion-hero__bg::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 50% 50%, rgba(200,165,83,0.08), transparent 70%);
+  animation: slowPulse 10s ease-in-out infinite alternate;
+}
+
+@keyframes slowPulse {
+  from { transform: scale(1); opacity: 0.5; }
+  to { transform: scale(1.15); opacity: 0.8; }
+}
+
+.meditacion-hero .title {
+  font-size: clamp(2rem, 5vw, 2.6rem);
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.meditacion-hero .excerpt {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 38rem;
+  margin: 0 auto;
+  animation: fadeIn 1.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Badge ---------- */
+.badge {
+  background: linear-gradient(90deg, var(--dorado), #e7c86e);
+  color: #fff;
+  border-radius: 999px;
+  padding: .45rem 1rem;
+  font-size: .85rem;
+  letter-spacing: .3px;
+  box-shadow: 0 3px 6px rgba(200,165,83,.25);
+}
+
+/* ---------- Grid ---------- */
+.meditaciones-grid {
+  display: grid;
+  gap: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  margin-top: 4rem;
+  position: relative;
+}
+
+/* ---------- Cards ---------- */
+.meditacion-card {
+  position: relative;
+  background: #fff;
+  border-radius: 1.75rem;
+  box-shadow: 0 8px 24px rgba(22,14,26,.06);
+  padding: 2rem 1.5rem 2.2rem;
+  transition: transform .35s ease, box-shadow .35s ease, background .3s ease;
+  overflow: hidden;
+}
+
+.meditacion-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 50% 40%, rgba(182,155,214,0.05), transparent 70%);
+  transition: opacity .4s ease;
+  opacity: 0;
+}
+
+.meditacion-card:hover::before {
+  opacity: 1;
+}
+
+.meditacion-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 36px rgba(22,14,26,.12);
+  background: linear-gradient(180deg, #ffffff 0%, #faf7fd 100%);
+}
+
+.meditacion-card h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1.2rem;
+  text-align: center;
+}
+
+.meditacion-card p.excerpt {
+  font-size: 1rem;
+  color: var(--muted);
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ---------- Audio player ---------- */
+.meditacion-card audio {
+  accent-color: var(--lila);
+  border-radius: 10px;
+  margin-bottom: 1.2rem;
+}
+
+audio::-webkit-media-controls-panel {
+  background-color: var(--marfil);
+  border-radius: 10px;
+}
+
+audio::-webkit-media-controls-play-button {
+  background-color: var(--lila);
+  border-radius: 50%;
+  transform: scale(1.1);
+}
+
+audio::-webkit-media-controls-play-button:hover {
+  background-color: var(--rosa);
+}
+
+/* ---------- Botones ---------- */
+.btn {
+  display: inline-block;
+  padding: .75rem 1.6rem;
+  border-radius: 2rem;
+  font-weight: 500;
+  text-decoration: none;
+  text-align: center;
+  transition: all .25s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--lila), var(--rosa));
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(182,155,214,.25);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(182,155,214,.35);
+}
+
+.btn-ghost {
+  color: var(--lila);
+  border: 1.5px solid var(--lila);
+  background: transparent;
+  font-size: 1rem;
+  padding: .75rem 1.8rem;
+}
+
+.btn-ghost:hover {
+  background: var(--lavanda);
+  color: var(--text);
+  transform: translateY(-2px);
+}
+
+/* ---------- Call to action ---------- */
+.wrap .btn-ghost {
+  margin-top: 3rem;
+  display: inline-block;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* ---------- Responsive tweaks ---------- */
+@media (max-width: 640px) {
+  .meditacion-hero {
+    padding: 3.5rem 1rem;
+  }
+  .meditacion-hero .title {
+    font-size: 1.9rem;
+  }
+  .meditaciones-grid {
+    gap: 1.75rem;
+  }
+  .meditacion-card {
+    padding: 1.5rem 1.25rem 1.75rem;
+  }
+}
+
+/* =========================
+   PÁGINA INDIVIDUAL (add-ons)
+   ========================= */
+
+/* Variantes de hero por meditación */
+.meditacion-hero--presente .meditacion-hero__bg::before{
+  background: radial-gradient(circle at 50% 50%, rgba(182,155,214,.10), transparent 70%);
+}
+.meditacion-hero--guia .meditacion-hero__bg::before{
+  background: radial-gradient(circle at 40% 50%, rgba(244,217,230,.12), transparent 70%);
+}
+.meditacion-hero--limpieza .meditacion-hero__bg::before{
+  background: radial-gradient(circle at 60% 50%, rgba(200,165,83,.10), transparent 70%);
+}
+.meditacion-hero--nocturno .meditacion-hero__bg::before{
+  background: radial-gradient(circle at 50% 30%, rgba(217,201,239,.12), transparent 70%);
+}
+.meditacion-hero--liberacion .meditacion-hero__bg::before{
+  background: radial-gradient(circle at 45% 40%, rgba(244,217,230,.15), transparent 70%);
+}
+
+/* Hero: meta más legible y pill gratis */
+.meditacion-hero .eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.meditacion-hero .meta{
+  display:flex; flex-wrap:wrap; gap:.5rem .8rem;
+  justify-content:center; margin-top:.6rem; color: var(--text);
+}
+
+.pill-ghost{
+  display:inline-block;
+  padding:.28rem .55rem; border:1px solid rgba(0,0,0,.08);
+  border-radius:999px; background:rgba(255,255,255,.55);
+  color: var(--text); font-size:.82rem; font-weight:700;
+}
+
+/* Cards individuales de la página */
+.meditacion-audio-section.card,
+.meditacion-beneficios-section.card,
+.meditacion-recomendaciones-section.card{
+  border-radius: 1.15rem;
+  border: 1px solid var(--line);
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+/* Titulares internos */
+.h2{
+  font-weight: 800;
+  letter-spacing: -.01em;
+}
+
+/* Audio player full width, con bordes suaves */
+.meditacion-audio-section audio{
+  width: 100%;
+  border-radius: .75rem;
+  background: var(--marfil);
+}
+
+/* Botones dentro de cta-row */
+.cta-row .btn{
+  border-radius: 999px;
+  padding: .7rem 1.2rem;
+  font-weight: 700;
+}
+.btn.btn-secondary{
+  background: #fff;
+  border: 1.5px solid var(--lila);
+  color: var(--text);
+  box-shadow: 0 8px 20px rgba(182,155,214,.12);
+}
+.btn.btn-secondary:hover{
+  background: var(--lavanda);
+}
+.btn.btn-secondary:active{
+  transform: translateY(1px);
+  box-shadow: 0 3px 10px rgba(0,0,0,.08);
+}
+
+/* Listas con check */
+.meditacion-beneficios-section ul,
+.meditacion-recomendaciones-section ul{
+  list-style: none; padding-left: 0; margin: .4rem 0 0;
+  display: grid; gap: .45rem;
+}
+.meditacion-beneficios-section li,
+.meditacion-recomendaciones-section li{
+  position: relative; padding-left: 1.4rem;
+  color: var(--muted);
+}
+.meditacion-beneficios-section li::before,
+.meditacion-recomendaciones-section li::before{
+  content: "✔";
+  position: absolute; left: 0; top: .05rem;
+  font-weight: 800; color: #5b4569;
+  background: #faf7ff; border:1px solid #efe9f7;
+  width: 1rem; height: 1rem; display: grid; place-items: center;
+  border-radius: .35rem; font-size: .7rem;
+}
+
+/* Separación general entre secciones */
+.card.section + .card.section{ margin-top: .9rem; }
+
+/* --- Opcional: barra mínima de progreso de lectura --- */
+.read-progress{
+  position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+  background: linear-gradient(90deg, var(--lila), var(--rosa));
+  z-index: 9999; transition: width .15s linear;
+}
+@media (prefers-reduced-motion: reduce){
+  .read-progress{ transition: none; }
+}
+
+/* =========================
+   LAYOUTS EN COLUMNAS
+   ========================= */
+
+/* Container principal con espaciado controlado */
+.meditacion-content-wrap {
+  max-width: 90rem; /* ampliado para que el carrusel no quede cortado */
+  margin: 0 auto;
+  padding: 2rem 2rem 3rem;
+}
+
+/* Intro texto centrado y compacto */
+.meditacion-intro-section {
+  text-align: center;
+  max-width: 52rem;
+  margin: 0 auto 1.75rem;
+}
+
+.intro-text {
+  font-size: 1.075rem;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Secciones con espaciado consistente */
+.meditacion-media-section,
+.meditacion-faq-section {
+  margin-bottom: 1.75rem;
+}
+
+.meditacion-relacionadas-section {
+  margin-bottom: 2rem;
+}
+
+.meditacion-relacionadas-section .h2,
+.meditacion-faq-section .h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+/* Grid de 3 columnas para info rápida */
+.meditacion-three-col-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.meditacion-three-col-grid .card {
+  border-radius: 0.875rem;
+  border: 1px solid rgba(182,155,214,0.15);
+  background: linear-gradient(135deg, #fdfcff 0%, #faf8fd 100%);
+  box-shadow: 0 2px 8px rgba(0,0,0,.03);
+  transition: all 0.3s ease;
+  padding: 1.5rem 1.35rem;
+}
+
+.meditacion-three-col-grid .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(182,155,214,.12);
+  border-color: var(--lavanda);
+}
+
+.meditacion-three-col-grid .h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.95rem;
+  color: var(--text);
+}
+
+.meditacion-three-col-grid ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.meditacion-three-col-grid li {
+  padding-left: 1.4rem;
+  position: relative;
+  color: var(--muted);
+  font-size: 0.925rem;
+  line-height: 1.55;
+}
+
+.meditacion-three-col-grid li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0.05rem;
+  color: var(--lila);
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+/* Grid de 2 columnas para secciones complementarias */
+.meditacion-two-col-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 0.9rem;
+}
+
+/* Grid de 3 columnas para meditaciones relacionadas */
+.carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 -1rem;
+}
+
+.carousel-btn {
+  flex-shrink: 0;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 1px solid rgba(182,155,214,0.25);
+  background: #fff;
+  color: var(--lila);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(182,155,214,0.12);
+}
+
+.carousel-btn:hover {
+  background: var(--lila);
+  color: #fff;
+  border-color: var(--lila);
+  transform: scale(1.05);
+}
+
+.carousel-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.carousel-track-container {
+  overflow: hidden;
+  flex: 1;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 1.25rem;
+  transition: transform 0.5s ease;
+}
+
+.carousel-item {
+  flex: 0 0 calc(33.333% - 0.875rem);
+  min-width: 280px;
+  background: #fff;
+  border: 1px solid rgba(182,155,214,0.12);
+  border-radius: 0.75rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(182,155,214,0.08);
+}
+
+.carousel-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(182,155,214,0.15);
+  border-color: var(--lavanda);
+}
+
+.carousel-item-image {
+  width: 100%;
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.carousel-item-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+}
+
+.carousel-item-content {
+  padding: 1.5rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.carousel-item-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  display: none;
+}
+
+.carousel-item h4 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--lila) !important;
+  margin: 0 0 0.65rem 0;
+  line-height: 1.35;
+}
+
+.carousel-item p {
+  font-size: 0.9rem;
+  color: var(--texto-claro) !important;
+  line-height: 1.5;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.carousel-item-duration {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-top: 1rem;
+  margin-top: 1rem;
+  border-top: 1px solid rgba(182,155,214,0.15);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--lila) !important;
+}
+
+.carousel-item-duration::before {
+  content: '⏱';
+  font-size: 1rem;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.carousel-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: rgba(182,155,214,0.25);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.carousel-dot.active {
+  background: var(--lila);
+  width: 1.5rem;
+  border-radius: 999px;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.related-item {
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+  padding: 1.35rem 1.25rem;
+  background: linear-gradient(135deg, #fdfcff 0%, #faf8fd 100%);
+  border: 1px solid rgba(182,155,214,0.15);
+  border-radius: 0.875rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.related-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(182,155,214,.12);
+  border-color: var(--lavanda);
+  background: linear-gradient(135deg, rgba(182,155,214,0.04), rgba(244,217,230,0.04));
+}
+
+.related-icon {
+  font-size: 1.85rem;
+  flex-shrink: 0;
+}
+
+.related-text h4 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.related-text p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+/* Estilos para FAQ (details/summary) */
+.meditacion-faq-section details {
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(182,155,214,0.12);
+  padding-bottom: 0.75rem;
+}
+
+.meditacion-faq-section details:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.meditacion-faq-section summary {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text);
+  cursor: pointer;
+  padding: 0.7rem 0;
+  list-style: none;
+  position: relative;
+  padding-right: 2rem;
+  transition: color 0.2s ease;
+}
+
+.meditacion-faq-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.meditacion-faq-section summary::after {
+  content: "+";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--lila);
+  transition: transform 0.3s ease;
+}
+
+.meditacion-faq-section details[open] summary::after {
+  content: "−";
+  transform: translateY(-50%) rotate(0deg);
+}
+
+.meditacion-faq-section summary:hover {
+  color: var(--lila);
+}
+
+.meditacion-faq-section details p {
+  margin: 0.8rem 0 0 0;
+  color: var(--muted);
+  line-height: 1.65;
+  font-size: 0.95rem;
+  padding-left: 0.25rem;
+}
+
+/* Media section (video/audio) */
+.meditacion-media-section.card {
+  border-radius: 0.875rem;
+  border: 1px solid rgba(182,155,214,0.2);
+  background: #fff;
+  box-shadow: 0 3px 12px rgba(0,0,0,.05);
+}
+
+.meditacion-faq-section.card {
+  border-radius: 0.875rem;
+  border: 1px solid rgba(182,155,214,0.15);
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,.03);
+}
+
+/* =========================
+   VIDEO/AUDIO TABS
+   ========================= */
+
+.media-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--line);
+}
+
+.media-tab {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  margin-bottom: -2px;
+}
+
+.media-tab:hover {
+  color: var(--text);
+  background: rgba(182,155,214,0.05);
+}
+
+.media-tab.active {
+  color: var(--lila);
+  border-bottom-color: var(--lila);
+  background: rgba(182,155,214,0.08);
+}
+
+.media-tab svg {
+  width: 20px;
+  height: 20px;
+}
+
+.media-content {
+  position: relative;
+}
+
+.media-panel {
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+
+.media-panel.active {
+  display: block;
+}
+
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  background: #000;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.75rem;
+}
+
+/* Responsive: mobile vuelve a columna única */
+@media (max-width: 768px) {
+  .meditacion-content-wrap {
+    padding: 1.5rem 1rem 2rem;
+  }
+  
+  .intro-text {
+    font-size: 1rem;
+  }
+  
+  .meditacion-three-col-grid {
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+  
+  .meditacion-two-col-grid {
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+  
+  .related-grid {
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+  
+  .related-item {
+    padding: 1rem;
+  }
+  
+  .media-tab {
+    font-size: 0.875rem;
+    padding: 0.75rem 0.875rem;
+  }
+  
+  .meditacion-relacionadas-section .h2,
+  .meditacion-faq-section .h2 {
+    font-size: 1.35rem;
+  }
+  
+  .carousel-item {
+    flex: 0 0 100%;
+    min-width: 100%;
+  }
+  
+  .carousel-container {
+    margin: 0;
+  }
+  
+  .carousel-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+/* =========================================
+   PULIDO PREMIUM — Overrides finales
+   (añadir al final de conecta.css)
+========================================= */
+
+/* ---------- Sistema: tipografías y espacios ---------- */
+:root{
+  --fs-xs: .85rem;
+  --fs-sm: .95rem;
+  --fs-base: 1rem;
+  --fs-h2: clamp(1.15rem, 2.2vw, 1.35rem);
+  --fs-h1: clamp(2rem, 4.8vw, 2.6rem);
+  --lh-tight: 1.25;
+  --lh-relaxed: 1.7;
+
+  --space-1: .5rem;
+  --space-2: .75rem;
+  --space-3: 1rem;
+  --space-4: 1.25rem;
+  --space-5: 1.75rem;
+  --space-6: 2rem;
+
+  --elev-1: 0 8px 24px rgba(22,14,26,.08);
+  --elev-2: 0 12px 36px rgba(22,14,26,.12);
+  --ring: 0 0 0 3px rgba(182,155,214,.35);
+  --line-strong: rgba(0,0,0,.08);
+}
+
+/* ---------- Tipografía base ---------- */
+body{
+  font-size: var(--fs-base);
+  line-height: var(--lh-relaxed);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.h2, .meditacion-hero .title{
+  letter-spacing: -.01em;
+}
+
+/* ---------- Hero más claro y consistente ---------- */
+.meditacion-hero{
+  padding: clamp(3.5rem, 6vw, 5rem) 1.25rem clamp(2.5rem, 4vw, 4rem);
+}
+.meditacion-hero .title{
+  font-size: var(--fs-h1);
+  line-height: var(--lh-tight);
+}
+.meditacion-hero .excerpt{
+  max-width: 42rem;
+}
+.meditacion-hero .meta{
+  gap: .6rem .9rem;
+  color: var(--muted);
+}
+.meditacion-hero .meta span strong{ color: var(--text); }
+
+/* ---------- Badges y chips ---------- */
+.badge{
+  padding: .38rem .9rem;
+  box-shadow: 0 2px 8px rgba(200,165,83,.22);
+}
+.pill-ghost{
+  border-color: var(--line-strong);
+  background: rgba(255,255,255,.6);
+}
+
+/* ---------- Cards: unificar elevación y rellenos ---------- */
+.card.section{
+  border-radius: 1.25rem;
+  border: 1px solid var(--line-strong);
+  box-shadow: var(--elev-1);
+  background: #fff;
+}
+.card.section .card__body{
+  padding: var(--space-5) var(--space-5);
+}
+.card.section + .card.section{
+  margin-top: var(--space-5);
+}
+
+/* Hover elegante (no agresivo) */
+.meditacion-card{
+  box-shadow: var(--elev-1);
+  transition: transform .28s ease, box-shadow .28s ease, background .28s ease;
+}
+.meditacion-card:hover{
+  transform: translateY(-4px);
+  box-shadow: var(--elev-2);
+  background: linear-gradient(180deg, #fff 0%, #faf7fd 100%);
+}
+
+/* ---------- Grid de 2 columnas: balance ---------- */
+.meditacion-two-col-grid{
+  gap: var(--space-5);
+  margin-top: var(--space-4);
+}
+@media (max-width: 768px){
+  .meditacion-two-col-grid{ gap: var(--space-3); }
+}
+
+/* ---------- Heading secundarios ---------- */
+.h2{
+  font-size: var(--fs-h2);
+  margin: 0 0 var(--space-3) 0;
+  line-height: var(--lh-tight);
+}
+
+/* ---------- Listas con check más limpias ---------- */
+.meditacion-beneficios-section ul,
+.meditacion-recomendaciones-section ul{
+  gap: .55rem;
+}
+.meditacion-beneficios-section li,
+.meditacion-recomendaciones-section li{
+  padding-left: 1.3rem;
+}
+.meditacion-beneficios-section li::before,
+.meditacion-recomendaciones-section li::before{
+  background: #faf7ff;
+  border: 1px solid #efe9f7;
+  color: #5b4569;
+}
+
+/* ---------- Audio: integración y foco visible ---------- */
+.meditacion-audio-section{
+  background: linear-gradient(135deg, rgba(182,155,214,0.03), rgba(244,217,230,0.03));
+  border: 1.5px solid var(--lavanda);
+}
+.meditacion-audio-section audio{
+  outline: none;
+}
+.meditacion-audio-section audio:focus-visible{
+  box-shadow: var(--ring);
+}
+
+/* ---------- Botones: foco y estados ---------- */
+.btn{
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+}
+.btn:focus-visible{
+  outline: none;
+  box-shadow: var(--ring);
+}
+.btn-primary{
+  box-shadow: 0 4px 12px rgba(182,155,214,.25);
+}
+.btn-primary:hover{
+  transform: translateY(-2px);
+}
+.btn.btn-secondary{
+  border-color: var(--lila);
+}
+.btn.btn-secondary:hover{
+  background: var(--lavanda);
+}
+.btn.btn-secondary:active{
+  transform: translateY(1px);
+  box-shadow: 0 3px 10px rgba(0,0,0,.09);
+}
+
+/* ---------- Related cards: orden y contraste ---------- */
+.related-grid{
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+.related-item{
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  box-shadow: var(--elev-1);
+}
+.related-item:hover{
+  box-shadow: var(--elev-2);
+}
+.related-text h4{
+  font-weight: 700;
+}
+
+/* ---------- FAQ: hit area y microinteracción ---------- */
+.meditacion-faq-section summary{
+  padding: .9rem 0;
+}
+.meditacion-faq-section summary::after{
+  font-size: 1.35rem;
+}
+.meditacion-faq-section details p{
+  margin-top: .6rem;
+}
+
+/* ---------- Barra de progreso: suavizar ---------- */
+.read-progress{
+  height: 3px;
+  background: linear-gradient(90deg, var(--lila), var(--rosa));
+}
+
+/* ---------- Motion: respetar reduce ---------- */
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
