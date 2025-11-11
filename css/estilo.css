@@ -285,6 +285,25 @@ html, body{ overflow-x: clip; }
   display: grid; grid-template-columns: repeat(4, 1fr);
   gap: 1.75rem;
 }
+
+/* ===== Estilos específicos para el index ===== */
+/* Compact grid usado solo en el index cuando existe #index-courses */
+#index-courses.courses-grid{
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .85rem;
+}
+.index-compact .course-card{ min-height: 320px; }
+/* Ajustes del botón dentro de las cards en el index para que no sea tan grande */
+.index-compact .course-card__meta .btn{
+  padding: .5rem .85rem;
+  font-size: .9rem;
+}
+.index-compact .course-card__meta .btn.btn-ghost{ border-radius: .9rem; }
+
+/* Icono de carrito dentro de botones (consistente) */
+.course-card__meta .cart-icon{ display:inline-flex; margin-right:.5rem; vertical-align:middle; }
+
+/* Fin: estilos del index */
 .curso-card{
   display: flex; flex-direction: column; height: 100%;
   background:#fff; border:0.0625rem solid #eee; border-radius:1.5rem;

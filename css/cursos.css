@@ -167,6 +167,8 @@
   list-style:none; margin:0; padding:0;
   display:grid; gap:1rem; grid-template-columns:repeat(3,minmax(0,1fr));
 }
+
+/* Index-specific styles moved to css/estilo.css */
 .course-card{
   background:var(--card); border-radius:1.5rem;
   box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column;
