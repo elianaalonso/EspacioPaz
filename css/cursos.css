@@ -172,7 +172,8 @@
 .course-card{
   background:var(--card); border-radius:1.5rem;
   box-shadow:var(--shadow); overflow:hidden; display:flex; flex-direction:column;
-  min-height:370px;
+  /* Reduced default min height to avoid excessively tall cards */
+  min-height:320px;
 }
 .course-card__link{ text-decoration:none; color:inherit; display:flex; flex-direction:column; height:100%; }
 .course-card__media{ 
@@ -214,6 +215,9 @@
 }
 .course-card__meta{ display:flex; justify-content:space-between; align-items:center; margin-top:auto; }
 .price{ font-weight:700; color:#1f1a1f; }
+
+/* Index-specific compact variant: make cards a bit más compactos en la home */
+.index-compact .course-card{ min-height:300px; }
 
 /* ---------- Newsletter ---------- */
 .courses-newsletter{

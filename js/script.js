@@ -872,9 +872,12 @@ function renderAuthUI(){
   });
   // logout
   menu.querySelector('#btnLogout')?.addEventListener('click', ()=>{
+    // Clear user data immediately
     clearUser();
+    // Update any UI widgets on this page
     renderAuthUI();
-    window.location.href = '/index.html';
+    // Show a universal logout screen/overlay (with hourglass), then redirect to index
+    showLogoutScreen({ message: '⏳ Cerrando sesión...', redirect: '/index.html', delay: 900 });
   });
 }
 
@@ -917,6 +920,48 @@ function renderAuthUI(){
 
 // Pintar al cargar
 document.addEventListener('DOMContentLoaded', renderAuthUI);
+
+// ===== Pantalla universal de cierre de sesión (overlay) =====
+function showLogoutScreen({ message = '⏳ Cerrando sesión...', redirect = null, delay = 1200 } = {}){
+  try{
+    // Use the same simple overlay previously used in curso.js so behaviour is identical
+    let overlay = document.getElementById('logoutOverlay');
+    if (!overlay){
+      overlay = document.createElement('div');
+      overlay.id = 'logoutOverlay';
+      overlay.style.position = 'fixed';
+      overlay.style.top = 0;
+      overlay.style.left = 0;
+      overlay.style.width = '100vw';
+      overlay.style.height = '100vh';
+      overlay.style.background = 'rgba(255,255,255,0.85)';
+      overlay.style.zIndex = 99999;
+      overlay.style.display = 'flex';
+      overlay.style.alignItems = 'center';
+      overlay.style.justifyContent = 'center';
+      overlay.style.fontSize = '1.75rem';
+      overlay.style.fontWeight = '700';
+      overlay.style.color = '#444';
+      overlay.style.transition = 'opacity 0.4s ease';
+      overlay.innerHTML = `<span>${message}</span>`;
+      document.body.appendChild(overlay);
+    } else {
+      overlay.textContent = message;
+      overlay.style.opacity = '';
+      overlay.style.display = 'flex';
+    }
+
+    setTimeout(() => {
+      // If redirect is provided, navigate there; otherwise reload the page (same behavior as index overlay)
+      if (redirect) {
+        try { window.location.href = redirect; } catch(e){ console.error('redirect after logout failed', e); }
+      } else {
+        try { overlay.style.opacity = 0; } catch(e){}
+        setTimeout(() => { try { location.reload(); } catch(e){ console.error(e); } }, 400);
+      }
+    }, delay);
+  } catch(e){ console.error('showLogoutScreen error', e); }
+}
 
 
 
