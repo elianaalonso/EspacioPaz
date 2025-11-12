@@ -302,7 +302,15 @@ function guardarUsuarioLocal() {
     openConfirm('Cerrar sesión','¿Seguro que querés cerrar sesión?', ()=>{
       // TODO: llamar API logout
       toast('Sesión cerrada');
-      localStorage.removeItem('espaciopaz_user_v1');
+      // Limpiar todo el estado de usuario en localStorage si la función global está disponible
+      if (typeof window.clearAllUserData === 'function') {
+        try { window.clearAllUserData(); } catch(e){ console.error(e); }
+      } else {
+        try { localStorage.removeItem('espaciopaz_user_v1'); } catch(e){}
+        try { localStorage.removeItem('espaciopaz_favs_v1'); } catch(e){}
+        try { localStorage.removeItem('espaciopaz_cart_v1'); } catch(e){}
+      }
+      try { window.dispatchEvent(new Event('logout')); } catch(e){}
       location.href = '/index.html';
     });
   $('#btnDelete').onclick = ()=>

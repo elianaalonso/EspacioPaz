@@ -792,7 +792,32 @@ function readUser(){
   catch { return null; }
 }
 function writeUser(u){ localStorage.setItem(USER_KEY, JSON.stringify(u)); }
+// Eliminar solo el usuario
 function clearUser(){ localStorage.removeItem(USER_KEY); }
+
+// Limpiar TODO el estado de la usuaria en localStorage (logout completo)
+function clearAllUserData(){
+  try {
+    // Claves conocidas
+    localStorage.removeItem(USER_KEY);
+    localStorage.removeItem('espaciopaz_favs_v1');
+    localStorage.removeItem('espaciopaz_cart_v1');
+    // Quitar cualquier clave de curso: owned_, done_, dur_
+    const prefixes = ['owned_', 'done_', 'dur_'];
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+      const key = localStorage.key(i);
+      if (!key) continue;
+      for (const p of prefixes) {
+        if (key.startsWith(p)) { localStorage.removeItem(key); break; }
+      }
+      // Borrar keys relacionadas con membresía/checkout/otros
+      if (key === 'pazJoinIntent' || key === 'pazUser' || key === 'STATE_CHECKOUT' || key === 'pazIntent') {
+        localStorage.removeItem(key);
+      }
+    }
+  } catch(e){ console.error('clearAllUserData failed', e); }
+}
+window.clearAllUserData = clearAllUserData;
 
 function initialsFromName(nameOrEmail){
   const s = (nameOrEmail || '').trim();
@@ -872,10 +897,12 @@ function renderAuthUI(){
   });
   // logout
   menu.querySelector('#btnLogout')?.addEventListener('click', ()=>{
-    // Clear user data immediately
-    clearUser();
+    // Clear all user data (owned courses, favs, cart, etc.)
+    if (typeof clearAllUserData === 'function') clearAllUserData();
     // Update any UI widgets on this page
     renderAuthUI();
+    // Emit logout event for other modules to react (curso.js listens to this)
+    try { window.dispatchEvent(new Event('logout')); } catch(e){}
     // Show a universal logout screen/overlay (with hourglass), then redirect to index
     showLogoutScreen({ message: '⏳ Cerrando sesión...', redirect: '/index.html', delay: 900 });
   });

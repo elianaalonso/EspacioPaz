@@ -497,12 +497,15 @@ if(favBtn){
 document.addEventListener('click', (e) => {
   const logoutBtn = e.target.closest('#btnLogout');
   if (!logoutBtn) return;
-  // Limpiar compra simulada solo de este curso
-  try { localStorage.removeItem(OWNED_KEY); } catch {}
-  // Limpiar favoritos globales
-  try { localStorage.removeItem('espaciopaz_favs_v1'); } catch {}
-  // Limpiar usuario (por si no lo hace el global)
-  try { localStorage.removeItem('espaciopaz_user_v1'); } catch {}
+  // Limpiar TODO el estado del usuario (usar la función global si existe)
+  if (typeof window.clearAllUserData === 'function') {
+    try { window.clearAllUserData(); } catch(e) { console.error(e); }
+  } else {
+    try { localStorage.removeItem(OWNED_KEY); } catch {}
+    try { localStorage.removeItem('espaciopaz_favs_v1'); } catch {}
+    try { localStorage.removeItem('espaciopaz_user_v1'); } catch {}
+    try { localStorage.removeItem('espaciopaz_cart_v1'); } catch {}
+  }
   // Actualizar botón de favoritos si existe
   const favBtn = document.querySelector('.btn-fav');
   if (favBtn) {
