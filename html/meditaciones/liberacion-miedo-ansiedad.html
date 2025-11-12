@@ -278,7 +278,34 @@
     </div>
   </footer>
 
+  <!-- ===== MODAL AUTH (inline para páginas) ===== -->
+  <div class="auth-backdrop" id="authBackdrop" aria-hidden="true"></div>
+  <section class="auth-modal" id="authModal" role="dialog" aria-modal="true" aria-labelledby="authTitle" hidden>
+    <button class="auth-close" id="authClose" aria-label="Cerrar" type="button">×</button>
+    <header class="auth-tabs">
+      <button class="auth-tab" data-tab="login" id="tabLogin" aria-controls="panelLogin" aria-selected="true" type="button">Iniciar sesión</button>
+      <button class="auth-tab" data-tab="register" id="tabRegister" aria-controls="panelRegister" aria-selected="false" type="button">Registrarse</button>
+    </header>
+    <form class="auth-panel" id="panelLogin">
+      <h3 id="authTitle" class="auth-title">¡Hola de nuevo!</h3>
+      <label class="auth-field"><span>Email</span><input type="email" id="loginEmail" autocomplete="email" required></label>
+      <label class="auth-field"><span>Contraseña</span><input type="password" id="loginPass" autocomplete="current-password" required></label>
+      <div class="auth-actions"><label class="auth-remember"><input type="checkbox"> Recordarme</label><a href="#" class="auth-link">Olvidé mi contraseña</a></div>
+      <button class="auth-btn" type="submit">Entrar</button>
+      <p class="auth-msg" id="loginMsg" aria-live="polite"></p>
+    </form>
+    <form class="auth-panel" id="panelRegister" hidden>
+      <h3 class="auth-title">Crear cuenta</h3>
+      <label class="auth-field"><span>Nombre</span><input type="text" id="regName" autocomplete="name" required></label>
+      <label class="auth-field"><span>Email</span><input type="email" id="regEmail" autocomplete="email" required></label>
+      <label class="auth-field"><span>Contraseña</span><input type="password" id="regPass" autocomplete="new-password" minlength="6" required></label>
+      <button class="auth-btn" type="submit">Crear cuenta</button>
+      <p class="auth-msg" id="regMsg" aria-live="polite"></p>
+    </form>
+  </section>
+
   <script src="../../js/script.js"></script>
+  <script type="module" src="../../js/curso.js"></script>
   <script src="../../js/carrito.js"></script>
   <script src="../../js/meditacion.js"></script>
 </body>
