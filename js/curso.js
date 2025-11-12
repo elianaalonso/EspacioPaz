@@ -142,31 +142,36 @@ function unlockLessonsIfOwned(){
 
     const src = li.dataset.src;
     const provider = li.dataset.provider || 'mp4';
-    if (!src) return;
 
     const labelEl = li.querySelector('span:nth-child(2)') || li.querySelector('span:not(.ic):not(.time)');
     const timeEl  = li.querySelector('.time') || li.appendChild(document.createElement('span'));
     timeEl.classList.add('time');
 
-    const a = document.createElement('a');
-    a.textContent = (labelEl?.textContent || '').trim();
-    a.href = '#';
-    a.dataset.src = src;
-    a.dataset.provider = provider;
+    // Si tenemos fuente (src) creamos un <a> para reproducir; si no, simplemente removemos el candado
+    if (src) {
+      const a = document.createElement('a');
+      a.textContent = (labelEl?.textContent || '').trim();
+      a.href = '#';
+      a.dataset.src = src;
+      a.dataset.provider = provider;
 
-    if (labelEl && labelEl.tagName.toLowerCase() === 'span') labelEl.replaceWith(a);
-    else li.insertBefore(a, timeEl);
+      if (labelEl && labelEl.tagName.toLowerCase() === 'span') labelEl.replaceWith(a);
+      else li.insertBefore(a, timeEl);
 
-    // icono: candado -> play
-    const ic = li.querySelector('.ic');
-    if (ic){
-      ic.classList.remove('ic--lock');
-      ic.classList.add('ic--play');
-      ic.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6l10 6-10 6z"/></svg>';
+      bindLessonClick(a);
+    } else {
+      // No hay src: conservamos el texto pero cambiamos el icono a 'play' visualmente
+      // (esto desbloquea la lección en la UI; el contenido real debe venir del backend o de data-src)
+      const ic = li.querySelector('.ic');
+      if (ic){
+        ic.classList.remove('ic--lock');
+        ic.classList.add('ic--play');
+        ic.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6l10 6-10 6z"/></svg>';
+      }
     }
 
+    // finalmente removemos la clase de bloqueo
     li.classList.remove('locked');
-    bindLessonClick(a);
   });
 
   // Recalcular duraciones si tenés esa lógica
