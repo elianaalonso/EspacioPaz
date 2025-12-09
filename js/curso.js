@@ -140,34 +140,31 @@ function unlockLessonsIfOwned(){
     // si ya tiene <a>, no hacemos nada (evita duplicados tipo "Bienvenida")
     if (li.querySelector('a')) { li.classList.remove('locked'); return; }
 
-    const src = li.dataset.src;
-    const provider = li.dataset.provider || 'mp4';
+    const src = li.dataset.src || 'https://www.youtube.com/embed/dQw4w9WgXcQ'; // Placeholder video
+    const provider = li.dataset.provider || 'youtube';
 
     const labelEl = li.querySelector('span:nth-child(2)') || li.querySelector('span:not(.ic):not(.time)');
     const timeEl  = li.querySelector('.time') || li.appendChild(document.createElement('span'));
     timeEl.classList.add('time');
 
-    // Si tenemos fuente (src) creamos un <a> para reproducir; si no, simplemente removemos el candado
-    if (src) {
-      const a = document.createElement('a');
-      a.textContent = (labelEl?.textContent || '').trim();
-      a.href = '#';
-      a.dataset.src = src;
-      a.dataset.provider = provider;
+    // Crear <a> para reproducir
+    const a = document.createElement('a');
+    a.textContent = (labelEl?.textContent || '').trim();
+    a.href = '#';
+    a.dataset.src = src;
+    a.dataset.provider = provider;
 
-      if (labelEl && labelEl.tagName.toLowerCase() === 'span') labelEl.replaceWith(a);
-      else li.insertBefore(a, timeEl);
+    if (labelEl && labelEl.tagName.toLowerCase() === 'span') labelEl.replaceWith(a);
+    else li.insertBefore(a, timeEl);
 
-      bindLessonClick(a);
-    } else {
-      // No hay src: conservamos el texto pero cambiamos el icono a 'play' visualmente
-      // (esto desbloquea la lección en la UI; el contenido real debe venir del backend o de data-src)
-      const ic = li.querySelector('.ic');
-      if (ic){
-        ic.classList.remove('ic--lock');
-        ic.classList.add('ic--play');
-        ic.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6l10 6-10 6z"/></svg>';
-      }
+    bindLessonClick(a);
+
+    // Cambiar icono a play
+    const ic = li.querySelector('.ic');
+    if (ic){
+      ic.classList.remove('ic--lock');
+      ic.classList.add('ic--play');
+      ic.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6l10 6-10 6z"/></svg>';
     }
 
     // finalmente removemos la clase de bloqueo
@@ -356,8 +353,8 @@ function playLesson(linkEl){
   playerWrap.scrollIntoView({behavior:'smooth', block:'center'});
 }
 
-// listeners en todas las lecciones con data-src
-document.querySelectorAll('.leccion a[data-src]:not([data-preview])').forEach(a=>{
+// listeners en todas las lecciones con data-src (incluyendo previews)
+document.querySelectorAll('.leccion a[data-src]').forEach(a=>{
   a.addEventListener('click', e => { e.preventDefault(); playLesson(a); });
 });
 
