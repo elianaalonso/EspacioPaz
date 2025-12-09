@@ -239,7 +239,7 @@
       const combined = [...cursos, ...meditaciones, ...rituales];
       const items = combined.filter(i=> i.status === 'publicado').slice(0,8);
       container.innerHTML = items.map(item=>{
-        const price = item.price ? (item.price.amount > 0 ? `$ ${item.price.amount}` : 'Gratis') : '';
+        const price = item.price ? (item.price.amount > 0 ? `USD ${item.price.amount}` : 'Gratis') : '';
         const img = item.image && item.image.src ? `<img src="${item.image.src}" alt="${item.image.alt||''}">` : '';
         return `
           <li class="course-card slide-up reveal">
