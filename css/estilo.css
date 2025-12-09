@@ -330,9 +330,10 @@ html, body{ overflow-x: clip; }
 }
 .price{
   white-space: nowrap;
-  font-weight: 500; font-size: 1rem; color: #413e3e; letter-spacing: 0.0187rem;
+  font-weight: 500; font-size: 0.938rem; color: #413e3e; letter-spacing: 0.0187rem;
   background:#efe9fb; border:0.0625rem solid #e3d9fb;
   padding:0.375rem 0.625rem; border-radius:0.75rem; display:inline-flex; align-items:baseline; gap:0.25rem;
+  min-width: fit-content;
 }
 .price span{ font-size:1rem }
 .price small{ font-size:0.875rem; color:var(--texto-claro) }

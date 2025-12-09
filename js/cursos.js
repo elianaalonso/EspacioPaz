@@ -51,7 +51,7 @@
 		if(item.category === 'curso' && item.area === 'reiki') cat = 'reiki';
 		if(item.category === 'curso' && item.area === 'mentoria') cat = 'mentoria';
 		// Precio
-		let price = item.price ? (item.price.amount > 0 ? `$ ${item.price.amount}` : 'Gratis') : '';
+		let price = item.price ? (item.price.amount > 0 ? `USD ${item.price.amount}` : 'Gratis') : '';
 		// Imagen
 		let img = '';
 		if (item.image && item.image.src) {
