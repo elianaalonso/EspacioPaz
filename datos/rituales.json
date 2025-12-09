@@ -12,7 +12,7 @@
   "includes": ["pdf", "audio", "carta-simbolica"],
     "status": "publicado",
     "order": 1,
-    "link": "rituales/perdon-y-liberacion.html",
+    "link": "html/rituales/perdon-y-liberacion.html",
     "tags": ["perdon","soltar","amor"]
   },
   {
@@ -28,7 +28,7 @@
     "includes": ["pdf", "afirmaciones", "ejercicio-espejo"],
     "status": "publicado",
     "order": 2,
-    "link": "rituales/amor-propio-y-merecimiento.html",
+    "link": "html/rituales/amor-propio-y-merecimiento.html",
     "tags": ["merecimiento","autoamor"]
   },
   {
@@ -44,7 +44,7 @@
     "includes": ["pdf", "carta-7-dias", "entrega-a-la-tierra"],
     "status": "publicado",
     "order": 3,
-    "link": "rituales/corte-con-el-clan.html",
+    "link": "html/rituales/corte-con-el-clan.html",
     "tags": ["clan","lealtades","liberacion"]
   },
   {
@@ -60,7 +60,7 @@
     "includes": ["pdf", "visualizacion", "ofrenda"],
     "status": "publicado",
     "order": 4,
-    "link": "rituales/abundancia-y-apertura.html",
+    "link": "html/rituales/abundancia-y-apertura.html",
     "tags": ["abundancia","gratitud","energia"]
   },
   {
@@ -76,7 +76,7 @@
     "includes": ["pdf", "cierre-fuego", "intencion-nueva"],
     "status": "publicado",
     "order": 5,
-    "link": "rituales/fin-de-ciclo-y-renacimiento.html",
+    "link": "html/rituales/fin-de-ciclo-y-renacimiento.html",
     "tags": ["cierre","renacer","proposito"]
   }
 ]

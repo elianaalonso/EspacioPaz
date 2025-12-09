@@ -13,7 +13,7 @@
     "includes": ["video", "audio", "pdf"],
     "status": "publicado",
     "order": 1,
-    "link": "meditaciones/energia-del-presente.html",
+    "link": "html/meditaciones/energia-del-presente.html",
     "tags": ["presencia","ansiedad","calma"]
   },
   {
@@ -30,7 +30,7 @@
     "includes": ["video", "audio", "respiracion"],
     "status": "publicado",
     "order": 2,
-    "link": "meditaciones/liberacion-miedo-ansiedad.html",
+    "link": "html/meditaciones/liberacion-miedo-ansiedad.html",
     "tags": ["ansiedad","miedo","respiracion"]
   },
   {
@@ -47,7 +47,7 @@
     "includes": ["video", "audio", "visualizacion"],
     "status": "publicado",
     "order": 3,
-    "link": "meditaciones/limpieza-energetica-proteccion.html",
+    "link": "html/meditaciones/limpieza-energetica-proteccion.html",
     "tags": ["limpieza","proteccion","energia"]
   },
   {
@@ -64,7 +64,7 @@
     "includes": ["video", "audio", "checklist-noche"],
     "status": "publicado",
     "order": 4,
-  "link": "meditaciones/meditacion-nocturna.html",
+  "link": "html/meditaciones/meditacion-nocturna.html",
     "tags": ["sueno","relajacion","noche"]
   },
   {
@@ -81,7 +81,7 @@
     "includes": ["video", "audio", "journal-prompts"],
     "status": "publicado",
     "order": 5,
-    "link": "meditaciones/guia-interior.html",
+    "link": "html/meditaciones/guia-interior.html",
     "tags": ["intuicion","proposito","calma"]
   }
 ]
