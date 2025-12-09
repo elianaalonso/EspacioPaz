@@ -1,4 +1,4 @@
-// ===== Scroll Reveal Animation =====
+﻿// ===== Scroll Reveal Animation =====
 function revealOnScroll() {
   const reveals = document.querySelectorAll('.reveal');
   const windowHeight = window.innerHeight;
@@ -51,14 +51,15 @@ if (ddCursos) {
 
 
 // ===== BUSCADOR con miniaturas (panel flotante) =====
-(function(){
+// Inicializar el buscador de forma robusta: si las cards se insertan dinámicamente
+// (p. ej. por `js/cursos.js`) reconstruimos el índice con un MutationObserver.
+document.addEventListener('DOMContentLoaded', () => {
   const $input  = document.getElementById('searchInput');
   const $toggle = document.getElementById('searchToggle');
   const $wrap   = document.getElementById('searchWrap');
   const $panel  = document.getElementById('searchResults');
-  const $cards  = document.querySelectorAll('.cursos-grid .curso-card');
 
-  if (!$input || !$panel || !$wrap || !$cards.length) return;
+  if (!$input || !$panel || !$wrap) return;
 
   // Abrir/cerrar input
   if ($toggle) {
@@ -72,19 +73,157 @@ if (ddCursos) {
     });
   }
 
-  // Construir índice desde las cards existentes
+  // Normalización y utilidades
   const norm = s => (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
-  const items = Array.from($cards).map(card => {
-    const title = card.querySelector('h3')?.textContent?.trim() || '';
-    const desc  = card.querySelector('p')?.textContent?.trim()  || '';
-    const img   = card.querySelector('.curso-media img')?.getAttribute('src') || '';
-    const link  = card.querySelector('.btn-cart')?.getAttribute('href') || '#';
-    return { title, desc, img, link, _t: norm(title), _d: norm(desc) };
+  let items = [];
+  let globalItems = []; // Mantener índice global separado
+
+  // Construir índice a partir del DOM (rápido y tolerante a distintas estructuras)
+  function buildIndex(){
+    const cardNodes = document.querySelectorAll('.cursos-grid .course-card, #grid .course-card, .course-card, .curso-card');
+    const seen = new Set();
+    const localItems = Array.from(cardNodes).map(card => {
+      if (seen.has(card)) return null; seen.add(card);
+      const title = (card.querySelector('h3')?.textContent || card.getAttribute('data-title') || '').trim();
+      const desc  = (card.querySelector('p')?.textContent || card.getAttribute('data-desc') || '').trim();
+      const imgEl = card.querySelector('img');
+      const img   = imgEl ? (imgEl.getAttribute('src') || '') : '';
+      const a = card.querySelector('a') || card.querySelector('.course-card__link');
+      const link  = a ? (a.getAttribute('href') || a.href || '#') : '#';
+      return { title, desc, img, link, _t: norm(title), _d: norm(desc) };
+    }).filter(Boolean);
+    
+    // Fusionar items locales con items globales, evitando duplicados
+    const existingKeys = new Set(localItems.map(it => (it.link || it.title || '').toString()));
+    items = localItems.slice();
+    for (const g of globalItems) {
+      const key = (g.link || g.title || '').toString();
+      if (!existingKeys.has(key)) { 
+        items.push(g); 
+        existingKeys.add(key); 
+      }
+    }
+    
+    try { window.__searchIndex = items; } catch(e){}
+  }
+
+  // Cargar un índice global desde JSON (para búsquedas desde páginas sin cards)
+  async function fetchJSONPaths(paths){
+    for (const p of paths){
+      try {
+        const r = await fetch(p);
+        if (!r.ok) continue; // Silenciosamente intentar siguiente ruta
+        const j = await r.json();
+        return { data: j, path: p };
+      } catch(e){ /* intentar siguiente */ }
+    }
+    return null;
+  }
+
+  async function loadGlobalIndex(){
+    if (window.__globalSearchIndex) return window.__globalSearchIndex;
+    // Construir candidatos automáticamente según la profundidad de la página actual
+    const maxUp = 6;
+    const parts = location.pathname.split('/').filter(Boolean);
+    
+    // Función para obtener el prefijo según la profundidad
+    const getPrefix = (up) => up === 0 ? '' : '../'.repeat(up);
+    
+    // Cargar los 3 archivos JSON: cursos, meditaciones y rituales
+    const allData = [];
+    const jsonFiles = ['datos/cursos.json', 'datos/meditaciones.json', 'datos/rituales.json'];
+    
+    for (const jsonFile of jsonFiles) {
+      const candidates = [];
+      // relative paths: '', ../, ../../, ... hasta maxUp
+      for (let up = 0; up <= Math.min(parts.length, maxUp); up++){
+        const prefix = getPrefix(up);
+        candidates.push(prefix + jsonFile);
+      }
+      // absolute paths
+      try { candidates.push('/' + jsonFile); } catch(e){}
+      try { candidates.push(window.location.origin + '/' + jsonFile); } catch(e){}
+
+      // Intentar cargar este archivo JSON
+      const result = await fetchJSONPaths(candidates);
+      if (result && result.data) {
+        const data = result.data;
+        // Agregar todos los items de este archivo al array global
+        const items = Array.isArray(data) ? data : (data.cursos || data.meditaciones || data.rituales || data.items || []);
+        allData.push(...items);
+      }
+    }
+    
+    // Si no se pudo cargar ningún archivo
+    if (allData.length === 0) {
+      console.warn && console.warn('search: no global index found');
+      return [];
+    }
+    
+    // Normalizar formato - ser tolerante a claves en español/inglés
+    const global = allData.map(it => {
+      const title = (it.title || it.titulo || it.nombre || it.name || '').toString().trim();
+      const desc  = (it.desc || it.short_desc || it.descripcion || it.description || it.summary || '').toString().trim();
+      const imgObj = it.image || {};
+      const img   = (imgObj.src || it.img || it.thumbnail || it.thumbnailUrl || it.cover || '').toString();
+      
+      // Obtener el link - ajustar según la categoría
+      let link = (it.link || it.url || it.href || '').toString();
+      if (!link) {
+        const slug = (it.slug || it.id || '').toString();
+        const category = (it.category || '').toString().toLowerCase();
+        if (slug) {
+          // Construir el link según la categoría
+          if (category === 'meditacion') {
+            link = `html/meditaciones/${slug}.html`;
+          } else if (category === 'ritual') {
+            link = `html/rituales/${slug}.html`;
+          } else {
+            link = `html/cursos/${slug}.html`;
+          }
+        }
+      }
+      
+      // Si sigue vacío, saltar (no útil para búsqueda)
+      if (!title) return null;
+      return { title, desc, img, link: link || '#', _t: norm(title), _d: norm(desc) };
+    }).filter(Boolean);
+    
+    window.__globalSearchIndex = global;
+    return global;
+  }
+
+  function debounce(fn, wait){ let t = null; return function(...args){ clearTimeout(t); t = setTimeout(()=> fn.apply(this, args), wait); }; }
+
+  // Inicializar y observar cambios en el DOM
+  buildIndex();
+  // Cargar en background un índice global (para páginas que no tienen cards)
+  let __globalIndexAvailable = false;
+  let __isLoadingIndex = true;
+  loadGlobalIndex().then(loadedItems => {
+    __isLoadingIndex = false;
+    if (!loadedItems || !loadedItems.length) { __globalIndexAvailable = false; return; }
+    __globalIndexAvailable = true;
+    
+    // Guardar items globales
+    globalItems = loadedItems;
+    
+    // Reconstruir índice fusionando local + global
+    buildIndex();
+    
+    console.log('Buscador: índice global cargado con', items.length, 'elementos');
+  }).catch((err)=>{ 
+    __isLoadingIndex = false;
+    __globalIndexAvailable = false; 
+    console.warn('Buscador: error al cargar índice global', err);
   });
+  const gridEl = document.getElementById('grid');
+  const mo = new MutationObserver(debounce(buildIndex, 120));
+  if (gridEl) mo.observe(gridEl, { childList: true, subtree: true });
+  else mo.observe(document.body, { childList: true, subtree: true });
 
   // Filtrado + render
-  let pos = -1; // posición activa en la lista
-  let t = null;
+  let pos = -1; let t = null;
 
   $input.addEventListener('input', () => {
     clearTimeout(t);
@@ -92,25 +231,59 @@ if (ddCursos) {
       const q = $input.value.trim();
       if (!q) { closePanel(); return; }
       const nq = norm(q);
+      
+      // Debug temporal
+      console.log('Buscando:', q, '| Normalizado:', nq, '| Items disponibles:', items.length);
+      
+      // Si está cargando, mostrar mensaje de espera
+      if (__isLoadingIndex && !items.length) {
+        $panel.innerHTML = `<div class="search-empty">Cargando índice de búsqueda...</div>`;
+        $panel.classList.add('show'); pos = -1; return;
+      }
+      
+      // Si no hay items y no pudimos cargar el índice global, avisar al usuario
+      if (!items.length && !__globalIndexAvailable && !__isLoadingIndex) {
+        $panel.innerHTML = `<div class="search-empty">No hay índice local cargado. Si abriste los archivos desde el sistema de archivos (file://), el navegador bloquea la carga de datos. Iniciá un servidor local (por ejemplo: <code>python -m http.server</code> o usando Live Server) y recargá la página para usar el buscador global.</div>`;
+        $panel.classList.add('show'); pos = -1; return;
+      }
+      
       const res = items.filter(it => it._t.includes(nq) || it._d.includes(nq)).slice(0, 6);
+      console.log('Resultados encontrados:', res.length, res.map(r => r.title));
       renderResults(res, q);
     }, 120);
   });
 
-  function highlight(text, q){
-    if (!q) return text;
-    const esc = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return text.replace(new RegExp(esc, 'ig'), m => `<mark>${m}</mark>`);
+  function highlight(text, q){ if (!q) return text; const esc = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); return text.replace(new RegExp(esc, 'ig'), m => `<mark>${m}</mark>`); }
+
+  // Función para ajustar rutas según la ubicación actual
+  function adjustPath(link) {
+    if (!link || link === '#') return link;
+    
+    // Si el link ya es absoluto o comienza con http, devolverlo tal cual
+    if (link.startsWith('http://') || link.startsWith('https://') || link.startsWith('/')) return link;
+    
+    // Calcular profundidad actual (cuántos niveles de carpetas tiene la página actual)
+    const currentPath = location.pathname;
+    const parts = currentPath.split('/').filter(Boolean);
+    
+    // Si estamos en la raíz (index.html), no necesitamos ajustar
+    if (parts.length <= 1) {
+      return link;
+    }
+    
+    // Si estamos en una subcarpeta, necesitamos subir niveles
+    // Por ejemplo, si estamos en html/meditaciones/algo.html, necesitamos ../../
+    const depth = parts.length - 1; // restamos 1 porque el último es el archivo
+    const prefix = '../'.repeat(depth);
+    
+    return prefix + link;
   }
 
   function renderResults(list, q){
-    if (!list.length) {
-      $panel.innerHTML = `<div class="search-empty">No se encontraron cursos para “${q}”.</div>`;
-      $panel.classList.add('show'); pos = -1; return;
-    }
+    if (!list.length) { $panel.innerHTML = `<div class="search-empty">No se encontraron resultados para “${q}”.</div>`; $panel.classList.add('show'); pos = -1; return; }
     $panel.innerHTML = list.map((it,i)=>`
-      <a class="search-item" href="${it.link}" data-idx="${i}">
-        <span class="search-thumb"><img src="${it.img}" alt=""></span>
+      <a class="search-item" href="${adjustPath(it.link)}" data-idx="${i}">
+        <span class="search-thumb"><img src="${adjustPath(it.img)}" alt=""></span>
         <span class="search-text">
           <h4>${highlight(it.title, q)}</h4>
           <p>${highlight(it.desc, q)}</p>
@@ -118,71 +291,29 @@ if (ddCursos) {
       </a>
     `).join('');
     $panel.classList.add('show'); pos = -1;
-
-    // click fuera cierra (se re-registra tras render)
-    setTimeout(() => {
-      document.addEventListener('click', onDocClick, { once:true });
-    }, 0);
+    setTimeout(() => { try { document.addEventListener('click', onDocClick, { once:true }); } catch(e){} }, 0);
   }
 
-  function onDocClick(e){
-    if (!$wrap.contains(e.target)) closePanel();
-    else document.addEventListener('click', onDocClick, { once:true }); // seguir escuchando hasta click fuera
-  }
+  function onDocClick(e){ if (!$wrap.contains(e.target)) closePanel(); else { try { document.addEventListener('click', onDocClick, { once:true }); } catch(e){} } }
 
-  function closePanel(){
-    $panel.classList.remove('show');
-    $panel.innerHTML = '';
-    $input.value = '';
-    pos = -1;
-  }
+  function closePanel(){ $panel.classList.remove('show'); $panel.innerHTML = ''; $input.value = ''; pos = -1; }
 
   // Teclado: / enfoca, Esc cierra, ▲▼ navega, Enter abre
   window.addEventListener('keydown', (e) => {
-    if (e.key === '/' && document.activeElement !== $input) {
-      e.preventDefault(); $wrap.classList.add('open'); $input.focus(); return;
-    }
+    if (e.key === '/' && document.activeElement !== $input) { e.preventDefault(); $wrap.classList.add('open'); $input.focus(); return; }
     if (e.key === 'Escape') { closePanel(); $wrap.classList.remove('open'); $input.blur(); return; }
-
     if (!$panel.classList.contains('show')) return;
     const $items = Array.from($panel.querySelectorAll('.search-item'));
     if (!$items.length) return;
-
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      pos = (pos + 1) % $items.length;
-      setActive($items, pos);
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      pos = (pos - 1 + $items.length) % $items.length;
-      setActive($items, pos);
-    } else if (e.key === 'Enter' && pos >= 0) {
-      e.preventDefault();
-      $items[pos].click();
-    }
+    if (e.key === 'ArrowDown') { e.preventDefault(); pos = (pos + 1) % $items.length; setActive($items, pos); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); pos = (pos - 1 + $items.length) % $items.length; setActive($items, pos); }
+    else if (e.key === 'Enter' && pos >= 0) { e.preventDefault(); $items[pos].click(); }
   });
 
-  function setActive(nodes, idx){
-    nodes.forEach(n => n.classList.remove('active'));
-    const n = nodes[idx];
-    if (n) {
-      n.classList.add('active');
-      n.scrollIntoView({ block: 'nearest' });
-    }
-  }
+  function setActive(nodes, idx){ nodes.forEach(n => n.classList.remove('active')); const n = nodes[idx]; if (n) { n.classList.add('active'); n.scrollIntoView({ block: 'nearest' }); } }
 
-  // Cierre automático al sacar el mouse del área (input + lupa + panel)
-  $wrap.addEventListener('mouseleave', () => {
-    if ($wrap.classList.contains('open')) {
-      setTimeout(() => {
-        if (! $wrap.matches(':hover')) {
-          $wrap.classList.remove('open');
-          closePanel();
-        }
-      }, 200);
-    }
-  });
-})();
+  $wrap.addEventListener('mouseleave', () => { if ($wrap.classList.contains('open')) { setTimeout(() => { if (! $wrap.matches(':hover')) { $wrap.classList.remove('open'); closePanel(); } }, 200); } });
+});
 
 // ===== Newsletter (sin recargar, con mensajito) =====
 (() => {
@@ -1053,8 +1184,10 @@ function reiniciarAuto() {
   autoSlide = setInterval(siguienteOpinion, 5000);
 }
 
-document.getElementById('prevOpinion').onclick = () => anteriorOpinion(true);
-document.getElementById('nextOpinion').onclick = () => siguienteOpinion(true);
+const _prevOpinionBtn = document.getElementById('prevOpinion');
+const _nextOpinionBtn = document.getElementById('nextOpinion');
+if (_prevOpinionBtn) _prevOpinionBtn.onclick = () => anteriorOpinion(true);
+if (_nextOpinionBtn) _nextOpinionBtn.onclick = () => siguienteOpinion(true);
 
 // Inicializar
 mostrarOpinion(idx, 'der');
@@ -1115,8 +1248,10 @@ autoSlide = setInterval(siguienteOpinion, 5000);
     clearInterval(autoSlide);
     autoSlide = setInterval(siguienteOpinion, 5000);
   }
-  document.getElementById('prevOpinion').onclick = () => anteriorOpinion(true);
-  document.getElementById('nextOpinion').onclick = () => siguienteOpinion(true);
+  const _prevOpinionBtn2 = document.getElementById('prevOpinion');
+  const _nextOpinionBtn2 = document.getElementById('nextOpinion');
+  if (_prevOpinionBtn2) _prevOpinionBtn2.onclick = () => anteriorOpinion(true);
+  if (_nextOpinionBtn2) _nextOpinionBtn2.onclick = () => siguienteOpinion(true);
   mostrarOpinion(idx, 'der');
   autoSlide = setInterval(siguienteOpinion, 5000);
 })();
