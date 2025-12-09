@@ -100,6 +100,311 @@ box-shadow:0 10px 24px rgba(0,0,0,.06);
 .btn-primario:focus-visible{ outline:2px solid var(--dorado); outline-offset:2px; }
 .btn-suave{ background:#fff; color:var(--texto); border-color:rgba(0,0,0,.12); }
 
+/* === ANIMACIONES DELICADAS === */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 10px 30px rgba(182, 155, 214, 0.2);
+  }
+  50% {
+    box-shadow: 0 10px 40px rgba(182, 155, 214, 0.4);
+  }
+}
+
+@keyframes gentlePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+/* Animación del hero */
+.sobre-hero {
+  animation: fadeIn 0.8s ease-out;
+}
+
+.sobre-hero-bg {
+  animation: scaleIn 1.2s ease-out, float 6s ease-in-out infinite 1.2s;
+}
+
+.sobre-hero h1 {
+  animation: fadeInUp 0.8s ease-out 0.2s backwards;
+}
+
+.sobre-hero-sub {
+  animation: fadeInUp 0.8s ease-out 0.4s backwards;
+}
+
+.sobre-hero-cta {
+  animation: fadeInUp 0.8s ease-out 0.6s backwards;
+}
+
+/* Animación de la foto */
+.sobre-foto {
+  animation: scaleIn 0.8s ease-out 0.3s backwards, glow 3s ease-in-out infinite 1s;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.sobre-foto:hover {
+  transform: scale(1.08) rotate(2deg);
+  box-shadow: 0 15px 40px rgba(182, 155, 214, 0.3);
+}
+
+/* Animación de presentación */
+.sobre-presentacion {
+  animation: fadeInUp 0.8s ease-out 0.2s backwards;
+}
+
+.sobre-presentacion-texto h2 {
+  animation: slideInRight 0.8s ease-out 0.4s backwards;
+}
+
+.sobre-presentacion-texto p {
+  animation: slideInRight 0.8s ease-out 0.5s backwards;
+}
+
+/* Animación de cards del recorrido */
+.sobre-card {
+  animation: fadeInUp 0.8s ease-out backwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sobre-recorrido .sobre-card {
+  animation-delay: 0.2s;
+}
+
+.sobre-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.sobre-card h3 {
+  transition: color 0.3s ease;
+}
+
+.sobre-card:hover h3 {
+  color: var(--lila);
+}
+
+.sobre-lista li {
+  opacity: 0;
+  animation: slideInLeft 0.6s ease-out forwards;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.sobre-lista li:nth-child(1) { animation-delay: 0.4s; }
+.sobre-lista li:nth-child(2) { animation-delay: 0.5s; }
+.sobre-lista li:nth-child(3) { animation-delay: 0.6s; }
+.sobre-lista li:nth-child(4) { animation-delay: 0.7s; }
+
+.sobre-card:hover .sobre-lista li {
+  transform: translateX(4px);
+  color: var(--lila);
+}
+
+/* Animación de imagen del recorrido */
+.sobre-media {
+  animation: fadeInUp 0.8s ease-out 0.4s backwards;
+}
+
+.sobre-img {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.sobre-img:hover {
+  transform: scale(1.03) rotate(-1deg);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+/* Animación del propósito */
+.sobre-proposito {
+  animation: scaleIn 0.8s ease-out backwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sobre-proposito:hover {
+  transform: scale(1.01);
+  box-shadow: 0 12px 30px rgba(182, 155, 214, 0.2);
+}
+
+.sobre-proposito h3 {
+  animation: fadeInUp 0.6s ease-out 0.2s backwards;
+}
+
+.sobre-proposito p {
+  animation: fadeInUp 0.6s ease-out 0.3s backwards;
+}
+
+/* Animación del CTA final */
+.sobre-cta {
+  animation: fadeInUp 0.8s ease-out backwards;
+}
+
+.sobre-cta-card {
+  animation: scaleIn 0.8s ease-out 0.2s backwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sobre-cta-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.sobre-cta-card h3 {
+  animation: fadeInUp 0.6s ease-out 0.4s backwards;
+  transition: color 0.3s ease;
+}
+
+.sobre-cta-card:hover h3 {
+  color: var(--lila);
+}
+
+.sobre-cta-card p {
+  animation: fadeInUp 0.6s ease-out 0.5s backwards;
+}
+
+.sobre-cta-actions {
+  animation: fadeInUp 0.6s ease-out 0.6s backwards;
+}
+
+/* Animaciones de botones */
+.btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;
+}
+
+.btn:hover:before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primario:hover {
+  box-shadow: 0 12px 30px rgba(182, 155, 214, 0.5);
+}
+
+.btn-suave {
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-suave:hover {
+  background: var(--marfil);
+  border-color: var(--lila);
+}
+
+/* Efecto sutil en títulos */
+h2, h3 {
+  position: relative;
+}
+
+h2:after, h3:after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--lila), var(--rosa));
+  transition: width 0.4s ease;
+}
+
+.sobre-card:hover h3:after,
+.sobre-proposito:hover h3:after,
+.sobre-cta-card:hover h3:after {
+  width: 40px;
+}
+
+/* Accesibilidad: reducir animaciones */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .sobre-hero-bg {
+    animation: fadeIn 0.01ms !important;
+  }
+}
+
 /* Utilidades */
 .sr-only{
   position:absolute; width:1px; height:1px; padding:0; margin:-1px;
@@ -110,4 +415,24 @@ box-shadow:0 10px 24px rgba(0,0,0,.06);
 @media (min-width:48rem){
   .sobre-presentacion{ grid-template-columns:auto 1fr; }
   .sobre-recorrido{ grid-template-columns:1fr 1fr; align-items:start; }
+  
+  /* Animaciones específicas para desktop */
+  .sobre-recorrido .sobre-card {
+    animation: slideInLeft 0.8s ease-out 0.2s backwards;
+  }
+  
+  .sobre-recorrido .sobre-media {
+    animation: slideInRight 0.8s ease-out 0.4s backwards;
+  }
+}
+
+@media (max-width: 48rem) {
+  /* Reducir intensidad de hover en móviles */
+  .sobre-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .sobre-foto:hover {
+    transform: scale(1.05);
+  }
 }

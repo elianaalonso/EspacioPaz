@@ -1,3 +1,51 @@
+/* === ANIMACIONES === */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 /* === Blog grid y cards === */
 .blog-grid {
   display: grid;
@@ -8,17 +56,25 @@
 
 .blog-card {
   background: #fff;
-  border-radius: 1.5rem; /* 24px */
+  border-radius: 1.5rem;
   box-shadow: 0 6px 20px rgba(0,0,0,0.06);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: fadeInUp 0.6s ease-out backwards;
 }
 
+.blog-card:nth-child(1) { animation-delay: 0.1s; }
+.blog-card:nth-child(2) { animation-delay: 0.2s; }
+.blog-card:nth-child(3) { animation-delay: 0.3s; }
+.blog-card:nth-child(4) { animation-delay: 0.4s; }
+.blog-card:nth-child(5) { animation-delay: 0.5s; }
+.blog-card:nth-child(6) { animation-delay: 0.6s; }
+
 .blog-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(0,0,0,0.1);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 16px 40px rgba(182, 155, 214, 0.25);
 }
 
 .blog-card img {
@@ -26,6 +82,12 @@
   height: 14rem;
   object-fit: cover;
   display: block;
+  transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.blog-card:hover img {
+  transform: scale(1.08);
+  filter: brightness(1.1);
 }
 
 .blog-card .card-body {
@@ -37,31 +99,52 @@
 
 .post-date {
   font-size: 0.875rem;
-  color: #b69bd6; /* lila */
+  color: #b69bd6;
   font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.blog-card:hover .post-date {
+  color: #9876c0;
 }
 
 .post-title {
   font-size: 1.25rem;
   line-height: 1.35;
   color: #333;
+  transition: color 0.3s ease;
+}
+
+.blog-card:hover .post-title {
+  color: #b69bd6;
 }
 
 .post-excerpt {
   font-size: 1rem;
   color: #555;
   flex-grow: 1;
+  transition: color 0.3s ease;
+}
+
+.blog-card:hover .post-excerpt {
+  color: #333;
 }
 
 .btn-link {
   align-self: flex-start;
   font-size: 0.95rem;
-  color: #c8a553; /* dorado */
+  color: #c8a553;
   font-weight: 600;
   text-decoration: none;
   border-bottom: 2px solid transparent;
-  transition: border-color 0.2s ease, color 0.2s ease;
+  transition: border-color 0.3s ease, color 0.3s ease;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
 }
+
 .btn-link:hover,
 .btn-link:focus-visible {
   color: #a88634;
@@ -92,40 +175,69 @@
   justify-content: center;
   padding: 0 0 2.5rem;
 }
+
 .btn-load-more {
   padding: 0.8rem 1.25rem;
   border-radius: 999px;
   border: 1px solid #e5e5e5;
-  background: #f8f5f0; /* marfil */
+  background: #f8f5f0;
   font-weight: 600;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
+
+.btn-load-more:before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(182, 155, 214, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;
+}
+
+.btn-load-more:hover:before {
+  width: 300px;
+  height: 300px;
+}
+
 .btn-load-more:hover,
 .btn-load-more:focus-visible {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(182, 155, 214, 0.25);
+  background: #fff;
+  border-color: #b69bd6;
   outline: none;
 }
+
 .btn-load-more[disabled] {
   opacity: 0.6;
   cursor: default;
   transform: none;
   box-shadow: none;
 }
+
+/* === Hero === */
 .hero-blog {
   position: relative;
-  background: #f8f5f0; /* marfil */
+  background: #f8f5f0;
   padding: 4rem 2rem;
   text-align: center;
+  animation: fadeIn 0.8s ease-out;
 }
 
 .hero-blog::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.25); /* sombra suave */
+  background: rgba(0,0,0,0.25);
   border-radius: inherit;
+  animation: fadeIn 1s ease-out;
 }
 
 .hero-blog .hero-content {
@@ -134,15 +246,26 @@
   color: #fff;
 }
 
+.hero-blog h1 {
+  animation: fadeInUp 0.8s ease-out 0.2s backwards;
+}
+
+.hero-blog p {
+  animation: fadeInUp 0.8s ease-out 0.4s backwards;
+}
+
 /* === Modal de artículos === */
 .blog-modal {
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: 99999;
   display: none;
   align-items: center;
   justify-content: center;
   padding: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  animation: modalFadeIn 0.3s ease;
 }
 
 .blog-modal[aria-hidden="false"] {
@@ -152,9 +275,8 @@
 .blog-modal__overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
   cursor: pointer;
+  z-index: 1;
 }
 
 .blog-modal__content {
@@ -166,17 +288,7 @@
   overflow-y: auto;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   animation: modalSlideIn 0.3s ease;
-}
-
-@keyframes modalSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  z-index: 2;
 }
 
 .blog-modal__close {
@@ -192,13 +304,15 @@
   border: none;
   border-radius: 50%;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
   z-index: 10;
+  animation: scaleIn 0.4s ease 0.2s backwards;
 }
 
 .blog-modal__close:hover {
   background: #fff;
-  transform: scale(1.1);
+  transform: scale(1.15) rotate(90deg);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .blog-modal__close svg {
@@ -209,12 +323,14 @@
 
 .blog-modal__article {
   padding: 2.5rem;
+  animation: fadeIn 0.5s ease 0.2s backwards;
 }
 
 .blog-modal__header {
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid #e5e5e5;
+  animation: fadeInUp 0.6s ease 0.3s backwards;
 }
 
 .blog-modal__header .post-date {
@@ -223,6 +339,7 @@
   font-size: 0.875rem;
   color: #b69bd6;
   font-weight: 500;
+  animation: fadeInUp 0.6s ease 0.4s backwards;
 }
 
 .blog-modal__header h1 {
@@ -230,16 +347,19 @@
   line-height: 1.25;
   color: #333;
   margin: 0;
+  animation: fadeInUp 0.6s ease 0.5s backwards;
 }
 
 .blog-modal__body {
   font-size: 1.05rem;
   line-height: 1.7;
   color: #555;
+  animation: fadeInUp 0.6s ease 0.6s backwards;
 }
 
 .blog-modal__body p {
   margin-bottom: 1.25rem;
+  transition: color 0.2s ease;
 }
 
 .blog-modal__body h2 {
@@ -247,6 +367,19 @@
   margin-top: 2rem;
   margin-bottom: 1rem;
   color: #333;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.blog-modal__body h2:after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #b69bd6, #f4d9e6);
+  border-radius: 2px;
 }
 
 .blog-modal__body h3 {
@@ -254,6 +387,11 @@
   margin-top: 1.5rem;
   margin-bottom: 0.75rem;
   color: #444;
+  transition: color 0.3s ease;
+}
+
+.blog-modal__body h3:hover {
+  color: #b69bd6;
 }
 
 .blog-modal__body ul, .blog-modal__body ol {
@@ -268,11 +406,23 @@
 .blog-modal__body strong {
   color: #333;
   font-weight: 600;
+  position: relative;
 }
 
 .blog-modal__body em {
   color: #b69bd6;
   font-style: italic;
+}
+
+/* Accesibilidad: reducir animaciones */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Responsive */
@@ -294,13 +444,4 @@
   .blog-modal__body {
     font-size: 1rem;
   }
-}
-
-/* Fix button styling */
-.btn-link {
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font-family: inherit;
 }

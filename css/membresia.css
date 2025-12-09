@@ -177,10 +177,312 @@
   margin:.5rem 0 0; font-size:.875rem; color: var(--texto-claro);
 }
 
+/* === ANIMACIONES === */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Aplicar animaciones a elementos */
+.membresia-hero {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.membresia-hero .pill {
+  animation: fadeInUp 0.8s ease-out 0.1s backwards;
+}
+
+.membresia-hero h1 {
+  animation: fadeInUp 0.8s ease-out 0.2s backwards;
+}
+
+.membresia-hero > .m-wrap > p {
+  animation: fadeInUp 0.8s ease-out 0.3s backwards;
+}
+
+.m-usp {
+  animation: fadeInUp 0.8s ease-out 0.4s backwards;
+}
+
+.m-usp li {
+  animation: scaleIn 0.6s ease-out backwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.m-usp li:nth-child(1) { animation-delay: 0.5s; }
+.m-usp li:nth-child(2) { animation-delay: 0.6s; }
+.m-usp li:nth-child(3) { animation-delay: 0.7s; }
+
+.m-usp li:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.12);
+}
+
+.m-trust {
+  animation: fadeInUp 0.8s ease-out 0.8s backwards;
+}
+
+.m-trust span {
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.m-trust span:hover {
+  transform: translateY(-2px);
+  background: #fff;
+}
+
+.m-cta {
+  animation: fadeInUp 0.8s ease-out 0.9s backwards;
+}
+
+/* Animaciones de planes */
+.plan-card {
+  animation: fadeInUp 0.8s ease-out backwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.plan-card:nth-child(1) { animation-delay: 0.2s; }
+.plan-card:nth-child(2) { animation-delay: 0.4s; }
+
+.plan-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.15);
+}
+
+.plan-card.featured {
+  animation: scaleIn 0.8s ease-out 0.4s backwards;
+}
+
+.plan-card.featured:hover {
+  border-color: var(--rosa);
+  box-shadow: 0 20px 40px rgba(182, 155, 214, 0.3);
+}
+
+.plan-card .tag {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.plan-card header h3 {
+  transition: color 0.3s ease;
+}
+
+.plan-card:hover header h3 {
+  color: var(--lila);
+}
+
+.plan-price {
+  transition: transform 0.3s ease;
+}
+
+.plan-card:hover .plan-price {
+  transform: scale(1.08);
+}
+
+.plan-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.plan-list li:before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--lila);
+  font-weight: bold;
+}
+
+.plan-card:hover .plan-list li {
+  transform: translateX(4px);
+  color: var(--texto);
+}
+
+.plan-cta {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.plan-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(182, 155, 214, 0.3);
+}
+
+/* Animaciones de beneficios */
+.membresia-beneficios .m-subtitle {
+  animation: fadeInUp 0.8s ease-out backwards;
+}
+
+.benefit {
+  animation: fadeInUp 0.8s ease-out backwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.benefit:nth-child(1) { animation-delay: 0.2s; }
+.benefit:nth-child(2) { animation-delay: 0.3s; }
+.benefit:nth-child(3) { animation-delay: 0.4s; }
+
+.benefit:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+}
+
+.benefit h4 {
+  transition: color 0.3s ease;
+}
+
+.benefit:hover h4 {
+  color: var(--lila);
+}
+
+/* Animaciones FAQ */
+.membresia-faq .m-subtitle {
+  animation: fadeInUp 0.8s ease-out backwards;
+}
+
+.faq {
+  animation: fadeInUp 0.8s ease-out backwards;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.faq:nth-child(2) { animation-delay: 0.1s; }
+.faq:nth-child(3) { animation-delay: 0.2s; }
+.faq:nth-child(4) { animation-delay: 0.3s; }
+.faq:nth-child(5) { animation-delay: 0.4s; }
+
+.faq:hover {
+  transform: translateX(4px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+  border-color: var(--lila);
+}
+
+.faq summary {
+  transition: color 0.3s ease;
+}
+
+.faq:hover summary {
+  color: var(--lila);
+}
+
+.faq[open] summary {
+  color: var(--lila);
+  margin-bottom: 0.5rem;
+}
+
+/* Efecto shimmer en botones principales */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-primary:hover:before {
+  left: 100%;
+}
+
+/* Accesibilidad: reducir animaciones */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* === RESPONSIVE === */
 @media (max-width: 40rem){
   .membresia-hero{ padding: 2rem 1rem; }
   .membresia-hero h1{ font-size: 1.6rem; }
   .m-usp{ grid-template-columns: 1fr 1fr; }
   .plan-price{ font-size: 1.25rem; }
+  
+  /* Reducir animaciones en móvil para mejor performance */
+  .plan-card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .benefit:hover {
+    transform: translateY(-3px);
+  }
 }
