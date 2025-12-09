@@ -232,9 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!q) { closePanel(); return; }
       const nq = norm(q);
       
-      // Debug temporal
-      console.log('Buscando:', q, '| Normalizado:', nq, '| Items disponibles:', items.length);
-      
       // Si está cargando, mostrar mensaje de espera
       if (__isLoadingIndex && !items.length) {
         $panel.innerHTML = `<div class="search-empty">Cargando índice de búsqueda...</div>`;
@@ -248,7 +245,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       const res = items.filter(it => it._t.includes(nq) || it._d.includes(nq)).slice(0, 6);
-      console.log('Resultados encontrados:', res.length, res.map(r => r.title));
       renderResults(res, q);
     }, 120);
   });
