@@ -88,64 +88,64 @@
   <!-- GRID BLOG -->
   <section class="blog-grid container" id="blogGrid">
     <!-- Visibles al inicio -->
-    <article class="blog-card reveal">
+    <article class="blog-card reveal" data-article="presente">
       <div class="img-color img-lila" aria-hidden="true"></div>
       <div class="card-body">
         <span class="post-date">10 septiembre 2025</span>
         <h2 class="post-title">El poder de vivir el presente</h2>
         <p class="post-excerpt">Aprendé a soltar la ansiedad del futuro y el peso del pasado para habitar plenamente tu ahora.</p>
-        <a href="#" class="btn-link">Leer más</a>
+        <button class="btn-link" data-open-modal>Leer más</button>
       </div>
     </article>
 
-    <article class="blog-card reveal">
+    <article class="blog-card reveal" data-article="gong">
       <div class="img-color img-rosa" aria-hidden="true"></div>
       <div class="card-body">
         <span class="post-date">2 septiembre 2025</span>
         <h2 class="post-title">Sanación con baños de gong</h2>
         <p class="post-excerpt">Descubrí cómo el sonido puede transformar tus emociones y liberar memorias profundas.</p>
-        <a href="#" class="btn-link">Leer más</a>
+        <button class="btn-link" data-open-modal>Leer más</button>
       </div>
     </article>
 
-    <article class="blog-card reveal">
+    <article class="blog-card reveal" data-article="flores-bach">
       <div class="img-color img-marfil" aria-hidden="true"></div>
       <div class="card-body">
         <span class="post-date">28 agosto 2025</span>
         <h2 class="post-title">Flores de Bach para el equilibrio emocional</h2>
         <p class="post-excerpt">Una guía práctica para conocer las esencias y cómo aplicarlas en tu vida cotidiana.</p>
-        <a href="#" class="btn-link">Leer más</a>
+        <button class="btn-link" data-open-modal>Leer más</button>
       </div>
     </article>
 
     <!-- Ocultos / Lazy (se muestran con "Cargar más") -->
-    <article class="blog-card reveal" data-lazy="true">
+    <article class="blog-card reveal" data-lazy="true" data-article="respiracion">
       <div class="img-color img-lavanda" aria-hidden="true"></div>
       <div class="card-body">
         <span class="post-date">20 agosto 2025</span>
         <h2 class="post-title">Respirar para calmar el sistema nervioso</h2>
         <p class="post-excerpt">Ejercicios simples para regular tu energía y volver al eje en minutos.</p>
-        <a href="#" class="btn-link">Leer más</a>
+        <button class="btn-link" data-open-modal>Leer más</button>
       </div>
     </article>
 
-    <article class="blog-card reveal" data-lazy="true">
+    <article class="blog-card reveal" data-lazy="true" data-article="rituales-cierre">
       <div class="img-color img-dorado" aria-hidden="true"></div>
       <div class="card-body">
         <span class="post-date">12 agosto 2025</span>
         <h2 class="post-title">Rituales de cierre: 7 días para soltar</h2>
         <p class="post-excerpt">Un paso a paso simbólico para despedirte de lo que ya cumplió su ciclo.</p>
-        <a href="#" class="btn-link">Leer más</a>
+        <button class="btn-link" data-open-modal>Leer más</button>
       </div>
     </article>
 
-    <article class="blog-card reveal" data-lazy="true">
+    <article class="blog-card reveal" data-lazy="true" data-article="reiki-pasos">
       <div class="img-color img-rosa" aria-hidden="true"></div>
       <div class="card-body">
         <span class="post-date">5 agosto 2025</span>
         <h2 class="post-title">Primeros pasos con Reiki</h2>
         <p class="post-excerpt">Cómo iniciar tu práctica y sostenerla de un modo simple y amoroso.</p>
-        <a href="#" class="btn-link">Leer más</a>
+        <button class="btn-link" data-open-modal>Leer más</button>
       </div>
     </article>
   </section>
@@ -185,6 +185,25 @@
     <small>© 2025 Espacio Paz — Todos los derechos reservados.</small>
   </div>
 </footer>
+
+<!-- Modal para artículos -->
+<div class="blog-modal" id="blogModal" aria-hidden="true">
+  <div class="blog-modal__overlay" id="modalOverlay"></div>
+  <div class="blog-modal__content" role="dialog" aria-labelledby="modalTitle">
+    <button class="blog-modal__close" id="modalClose" type="button" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18"/>
+      </svg>
+    </button>
+    <article class="blog-modal__article">
+      <header class="blog-modal__header">
+        <span class="post-date" id="modalDate"></span>
+        <h1 id="modalTitle"></h1>
+      </header>
+      <div class="blog-modal__body" id="modalBody"></div>
+    </article>
+  </div>
+</div>
 
 <!-- Scripts -->
 <script src="../js/script.js"></script>
