@@ -246,3 +246,316 @@
 
 /* A11y */
 :focus-visible{ outline:2px solid var(--dorado); outline-offset:2px; }
+
+/* ========================================= 
+   ANIMACIONES Y DINAMISMO
+========================================= */
+
+/* Animación de entrada del hero */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Animación inicial del hero */
+.courses-hero__inner {
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.courses-hero__title {
+  animation: fadeInUp 0.8s ease-out 0.1s backwards;
+}
+
+.courses-hero__subtitle {
+  animation: fadeInUp 0.8s ease-out 0.2s backwards;
+}
+
+.courses-hero__search {
+  animation: fadeInUp 0.8s ease-out 0.3s backwards;
+}
+
+/* Animación de entrada de las cards */
+.course-card {
+  opacity: 0;
+  animation: scaleIn 0.5s ease-out forwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Delay escalonado para las cards */
+.course-card:nth-child(1) { animation-delay: 0.1s; }
+.course-card:nth-child(2) { animation-delay: 0.15s; }
+.course-card:nth-child(3) { animation-delay: 0.2s; }
+.course-card:nth-child(4) { animation-delay: 0.25s; }
+.course-card:nth-child(5) { animation-delay: 0.3s; }
+.course-card:nth-child(6) { animation-delay: 0.35s; }
+.course-card:nth-child(7) { animation-delay: 0.4s; }
+.course-card:nth-child(8) { animation-delay: 0.45s; }
+.course-card:nth-child(9) { animation-delay: 0.5s; }
+
+/* Hover effect mejorado en cards */
+.course-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 32px rgba(182, 155, 214, 0.25);
+}
+
+/* Animación de la imagen al hover */
+.course-card__media img {
+  transition: transform 0.5s ease;
+}
+
+.course-card:hover .course-card__media img {
+  transform: scale(1.1);
+}
+
+/* Efecto de brillo en el badge/precio */
+.price {
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.course-card:hover .price {
+  transform: scale(1.05);
+}
+
+/* Animación del botón de agregar al carrito */
+.course-card__meta .btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.course-card__meta .btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;
+}
+
+.course-card__meta .btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.course-card__meta .btn:active {
+  transform: scale(0.95);
+}
+
+/* Animación de los filtros */
+.chip {
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.chip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: var(--lila);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.chip:hover::after {
+  opacity: 0.1;
+}
+
+.chip.is-active {
+  transform: scale(1.05);
+  background: var(--lavanda);
+}
+
+/* Animación del sidebar */
+.courses-sidebar {
+  animation: fadeIn 0.6s ease-out 0.2s backwards;
+}
+
+.courses-filter .chip {
+  animation: fadeInUp 0.4s ease-out backwards;
+}
+
+.courses-filter .chip:nth-child(1) { animation-delay: 0.3s; }
+.courses-filter .chip:nth-child(2) { animation-delay: 0.35s; }
+.courses-filter .chip:nth-child(3) { animation-delay: 0.4s; }
+.courses-filter .chip:nth-child(4) { animation-delay: 0.45s; }
+.courses-filter .chip:nth-child(5) { animation-delay: 0.5s; }
+.courses-filter .chip:nth-child(6) { animation-delay: 0.55s; }
+
+/* Loading state para cuando se filtran cursos */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.courses-grid.is-filtering .course-card {
+  animation: pulse 0.6s ease-in-out;
+}
+
+/* Transición suave al mostrar/ocultar cards */
+.course-card[style*="display: none"] {
+  display: none !important;
+}
+
+.course-card[style*="display: block"],
+.course-card:not([style*="display"]) {
+  display: flex;
+}
+
+/* Animación del selector de ordenamiento */
+.courses .select {
+  transition: all 0.2s ease;
+}
+
+.courses .select:hover {
+  border-color: var(--lila);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(22,14,26,.1);
+}
+
+/* Efecto de onda al hacer click */
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.chip:active::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: var(--lila);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  animation: ripple 0.6s ease-out;
+}
+
+/* Animación de contador de resultados */
+.count {
+  display: inline-block;
+  animation: fadeInUp 0.4s ease-out;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Reducir animaciones para usuarios con preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Feedback visual del botón "Agregado" */
+.add-cart.added {
+  background: #4CAF50 !important;
+  color: #fff !important;
+  transform: scale(1.05);
+  pointer-events: none;
+}
+
+/* Animación del carrito en el navbar */
+@keyframes cartBump {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.cart-btn.bump {
+  animation: cartBump 0.4s ease;
+}
+
+/* Efecto de partículas al agregar al carrito (opcional) */
+@keyframes particle {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Transición suave en las descripciones truncadas */
+.course-card__desc {
+  transition: all 0.3s ease;
+}
+
+.course-card:hover .course-card__desc {
+  color: var(--text);
+}
+
+/* Efecto de brillo en las imágenes placeholder */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.course-card__media:not(:has(img)) {
+  background: linear-gradient(
+    90deg,
+    var(--lavanda) 0%,
+    var(--rosa) 50%,
+    var(--lavanda) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}

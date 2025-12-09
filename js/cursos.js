@@ -2,6 +2,51 @@
 	const $  = (s, c=document)=>c.querySelector(s);
 	const $$ = (s, c=document)=>Array.from(c.querySelectorAll(s));
 
+	// Efecto typing en el placeholder del buscador
+	const heroInput = $('#q');
+	if(heroInput){
+		const texts = [
+			'Buscar cursos...',
+			'Buscar meditaciones...',
+			'Buscar rituales...',
+			'Buscar Reiki...',
+			'Buscar biodescodificación...'
+		];
+		let textIndex = 0;
+		let charIndex = 0;
+		let isDeleting = false;
+
+		function typeEffect(){
+			const currentText = texts[textIndex];
+			let typingSpeed = 100; // Velocidad de escritura
+			
+			if(!isDeleting){
+				heroInput.placeholder = currentText.substring(0, charIndex + 1);
+				charIndex++;
+				
+				if(charIndex === currentText.length){
+					isDeleting = true;
+					typingSpeed = 2000; // Pausa al terminar de escribir
+				}
+			} else {
+				heroInput.placeholder = currentText.substring(0, charIndex - 1);
+				charIndex--;
+				typingSpeed = 50; // Velocidad de borrado
+				
+				if(charIndex === 0){
+					isDeleting = false;
+					textIndex = (textIndex + 1) % texts.length;
+					typingSpeed = 500; // Pausa antes de escribir el siguiente
+				}
+			}
+			
+			setTimeout(typeEffect, typingSpeed);
+		}
+		
+		// Iniciar el efecto después de un pequeño delay
+		setTimeout(typeEffect, 1000);
+	}
+
 	// Navbar: toggle menú en mobile
 	const navToggle = $('.nav-toggle');
 	const menu = $('#menu');
@@ -94,11 +139,34 @@
 	}
 	// Filtrado
 	function applyFilter(cat){
-		$$('#grid .course-card').forEach(li=>{
-			const cats = (li.dataset.cats||'').split(',');
-			li.style.display = (cat==='todos' || cats.includes(cat)) ? '' : 'none';
-		});
-		updateCount();
+		// Agregar clase de filtrado
+		if(grid) grid.classList.add('is-filtering');
+		
+		// Pequeño delay para la animación
+		setTimeout(() => {
+			$$('#grid .course-card').forEach((li, index) => {
+				const cats = (li.dataset.cats||'').split(',');
+				const shouldShow = (cat==='todos' || cats.includes(cat));
+				
+				if(shouldShow) {
+					li.style.display = '';
+					// Re-animar con delay escalonado
+					li.style.animation = 'none';
+					setTimeout(() => {
+						li.style.animation = `scaleIn 0.5s ease-out ${index * 0.05}s forwards`;
+					}, 10);
+				} else {
+					li.style.display = 'none';
+				}
+			});
+			
+			updateCount();
+			
+			// Remover clase de filtrado
+			setTimeout(() => {
+				if(grid) grid.classList.remove('is-filtering');
+			}, 300);
+		}, 100);
 	}
 	function updateCount(){
 		if(!count) return;
