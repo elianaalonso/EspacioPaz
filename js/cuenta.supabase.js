@@ -1,10 +1,16 @@
 import { supabase } from "./supabaseClient.js";
 import { ensureProfile } from "./authSupabase.js";
 
-function money(amount, currency="USD") {
-  // En tu tabla hoy "price_cents" está en dólares (180, 205, etc).
-  // Si algún día pasás a centavos reales, lo ajustamos.
-  return currency === "USD" ? `$${amount}` : `${amount} ${currency}`;
+function moneyFromCents(cents, currency = "USD") {
+  const amount = (Number(cents || 0) / 100);
+
+  // formateo simple
+  const formatted = amount.toLocaleString("es-UY", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2
+  });
+
+  return currency === "USD" ? `USD ${formatted}` : `${formatted} ${currency}`;
 }
 
 async function loadCuentaSupabase() {
@@ -83,8 +89,8 @@ async function loadCuentaSupabase() {
       id: p.course_id,
       title: c?.title || p.course_id,
       date: p.created_at,
-      total: amount,
-      total_display: money(amount, currency),
+      total: amount / 100, // convertir centavos a dólares para el cálculo
+      total_display: moneyFromCents(amount, currency),
       status: p.status,
       link: c?.link || ""
     };
