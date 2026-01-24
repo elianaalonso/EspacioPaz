@@ -1,10 +1,13 @@
-// Redirigir si no está logueado
+// Si no hay usuario en localStorage, abrimos el modal (no redirigimos)
 document.addEventListener('DOMContentLoaded', () => {
   const userLS = localStorage.getItem('espaciopaz_user_v1');
   if (!userLS) {
-    window.location.href = '../index.html';
+    // abre el modal de script.js
+    if (typeof window.openAuth === 'function') window.openAuth('login');
+    else document.dispatchEvent(new Event('open-auth-modal'));
   }
 });
+
 /* =========================================
    Mi Cuenta — JS vanilla (tabs, mock data, modales)
 ========================================= */
@@ -12,6 +15,7 @@ const $ = (sel,ctx=document)=>ctx.querySelector(sel);
 const $$ = (sel,ctx=document)=>Array.from(ctx.querySelectorAll(sel));
 
 const state = {
+  
   user:{ name:'Eli', lastname:'', email:'eli@espaciopaz.com', phone:'', bio:'', avatar:'../img/usuario-default.jpeg' },
   membership:{ status:'Activa', plan:'Mensual', renews:'2025-11-09' },
   orders:[
@@ -35,6 +39,10 @@ const state = {
     { id:'d-1', name:'Complemento_Biodescodificacion_EspacioPaz.pdf', date:'2025-10-04', url:'#' },
   ],
 };
+
+// Exponer state para integraciones (Supabase)
+window.state = state;
+
 
 // INIT
 window.addEventListener('DOMContentLoaded', () => {
