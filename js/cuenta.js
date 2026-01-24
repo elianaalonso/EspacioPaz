@@ -2,7 +2,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const userLS = localStorage.getItem('espaciopaz_user_v1');
   if (!userLS) {
-    window.location.href = '/html/login.html'; // Cambia la ruta si tu login está en otro archivo
+    window.location.href = '../index.html';
   }
 });
 /* =========================================
@@ -12,7 +12,7 @@ const $ = (sel,ctx=document)=>ctx.querySelector(sel);
 const $$ = (sel,ctx=document)=>Array.from(ctx.querySelectorAll(sel));
 
 const state = {
-  user:{ name:'Eli', lastname:'', email:'eli@espaciopaz.com', phone:'', bio:'', avatar:'../img/usuario-default.jpg' },
+  user:{ name:'Eli', lastname:'', email:'eli@espaciopaz.com', phone:'', bio:'', avatar:'../img/usuario-default.jpeg' },
   membership:{ status:'Activa', plan:'Mensual', renews:'2025-11-09' },
   orders:[
     { id:'EP-1042', date:'2025-10-01', total:1890, status:'Entregado', items:2 },

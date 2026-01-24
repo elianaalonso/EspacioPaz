@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Test Auth Supabase</title>
+</head>
+<body style="font-family:system-ui;padding:20px;">
+  <h1>Test Supabase Auth</h1>
+
+  <h2>Registro</h2>
+  <input id="n" placeholder="Nombre" /><br><br>
+  <input id="re" placeholder="Email" /><br><br>
+  <input id="rp" type="password" placeholder="Password" /><br><br>
+  <button id="reg">Registrarme</button>
+  
+
+  <hr>
+
+  <h2>Login</h2>
+  <input id="le" placeholder="Email" /><br><br>
+  <input id="lp" type="password" placeholder="Password" /><br><br>
+  <button id="log">Entrar</button>
+
+  <hr>
+
+  <button id="me">Ver user</button>
+  <button id="out">Logout</button>
+
+  <pre id="outp"></pre>
+
+  <input id="re" type="email" autocomplete="email" autocapitalize="none" spellcheck="false" />
+<input id="le" type="email" autocomplete="email" autocapitalize="none" spellcheck="false" />
+
+<input id="rp" type="password" autocomplete="new-password" />
+<input id="lp" type="password" autocomplete="current-password" />
+
+
+  <script type="module">
+    import { signUp, signIn, signOut, getUser, ensureProfile } from "../js/authSupabase.js";
+
+
+    const out = (x) =>
+      (document.querySelector("#outp").textContent =
+        typeof x === "string" ? x : JSON.stringify(x, null, 2));
+
+    document.querySelector("#reg").onclick = async () => {
+      try {
+        const n = document.querySelector("#n").value;
+        const e = document.querySelector("#re").value;
+        const p = document.querySelector("#rp").value;
+        out(await signUp(e, p, n));
+      } catch (e) {
+        out(e.message || e);
+      }
+      const e = document.querySelector("#re").value.trim();
+
+    };
+
+    document.querySelector("#log").onclick = async () => {
+      try {
+        const e = document.querySelector("#le").value;
+        const p = document.querySelector("#lp").value;
+        const login = await signIn(e, p);
+        await ensureProfile();
+        out(login);
+
+      } catch (e) {
+        out(e.message || e);
+      }
+      const e = document.querySelector("#le").value.trim();
+
+    };
+
+    document.querySelector("#me").onclick = async () => {
+      out(await getUser());
+    };
+
+    document.querySelector("#out").onclick = async () => {
+      await signOut();
+      out("logout ok");
+    };
+  </script>
+</body>
+</html>
