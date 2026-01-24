@@ -15,29 +15,23 @@ const $ = (sel,ctx=document)=>ctx.querySelector(sel);
 const $$ = (sel,ctx=document)=>Array.from(ctx.querySelectorAll(sel));
 
 const state = {
-  
-  user:{ name:'Eli', lastname:'', email:'eli@espaciopaz.com', phone:'', bio:'', avatar:'../img/usuario-default.jpeg' },
-  membership:{ status:'Activa', plan:'Mensual', renews:'2025-11-09' },
-  orders:[
-    { id:'EP-1042', date:'2025-10-01', total:1890, status:'Entregado', items:2 },
-    { id:'EP-1036', date:'2025-09-12', total:890, status:'En curso', items:1 },
-  ],
-  addresses:[
-    { id:'addr-1', fullName:'Eli', phone:'', street:'Av. Rivera 1234', city:'Montevideo', state:'Montevideo', zip:'11300', isDefault:true },
-  ],
-  courses:[
-    { id:'c-1', title:'Biodescodificación 1', progress:0.42, cover:'' },
-    { id:'c-2', title:'Reiki Nivel I', progress:0.0, cover:'' },
-  ],
-  payments:[
-    { id:'pm-1', brand:'Visa', last4:'1234', exp:'10/27', default:true },
-  ],
-  sessions:[
-    { id:'s-1', device:'Chrome en Windows', ip:'190.64.10.22', last:'2025-10-09 10:20', current:true },
-  ],
-  downloads:[
-    { id:'d-1', name:'Complemento_Biodescodificacion_EspacioPaz.pdf', date:'2025-10-04', url:'#' },
-  ],
+  user: {
+    name: "",
+    lastname: "",
+    email: "",
+    phone: "",
+    bio: "",
+    avatar: "img/usuario-default.jpeg"
+  },
+
+  membership: null,      // cuando exista una tabla real, lo llenamos
+  orders: [],            // lo vamos a llenar desde purchases reales
+  addresses: [],         // futuro
+  courses: [],           // lo vamos a llenar desde purchases + courses
+  favorites: [],         // futuro
+  payments: [],          // futuro
+  sessions: [],          // futuro
+  downloads: []          // futuro (storage)
 };
 
 // Exponer state para integraciones (Supabase)
@@ -72,6 +66,13 @@ function initTabs(){
 }
 
 function renderAll(){
+  // defensas (para no romper si está vacío)
+  if (!state.user) state.user = { name:"", email:"", avatar:"img/usuario-default.jpeg" };
+  if (!state.orders) state.orders = [];
+  if (!state.courses) state.courses = [];
+  if (!state.downloads) state.downloads = [];
+  // membership puede ser null, lo manejamos abajo
+
   // Header user
   // Mantener avatar desde localStorage si existe
   let userLS = null;
@@ -91,7 +92,10 @@ function renderAll(){
   $('#avatarImg').src = state.user.avatar;
 
   // Resumen
-  $('#summaryMembership').textContent = `${state.membership.status} — Plan ${state.membership.plan}. Renueva ${fmtDate(state.membership.renews)}`;
+  const ms = state.membership;
+  $('#summaryMembership').textContent = ms
+    ? `${ms.status} — Plan ${ms.plan}. Renueva ${fmtDate(ms.renews)}`
+    : "Sin membresía activa.";
   $('#summaryLastOrder').textContent = state.orders.length ? `${state.orders[0].id} · ${fmtDate(state.orders[0].date)} · $${state.orders[0].total}` : 'Sin pedidos';
   $('#summaryCourses').textContent = state.courses.length ? `${state.courses.length} curso(s)` : 'Sin cursos aún';
 
@@ -109,7 +113,10 @@ function renderAll(){
   // Cursos
   renderCourses();
   // Membresía
-  $('#membershipStatus').textContent = `${state.membership.status} · ${state.membership.plan} · Renueva ${fmtDate(state.membership.renews)}`;
+  const mStatus = state.membership;
+  $('#membershipStatus').textContent = mStatus
+    ? `${mStatus.status} · ${mStatus.plan} · Renueva ${fmtDate(mStatus.renews)}`
+    : "Sin membresía activa.";
   // Pagos
   renderPayments();
   // Sesiones

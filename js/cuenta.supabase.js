@@ -1,19 +1,17 @@
 import { supabase } from "./supabaseClient.js";
 import { ensureProfile } from "./authSupabase.js";
 
-async function loadCuenta() {
-  // 1) sesión
+async function loadCuentaSupabase() {
   const { data } = await supabase.auth.getSession();
   const session = data?.session;
 
+  // Si no hay sesión -> al index
   if (!session) {
-  window.location.href = "/index.html";
-  return;
-}
-
+    window.location.href = "/index.html";
+    return;
   }
 
-  // 2) asegurar perfil
+  // Perfil real
   const profile = await ensureProfile();
 
   const email = session.user.email || "";
@@ -22,67 +20,80 @@ async function loadCuenta() {
     session.user.user_metadata?.full_name ||
     email.split("@")[0];
 
-  // 3) actualizar state global (lo expusiste con window.state = state)
+  // Guardamos compat para el resto del front
+  localStorage.setItem("espaciopaz_user_v1", JSON.stringify({ name, email }));
+
+  // Actualizar state real
   if (window.state?.user) {
-    window.state.user.email = email;
     window.state.user.name = name;
-    if (typeof window.renderAccountHeader === "function")
-      window.renderAccountHeader();
+    window.state.user.email = email;
   }
 
-  // 4) compras aprobadas
+  // 1) compras reales (solo del usuario logueado)
   const { data: purchases, error: pErr } = await supabase
     .from("purchases")
-    .select("course_id")
+    .select("course_id, status, created_at")
+    .eq("user_id", session.user.id)
     .eq("status", "approved");
 
   if (pErr) {
-    console.error(pErr);
+    console.error("purchases error:", pErr);
     return;
   }
 
+  // 2) si no hay compras, mostrar vacío
   const grid = document.getElementById("coursesGrid");
   if (!grid) return;
 
   if (!purchases?.length) {
-    grid.innerHTML = `<div class="empty">Todavía no tenés cursos activos.</div>`;
+    window.state.courses = [];
+    if (typeof window.renderAll === "function") window.renderAll();
     return;
   }
 
-  // 5) traer cursos
+  // 3) traer cursos reales
   const ids = purchases.map((p) => p.course_id);
 
   const { data: courses, error: cErr } = await supabase
     .from("courses")
-    .select("id, title, image_url, link, short_desc")
+    .select("id, title, short_desc, image_url, link, price_cents, currency")
     .in("id", ids);
 
   if (cErr) {
-    console.error(cErr);
+    console.error("courses error:", cErr);
     return;
   }
 
-  // 6) render cards (usa estructura similar a tu cuenta.js)
-  grid.innerHTML = (courses || [])
-    .map(
-      (c) => `
-      <article class="course">
-        <div class="course__media"
-          style="background-image:url(../${c.image_url || ""}); background-size:cover; background-position:center;">
-        </div>
-        <div class="course__body">
-          <h3 class="course__title">${c.title}</h3>
-          <div class="course__meta">
-            <span>0% completado</span>
-            <a class="btn btn--light" href="../${c.link}">Continuar</a>
-          </div>
-        </div>
-      </article>
-    `
-    )
-    .join("");
+  // 4) map a estructura que tu cuenta.js ya sabe renderizar
+  const byId = new Map((courses || []).map((c) => [c.id, c]));
+  const mappedCourses = ids
+    .map((id) => byId.get(id))
+    .filter(Boolean)
+    .map((c) => ({
+      id: c.id,
+      title: c.title,
+      progress: 0,
+      cover: c.image_url || "",
+      link: c.link || "",
+      short_desc: c.short_desc || ""
+    }));
 
+  // 5) opcional: transformar purchases a "orders reales" (si mostrás Compras)
+  const mappedOrders = (purchases || []).map((p) => ({
+    id: p.course_id,
+    date: p.created_at,
+    total: 0,
+    status: p.status,
+    items: 1
+  }));
+
+  window.state.courses = mappedCourses;
+  window.state.orders = mappedOrders;
+
+  // Render final
+  if (typeof window.renderAll === "function") window.renderAll();
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-  loadCuenta().catch((err) => console.error(err));
+  loadCuentaSupabase().catch(console.error);
 });

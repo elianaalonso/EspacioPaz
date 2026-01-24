@@ -1,127 +1,26 @@
 import { signUp, signIn, signOut, ensureProfile } from "./authSupabase.js";
 
-/**
- * Toma el modal existente (panelLogin y panelRegister)
- * y hace login/registro real con Supabase.
- * Luego guarda compatibilidad con tu UI guardando espaciopaz_user_v1 en localStorage.
- */
-function hookAuthModalSupabase() {
-  const loginForm = document.getElementById("panelLogin");
-  const regForm = document.getElementById("panelRegister");
+function translateAuthError(err) {
+  const msg = err?.message?.toLowerCase() || "";
 
-  if (!loginForm || !regForm) {
-    console.warn("[authModal.supabase] No encontré panelLogin/panelRegister");
-    return;
+  if (msg.includes("invalid login credentials")) {
+    return "El correo o la contraseña no son correctos.";
   }
 
-  // LOGIN
-  loginForm.addEventListener(
-    "submit",
-    async (e) => {
-      e.preventDefault();
-      e.stopImmediatePropagation();
+  if (msg.includes("user already registered") || msg.includes("already been registered")) {
+    return "Este correo ya tiene una cuenta. Probá iniciar sesión.";
+  }
 
-      const email = document.getElementById("loginEmail")?.value?.trim() || "";
-      const pass = document.getElementById("loginPass")?.value || ""; // NO trim
-      const msg = document.getElementById("loginMsg");
+  if (msg.includes("password")) {
+    return "La contraseña debe tener al menos 6 caracteres.";
+  }
 
-      try {
-        if (!email || !pass) throw new Error("Completá email y contraseña.");
+  if (msg.includes("email")) {
+    return "El correo ingresado no es válido.";
+  }
 
-        await signIn(email, pass);
-        const profile = await ensureProfile();
-
-        const name = profile?.full_name || email.split("@")[0];
-
-        // Compat con tu front actual
-        localStorage.setItem(
-          "espaciopaz_user_v1",
-          JSON.stringify({ name, email })
-        );
-
-        if (msg) msg.textContent = "¡Sesión iniciada! ✨";
-
-        // Cerrar modal
-        document.getElementById("authClose")?.click();
-
-        // Si estamos en cuenta, re-render
-        if (typeof window.renderAll === "function") window.renderAll();
-      } catch (err) {
-        if (msg) msg.textContent = err?.message || "Error al iniciar sesión";
-      }
-    },
-    true
-  );
-
-  // REGISTRO
-  regForm.addEventListener(
-    "submit",
-    async (e) => {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-
-      const fullName = document.getElementById("regName")?.value?.trim() || "";
-      const email = document.getElementById("regEmail")?.value?.trim() || "";
-      const pass = document.getElementById("regPass")?.value || ""; // NO trim
-      const msg = document.getElementById("regMsg");
-
-      try {
-        if (!email || !pass) throw new Error("Completá email y contraseña.");
-
-        // Crear usuario
-        await signUp(email, pass, fullName);
-
-        // Loguear (para tener session)
-        await signIn(email, pass);
-
-        const profile = await ensureProfile();
-        const name = profile?.full_name || fullName || email.split("@")[0];
-
-        localStorage.setItem(
-          "espaciopaz_user_v1",
-          JSON.stringify({ name, email })
-        );
-
-        if (msg) msg.textContent = "¡Cuenta creada! 🌸";
-
-        document.getElementById("authClose")?.click();
-        if (typeof window.renderAll === "function") window.renderAll();
-      } catch (err) {
-        if (msg) msg.textContent = err?.message || "Error al crear cuenta";
-      }
-    },
-    true
-  );
-
-  // LOGOUT real (si tu botón existe)
-  document.addEventListener("click", async (e) => {
-    const btn = e.target.closest("#btnLogout");
-    if (!btn) return;
-
-    try {
-      await signOut();
-    } catch (err) {
-      console.warn(err);
-    }
-
-    localStorage.removeItem("espaciopaz_user_v1");
-
-// Redirigir al inicio
-window.location.href = "/index.html";
-
-  });
+  return "Ocurrió un error. Intentá nuevamente en unos segundos.";
 }
-
-hookAuthModalSupabase();
-
-
-
-
-
-
-
-
-import { signUp, signIn, signOut, ensureProfile } from "./authSupabase.js";
 
 function setMsg(id, text, ok = false) {
   const el = document.getElementById(id);
@@ -177,7 +76,7 @@ function hookAuthModalSupabase() {
         // Si estás en cuenta y existe renderAll, refrescá UI
         if (typeof window.renderAll === "function") window.renderAll();
       } catch (err) {
-        setMsg("loginMsg", err?.message || "Error al iniciar sesión");
+        setMsg("loginMsg", translateAuthError(err));
       }
     },
     true
@@ -210,7 +109,7 @@ function hookAuthModalSupabase() {
 
         if (typeof window.renderAll === "function") window.renderAll();
       } catch (err) {
-        setMsg("regMsg", err?.message || "Error al crear cuenta");
+        setMsg("regMsg", translateAuthError(err));
       }
     },
     true
