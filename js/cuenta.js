@@ -96,7 +96,7 @@ function renderAll(){
   $('#summaryMembership').textContent = ms
     ? `${ms.status} — Plan ${ms.plan}. Renueva ${fmtDate(ms.renews)}`
     : "Sin membresía activa.";
-  $('#summaryLastOrder').textContent = state.orders.length ? `${state.orders[0].id} · ${fmtDate(state.orders[0].date)} · $${state.orders[0].total}` : 'Sin pedidos';
+  $('#summaryLastOrder').textContent = state.orders.length ? `${state.orders[0].title || state.orders[0].id} · ${fmtDate(state.orders[0].date)} · ${state.orders[0].total_display || '$' + state.orders[0].total}` : 'Sin pedidos';
   $('#summaryCourses').textContent = state.courses.length ? `${state.courses.length} curso(s)` : 'Sin cursos aún';
 
   // Perfil form
@@ -126,6 +126,24 @@ function renderAll(){
 
   // Favoritos
   renderFavorites();
+
+  // KPIs (si existen en el HTML)
+  const elOrders = document.getElementById("kpiOrders");
+  const elCourses = document.getElementById("kpiCourses");
+  const elSpent = document.getElementById("kpiSpent");
+
+  if (elOrders) elOrders.textContent = state.orders.length;
+  if (elCourses) elCourses.textContent = state.courses.length;
+
+  // gastado = suma de órdenes del año actual
+  if (elSpent) {
+    const year = new Date().getFullYear();
+    const sum = (state.orders || [])
+      .filter(o => String(o.date || "").includes(String(year)))
+      .reduce((acc, o) => acc + (o.total || 0), 0);
+
+    elSpent.textContent = sum ? `$${sum}` : "—";
+  }
 }
 
 // Exponer renderAll para que cuenta.supabase.js pueda llamarla
@@ -134,18 +152,20 @@ window.renderAll = renderAll;
 function renderOrders(){
   const wrap = $('#ordersWrap');
   if(!state.orders.length){ wrap.innerHTML = `<div class="empty">Aún no hay pedidos</div>`; return; }
-  const rows = state.orders.map(o=>`
+  const rows = state.orders.map(o=>{
+    const link = o.link ? (o.link.startsWith('html/') ? '../' + o.link : o.link) : '#';
+    return `
     <tr>
-      <td><strong>${o.id}</strong></td>
+      <td><strong>${o.title || o.id}</strong></td>
       <td>${fmtDate(o.date)}</td>
-      <td>$${o.total}</td>
+      <td>${o.total_display || `$${o.total}`}</td>
       <td>${badge(o.status)}</td>
-      <td><a class="btn btn--light" href="/pedido/${o.id}">Ver</a></td>
+      <td><a class="btn btn--light" href="${link}">Ir al curso</a></td>
     </tr>
-  `).join('');
+  `}).join('');
   wrap.innerHTML = `
     <table class="table" role="table" aria-label="Historial de pedidos">
-      <thead><tr><th>N°</th><th>Fecha</th><th>Total</th><th>Estado</th><th></th></tr></thead>
+      <thead><tr><th>Curso</th><th>Fecha</th><th>Total</th><th>Estado</th><th></th></tr></thead>
       <tbody>${rows}</tbody>
     </table>`;
 }
@@ -418,7 +438,16 @@ function badge(status){
   else if(/cancel|fall/.test(norm)) cls += ' badge--err';
   return `<span class="${cls}">${status}</span>`;
 }
-function fmtDate(iso){ try{ return new Date(iso+'T00:00:00').toLocaleDateString('es-UY'); }catch{ return iso; } }
+function fmtDate(iso){
+  if(!iso) return "—";
+  try{
+    const d = iso.includes("T") ? new Date(iso) : new Date(`${iso}T00:00:00`);
+    if (isNaN(d.getTime())) return "—";
+    return d.toLocaleDateString("es-UY");
+  }catch{
+    return "—";
+  }
+}
 
 function toast(msg){
   const el = document.createElement('div');
