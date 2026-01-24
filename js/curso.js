@@ -1,3 +1,6 @@
+// Importar supabase para guardar compras simuladas
+import { supabase } from './supabaseClient.js';
+
 // ========== Bloqueo de recursos y recursos adicionales ========== 
 function updateResourceLockState() {
   const owned = document.body.classList.contains('is-owned');
@@ -362,20 +365,53 @@ document.querySelectorAll('.leccion a[data-src]').forEach(a=>{
 // El reproductor solo aparece al hacer click, no autoload
 
 // Comprar: solo si está logueado
-$$('.js-comprar').forEach(b => b.addEventListener('click', (e) => {
+$$('.js-comprar').forEach(b => b.addEventListener('click', async (e) => {
+  e.preventDefault();
+  
   const user = readUser();
   if (!user) {
-    e.preventDefault();
     if (typeof openAuth === 'function') openAuth('login');
     else document.dispatchEvent(new CustomEvent('open-auth-modal'));
     return;
   }
 
   if(confirm('¿Simular compra y desbloquear el curso?')){
-  body.classList.add('is-owned');
-  try{ localStorage.setItem(OWNED_KEY,'1'); }catch{}
-  unlockAllIfOwned();
-  alert('¡Listo! Contenido desbloqueado.');
+    // Obtener sesión de Supabase
+    const { data } = await supabase.auth.getSession();
+    const session = data?.session;
+    
+    if (!session) {
+      alert('Necesitás estar logueado con Supabase para simular compra');
+      return;
+    }
+    
+    // Obtener course_id del botón
+    const courseId = b.dataset.courseId;
+    if (!courseId) {
+      alert('Error: no se encontró el ID del curso');
+      return;
+    }
+    
+    // Guardar en Supabase
+    const { error } = await supabase
+      .from('purchases')
+      .insert({
+        user_id: session.user.id,
+        course_id: courseId,
+        status: 'approved'
+      });
+    
+    if (error) {
+      console.error('Error al simular compra:', error);
+      alert('Error al guardar la compra: ' + error.message);
+      return;
+    }
+    
+    // Desbloquear localmente
+    body.classList.add('is-owned');
+    try{ localStorage.setItem(OWNED_KEY,'1'); }catch{}
+    unlockAllIfOwned();
+    alert('¡Listo! Contenido desbloqueado.');
   }
 }));
 

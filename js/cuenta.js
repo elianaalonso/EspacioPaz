@@ -128,6 +128,9 @@ function renderAll(){
   renderFavorites();
 }
 
+// Exponer renderAll para que cuenta.supabase.js pueda llamarla
+window.renderAll = renderAll;
+
 function renderOrders(){
   const wrap = $('#ordersWrap');
   if(!state.orders.length){ wrap.innerHTML = `<div class="empty">Aún no hay pedidos</div>`; return; }
@@ -170,18 +173,24 @@ function renderAddresses(){
 function renderCourses(){
   const grid = $('#coursesGrid');
   if(!state.courses.length){ grid.innerHTML = `<div class="empty">Aún no hay cursos</div>`; return; }
-  grid.innerHTML = state.courses.map(c=>`
+  grid.innerHTML = state.courses.map(c=>{
+    // Ajustar link: si empieza con 'html/', agregar '../' 
+    let courseLink = c.link || '/curso/' + c.id;
+    if (courseLink.startsWith('html/')) {
+      courseLink = '../' + courseLink;
+    }
+    return `
     <article class="course">
-      <div class="course__media" role="img" aria-label="Portada del curso"></div>
+      <div class="course__media" style="background-image:url(${c.cover || '../img/usuario-default.jpeg'}); background-size:cover; background-position:center;" role="img" aria-label="Portada del curso"></div>
       <div class="course__body">
         <h3 class="course__title">${c.title}</h3>
         <div class="course__meta">
           <span>${Math.round(c.progress*100)}% completado</span>
-          <a class="btn btn--light" href="/curso/${c.id}">Continuar</a>
+          <a class="btn btn--light" href="${courseLink}">Continuar</a>
         </div>
       </div>
     </article>
-  `).join('');
+  `;}).join('');
 }
 
 function renderPayments(){
