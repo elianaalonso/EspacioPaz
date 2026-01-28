@@ -498,8 +498,9 @@ html {
 
 /* Feedback visual del botón "Agregado" */
 .add-cart.added {
-  background: #4CAF50 !important;
+  background: #c7a4e7 !important;
   color: #fff !important;
+  border-color: #b890d8 !important;
   transform: scale(1.05);
   pointer-events: none;
 }

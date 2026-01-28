@@ -364,7 +364,7 @@ html, body{ overflow-x: clip; }
 .btn-cart svg{ width:1.125rem; height:1.125rem }
 .btn-cart:hover{ filter:brightness(1.03) }
 .btn-cart:active{ transform: translateY(0.0625rem) }
-.btn-cart.added{ filter: brightness(1.05); box-shadow: 0 0 0 0.1875rem rgba(182,155,214,.25) inset; }
+.btn-cart.added{ background: #c7a4e7 !important; color: #fff !important; border-color: #b890d8 !important; cursor: not-allowed; opacity: 0.9; }
 
 .curso-card{ cursor:pointer; }
 .curso-card:focus-visible{ outline:0.1875rem solid #cfacff; outline-offset:0.125rem; }

@@ -511,18 +511,8 @@ document.querySelectorAll('.curso-card').forEach(card => {
   });
 });
 
-// botón Agregar al carrito (stub)
-document.querySelectorAll('.btn-cart').forEach(btn => {
-  btn.addEventListener('click', e => {
-    e.stopPropagation(); // no disparar navegación de la card
-    const id = btn.getAttribute('data-add');
-    // Acá integrarías tu carrito real; por ahora, feedback rápido:
-    btn.disabled = true;
-    const prev = btn.textContent.trim();
-    btn.textContent = 'Agregado ✓';
-    setTimeout(() => { btn.disabled = false; btn.textContent = prev; }, 1500);
-  });
-});
+// botón Agregar al carrito - NO hacer nada aquí, carrito.js ya lo maneja
+// (Removido el setTimeout que estaba limpiando el estado)
 
 /* ======= Testimonios: carrusel horizontal ======= */
 (() => {

@@ -131,11 +131,11 @@
 		if(!grid) return;
 		grid.innerHTML = allItems.map(renderCard).join('');
 		updateCount();
-		// Re-asignar eventos de carrito
-		$$('.add-cart').forEach(btn => btn.addEventListener('click', (e)=>{
-			e.preventDefault();
-			addToCartFromCard(btn);
-		}));
+		// NO agregar listeners aquí - carrito.js ya los maneja con delegación de eventos
+		// Marcar botones que ya están en el carrito
+		if (typeof markCartButtons === 'function') {
+			setTimeout(() => markCartButtons(), 50); // Pequeño delay para asegurar que el DOM esté listo
+		}
 	}
 	// Filtrado
 	function applyFilter(cat){

@@ -51,11 +51,19 @@ function formatUSD(n){
 
 // Para cards (cursos.html)
 function addToCartFromCard(btn){
-  const card = btn.closest('.curso-card');
+  console.log('🛒 addToCartFromCard ejecutándose...', btn);
+  
+  // Si ya fue procesado, no hacer nada
+  if (btn.dataset.inCart === 'true') {
+    console.log('⚠️ Ya estaba en carrito, saliendo...');
+    return;
+  }
+  
+  const card = btn.closest('.curso-card, .course-card');
   if (!card) return;
 
-  const id = btn.getAttribute('data-add') || card.dataset.href || crypto.randomUUID();
-  const name = (card.querySelector('h3')?.textContent || 'Curso').trim();
+  const id = btn.getAttribute('data-add') || btn.getAttribute('data-id') || card.dataset.href || crypto.randomUUID();
+  const name = (card.querySelector('h3, .course-card__title')?.textContent || 'Curso').trim();
 
   // Si la card tiene algo tipo "$ 5.500", limpiamos
   const priceText = (card.querySelector('.price')?.textContent || '0')
@@ -64,41 +72,46 @@ function addToCartFromCard(btn){
     .replace(',','.');     // coma decimal a punto (por si acaso)
 
   const price = parseFloat(priceText) || 0;
-  const img = card.querySelector('.curso-media img')?.getAttribute('src') || '';
-  const href = card.dataset.href || '';
+  const img = card.querySelector('.curso-media img, .course-card__media img')?.getAttribute('src') || '';
+  const href = card.dataset.href || card.querySelector('a')?.getAttribute('href') || '';
 
   const cart = readCart();
 
-  // Curso digital: qty siempre 1 (si ya existe, no suma)
+  // Revisar si ya existe
   const existing = cart.find(it => it.id === id);
   if (existing){
-    existing.qty = 1;
-  } else {
-    cart.push({ id, name, price, img, qty: 1, href });
+    console.log('⚠️ Curso ya existe en carrito');
+    return;
   }
+
+  // No existe, agregarlo
+  cart.push({ id, name, price, img, qty: 1, href });
 
   writeCart(cart);
   updateCartBadge();
   animateCartIcon();
 
-  // feedback
+  // Marcar botón como agregado PERMANENTEMENTE
   btn.disabled = true;
-  const prev = btn.textContent.trim();
   btn.classList.add('added');
   btn.textContent = 'Agregado ✓';
-  setTimeout(() => {
-    btn.disabled = false;
-    btn.classList.remove('added');
-    btn.textContent = prev;
-  }, 900);
+  btn.dataset.inCart = 'true'; // Marcar para evitar duplicados
+  
+  console.log('✅ Botón marcado:', btn.textContent, 'disabled:', btn.disabled);
 
   if (document.getElementById('cartList') && typeof window.draw === 'function') {
     window.draw();
   }
 }
 
+// Exponer globalmente para cursos.js
+window.addToCartFromCard = addToCartFromCard;
+
 // Para páginas de curso (curso.html)
 function addCourseFromCoursePage(btn){
+  // Si ya fue procesado, no hacer nada
+  if (btn.dataset.inCart === 'true') return;
+  
   const courseId = btn.getAttribute('data-course-id') || document.body.dataset.courseId;
   const price = Number(btn.getAttribute('data-price') || 0);
 
@@ -118,18 +131,21 @@ function addCourseFromCoursePage(btn){
   const existing = cart.find(it => it.id === courseId);
 
   if (existing){
-    existing.qty = 1;
-    existing.name = title;
-    existing.price = price;
-    existing.href = href;
-    if (img) existing.img = img;
-  } else {
-    cart.push({ id: courseId, name: title, price, img, qty: 1, href });
+    // Ya está en carrito, no agregar de nuevo
+    return;
   }
+
+  cart.push({ id: courseId, name: title, price, img, qty: 1, href });
 
   writeCart(cart);
   updateCartBadge();
   animateCartIcon();
+  
+  // Marcar botón como agregado
+  btn.disabled = true;
+  btn.classList.add('added');
+  btn.textContent = 'Agregado ✓';
+  btn.dataset.inCart = 'true'; // Marcar para evitar duplicados
 }
 
 // Exponemos una API global para que curso.js la use
@@ -147,16 +163,56 @@ window.cartApi = {
 
 /* ================== BINDS (Agregar al carrito) ================== */
 
-// Botones "Agregar al carrito" en cards
-document.querySelectorAll('.btn-cart').forEach(btn => {
-  btn.addEventListener('click', e => {
-    e.stopPropagation();
-    addToCartFromCard(btn);
+// Usar delegación de eventos para capturar TODOS los clicks en botones de carrito
+// Esto funciona incluso si los botones se regeneran dinámicamente
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('.btn-cart, .add-cart');
+  if (!btn) return;
+  
+  e.stopPropagation();
+  e.stopImmediatePropagation();
+  e.preventDefault();
+  
+  console.log('🎯 Click detectado en botón carrito');
+  addToCartFromCard(btn);
+}, true); // capture phase = ejecutar ANTES que cualquier otro listener
+
+// Marcar botones que ya están en el carrito
+function markCartButtons() {
+  const cart = readCart();
+  const cartIds = new Set(cart.map(it => it.id));
+  
+  document.querySelectorAll('.btn-cart, .add-cart').forEach(btn => {
+    const card = btn.closest('.curso-card, .course-card');
+    if (!card) return;
+    
+    const id = btn.getAttribute('data-add') || btn.getAttribute('data-id') || card.dataset.href;
+    if (cartIds.has(id)) {
+      btn.disabled = true;
+      btn.classList.add('added');
+      btn.textContent = 'Agregado ✓';
+      btn.dataset.inCart = 'true'; // Marcar como procesado
+      console.log('🔖 Botón marcado al cargar:', id);
+    }
   });
+}
+
+// Exponer globalmente para que cursos.js pueda usarla
+window.markCartButtons = markCartButtons;
+
+// Badge y marcar botones al cargar
+document.addEventListener('DOMContentLoaded', () => {
+  updateCartBadge();
+  markCartButtons();
 });
 
-// Badge al cargar
-document.addEventListener('DOMContentLoaded', updateCartBadge);
+// También marcar después de que se agregue algo al carrito
+window.addEventListener('storage', (e) => {
+  if (e.key === CART_KEY) {
+    updateCartBadge();
+    markCartButtons();
+  }
+});
 
 
 /* ================== RENDER CARRITO ================== */
