@@ -240,55 +240,8 @@ document.addEventListener('DOMContentLoaded', updateCartBadge);
     document.getElementById('sumSubtotal').textContent = `USD ${total.toLocaleString('es-UY', { maximumFractionDigits: 0 })}`;
     updateCartBadge();
 
-    // Consideración: tu conversor local usa rates fijos (ok por ahora)
     const localDiv = document.getElementById('cartTotalLocal');
-    function setLocalCurrency(country) {
-      const currencies = {
-        AR: { rate: 950, symbol: '$', code: 'ARS', locale: 'es-AR' },
-        UY: { rate: 39, symbol: '$', code: 'UYU', locale: 'es-UY' },
-        BR: { rate: 5.2, symbol: 'R$', code: 'BRL', locale: 'pt-BR' },
-        CL: { rate: 950, symbol: '$', code: 'CLP', locale: 'es-CL' },
-        MX: { rate: 18, symbol: '$', code: 'MXN', locale: 'es-MX' },
-        US: { rate: 1, symbol: '$', code: 'USD', locale: 'en-US' },
-        ES: { rate: 0.95, symbol: '€', code: 'EUR', locale: 'es-ES' },
-        CO: { rate: 4100, symbol: '$', code: 'COP', locale: 'es-CO' },
-        PE: { rate: 3.7, symbol: 'S/', code: 'PEN', locale: 'es-PE' },
-        EC: { rate: 1, symbol: '$', code: 'USD', locale: 'es-EC' },
-        PY: { rate: 7300, symbol: '₲', code: 'PYG', locale: 'es-PY' },
-        BO: { rate: 6.9, symbol: 'Bs', code: 'BOB', locale: 'es-BO' },
-        VE: { rate: 36, symbol: 'Bs', code: 'VES', locale: 'es-VE' },
-        CR: { rate: 530, symbol: '₡', code: 'CRC', locale: 'es-CR' },
-        PA: { rate: 1, symbol: 'B/.', code: 'PAB', locale: 'es-PA' },
-        GT: { rate: 7.8, symbol: 'Q', code: 'GTQ', locale: 'es-GT' },
-        DO: { rate: 57, symbol: 'RD$', code: 'DOP', locale: 'es-DO' },
-        HN: { rate: 24.7, symbol: 'L', code: 'HNL', locale: 'es-HN' },
-        SV: { rate: 8.75, symbol: '$', code: 'USD', locale: 'es-SV' },
-        NI: { rate: 36.5, symbol: 'C$', code: 'NIO', locale: 'es-NI' },
-      };
-
-      const c = currencies[country] || { rate: 1, symbol: '$', code: 'USD', locale: 'en-US' };
-      const totalLocal = Math.round(total * c.rate);
-
-      if (!localDiv) return;
-
-      if (c.code !== 'USD' || country === 'EC' || country === 'SV' || country === 'PA') {
-        localDiv.textContent = `≈ ${c.symbol}${totalLocal.toLocaleString(c.locale)} ${c.code}`;
-      } else {
-        localDiv.textContent = '';
-      }
-    }
-
-    if (window._userCountry) {
-      setLocalCurrency(window._userCountry);
-    } else {
-      fetch('https://ipapi.co/country/')
-        .then(r => r.text())
-        .then(code => {
-          window._userCountry = (code || '').trim();
-          setLocalCurrency(window._userCountry);
-        })
-        .catch(() => setLocalCurrency('UY'));
-    }
+    renderLocalTotal(localDiv, total);
   }
 
   window.draw = draw;
