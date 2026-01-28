@@ -21,7 +21,7 @@ const state = {
     email: "",
     phone: "",
     bio: "",
-    avatar: "img/usuario-default.jpeg"
+    avatar: "../img/usuario-default.jpeg"
   },
 
   membership: null,      // cuando exista una tabla real, lo llenamos
@@ -67,7 +67,7 @@ function initTabs(){
 
 function renderAll(){
   // defensas (para no romper si está vacío)
-  if (!state.user) state.user = { name:"", email:"", avatar:"img/usuario-default.jpeg" };
+  if (!state.user) state.user = { name:"", email:"", avatar:"../img/usuario-default.jpeg" };
   if (!state.orders) state.orders = [];
   if (!state.courses) state.courses = [];
   if (!state.downloads) state.downloads = [];
@@ -355,7 +355,7 @@ function guardarUsuarioLocal() {
         try { localStorage.removeItem('espaciopaz_cart_v1'); } catch(e){}
       }
       try { window.dispatchEvent(new Event('logout')); } catch(e){}
-      location.href = '/index.html';
+      location.href = '../index.html';
     });
   $('#btnDelete').onclick = ()=>
     openConfirm('Eliminar cuenta','Esta acción no se puede deshacer. ¿Seguro?', ()=>{
@@ -483,12 +483,12 @@ function writeFavIds(ids){
 
 // Mapea IDs -> metadatos para mostrar (completalo a medida que sumes cursos)
 const FAV_META = {
-  'curso-biodecodificacion-n1': { title: 'Biodescodificación Emocional — Nivel 1', kind:'course', href: 'html/cursos/biodecodificacion-emocional-nivel-1.html', img: '../img/bio.png' },
-  'curso-biodecodificacion-n2': { title: 'Biodescodificación Emocional — Nivel 2 (Transgeneracional)', kind:'course', href: 'html/cursos/biodecodificacion-emocional-nivel-2.html', img: '../img/bio.png' },
-  'curso-reiki-usui-n1': { title: 'Reiki Usui — Nivel 1', kind:'course', href: 'html/cursos/reiki-usui-nivel-1.html', img: '../img/reiki1.jpg' },
-  'curso-reiki-usui-n2': { title: 'Reiki Usui — Nivel 2', kind:'course', href: 'html/cursos/reiki-usui-nivel-2.html', img: '../img/reiki2.png' },
-  'curso-reiki-usui-n3': { title: 'Reiki Usui — Nivel 3', kind:'course', href: 'html/cursos/reiki-usui-nivel-3.html', img: '../img/reiki3.png' },
-  'curso-mentoria-herida-al-alma': { title: 'Mentoría — De la herida al alma', kind:'course', href: 'html/cursos/mentoria-de-la-herida-al-alma.html', img: '../img/reiki3.png' },
+  'curso-biodecodificacion-n1': { title: 'Biodescodificación Emocional — Nivel 1', kind:'course', href: '../html/cursos/biodecodificacion-emocional-nivel-1.html', img: '../img/bio.png' },
+  'curso-biodecodificacion-n2': { title: 'Biodescodificación Emocional — Nivel 2 (Transgeneracional)', kind:'course', href: '../html/cursos/biodecodificacion-emocional-nivel-2.html', img: '../img/bio.png' },
+  'curso-reiki-usui-n1': { title: 'Reiki Usui — Nivel 1', kind:'course', href: '../html/cursos/reiki-usui-nivel-1.html', img: '../img/reiki1.jpg' },
+  'curso-reiki-usui-n2': { title: 'Reiki Usui — Nivel 2', kind:'course', href: '../html/cursos/reiki-usui-nivel-2.html', img: '../img/reiki2.png' },
+  'curso-reiki-usui-n3': { title: 'Reiki Usui — Nivel 3', kind:'course', href: '../html/cursos/reiki-usui-nivel-3.html', img: '../img/reiki3.png' },
+  'curso-mentoria-herida-al-alma': { title: 'Mentoría — De la herida al alma', kind:'course', href: '../html/cursos/mentoria-de-la-herida-al-alma.html', img: '../img/reiki3.png' },
 };
 
 function favsToObjects(ids){
@@ -498,7 +498,7 @@ function favsToObjects(ids){
       id,
       title: meta.title || (id || 'Favorito'),
       kind: meta.kind || 'course',
-      href: meta.href || 'cursos.html',
+      href: meta.href || '../html/cursos.html',
       img: meta.img || ''
     };
   });
@@ -515,7 +515,7 @@ function renderFavorites(){
       <div class="placeholder">
         <div class="placeholder__row">Aún no agregaste favoritos.</div>
         <div class="placeholder__row">Tocá el corazón en un curso para guardarlo acá.</div>
-        <a class="btn" href="cursos.html">Ver cursos</a>
+        <a class="btn" href="../html/cursos.html">Ver cursos</a>
       </div>`;
     return;
   }
