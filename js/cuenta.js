@@ -483,7 +483,12 @@ function writeFavIds(ids){
 
 // Mapea IDs -> metadatos para mostrar (completalo a medida que sumes cursos)
 const FAV_META = {
-  'bio-fundamentos': { title: 'Biodescodificación — Fundamentos', kind:'course', href: 'curso-reiki1.html' },
+  'curso-biodecodificacion-n1': { title: 'Biodescodificación Emocional — Nivel 1', kind:'course', href: 'html/cursos/biodecodificacion-emocional-nivel-1.html', img: '../img/bio.png' },
+  'curso-biodecodificacion-n2': { title: 'Biodescodificación Emocional — Nivel 2 (Transgeneracional)', kind:'course', href: 'html/cursos/biodecodificacion-emocional-nivel-2.html', img: '../img/bio.png' },
+  'curso-reiki-usui-n1': { title: 'Reiki Usui — Nivel 1', kind:'course', href: 'html/cursos/reiki-usui-nivel-1.html', img: '../img/reiki1.jpg' },
+  'curso-reiki-usui-n2': { title: 'Reiki Usui — Nivel 2', kind:'course', href: 'html/cursos/reiki-usui-nivel-2.html', img: '../img/reiki2.png' },
+  'curso-reiki-usui-n3': { title: 'Reiki Usui — Nivel 3', kind:'course', href: 'html/cursos/reiki-usui-nivel-3.html', img: '../img/reiki3.png' },
+  'curso-mentoria-herida-al-alma': { title: 'Mentoría — De la herida al alma', kind:'course', href: 'html/cursos/mentoria-de-la-herida-al-alma.html', img: '../img/reiki3.png' },
 };
 
 function favsToObjects(ids){
@@ -493,7 +498,8 @@ function favsToObjects(ids){
       id,
       title: meta.title || (id || 'Favorito'),
       kind: meta.kind || 'course',
-      href: meta.href || 'cursos.html'
+      href: meta.href || 'cursos.html',
+      img: meta.img || ''
     };
   });
 }
@@ -514,9 +520,12 @@ function renderFavorites(){
     return;
   }
 
-  grid.innerHTML = favs.map(f => `
+  grid.innerHTML = favs.map(f => {
+    // Obtener imagen del fav meta o usar placeholder
+    const img = f.img ? `background-image: url('${f.img}')` : '';
+    return `
     <article class="favorite">
-      <div class="favorite__media" role="img" aria-label="${f.title}"></div>
+      <div class="favorite__media" role="img" aria-label="${f.title}" style="${img}"></div>
       <div class="favorite__body">
         <h3 class="favorite__title">${f.title}</h3>
         <div class="favorite__meta">
@@ -528,7 +537,8 @@ function renderFavorites(){
         </div>
       </div>
     </article>
-  `).join('');
+  `;
+  }).join('');
 }
 
 // Quitar desde la pestaña Favoritos

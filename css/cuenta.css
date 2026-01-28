@@ -1104,18 +1104,29 @@ body::before {
 .favorite__media{ 
   aspect-ratio: 3/2;
   background: var(--gradient-primary);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   position: relative;
   overflow: hidden;
 }
 
 .favorite__media::before {
-  content: '�';
+  content: '❓';
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 1.5rem;
   opacity: 0.9;
+  /* Ocultar el ícono si hay background-image */
+  pointer-events: none;
+  display: block;
+}
+
+/* Si tiene background-image, ocultar el ::before */
+.favorite__media[style*="background-image"]::before {
+  display: none;
 }
 
 .favorite__icon {
