@@ -364,55 +364,38 @@ document.querySelectorAll('.leccion a[data-src]').forEach(a=>{
 // AUTOCARGA: primera preview o primera lección si la usuaria es dueña
 // El reproductor solo aparece al hacer click, no autoload
 
-// Comprar: solo si está logueado
-$$('.js-comprar').forEach(b => b.addEventListener('click', async (e) => {
+// Comprar: agregar al carrito y enviar a carrito.html (sin simulación)
+$$('.js-comprar').forEach(btn => btn.addEventListener('click', (e) => {
   e.preventDefault();
-  
-  const user = readUser();
-  if (!user) {
-    if (typeof openAuth === 'function') openAuth('login');
-    else document.dispatchEvent(new CustomEvent('open-auth-modal'));
+
+  // Si existe la API del carrito, la usamos (recomendado)
+  if (window.cartApi?.addCourseAndGo) {
+    window.cartApi.addCourseAndGo(btn);
     return;
   }
 
-  if(confirm('¿Simular compra y desbloquear el curso?')){
-    // Obtener sesión de Supabase
-    const { data } = await supabase.auth.getSession();
-    const session = data?.session;
-    
-    if (!session) {
-      alert('Necesitás estar logueado con Supabase para simular compra');
-      return;
-    }
-    
-    // Obtener course_id del botón
-    const courseId = b.dataset.courseId;
-    if (!courseId) {
-      alert('Error: no se encontró el ID del curso');
-      return;
-    }
-    
-    // Guardar en Supabase
-    const { error } = await supabase
-      .from('purchases')
-      .insert({
-        user_id: session.user.id,
-        course_id: courseId,
-        status: 'approved'
-      });
-    
-    if (error) {
-      console.error('Error al simular compra:', error);
-      alert('Error al guardar la compra: ' + error.message);
-      return;
-    }
-    
-    // Desbloquear localmente
-    body.classList.add('is-owned');
-    try{ localStorage.setItem(OWNED_KEY,'1'); }catch{}
-    unlockAllIfOwned();
-    alert('¡Listo! Contenido desbloqueado.');
+  // Fallback por si todavía no cargó carrito.js
+  const courseId = btn.getAttribute('data-course-id') || document.body.dataset.courseId;
+  const price = Number(btn.getAttribute('data-price') || 0);
+
+  const title =
+    document.querySelector('#curso-titulo')?.textContent?.trim() ||
+    document.querySelector('h1')?.textContent?.trim() ||
+    'Curso';
+
+  const CART_KEY = 'espaciopaz_cart_v1';
+  let cart = [];
+  try { cart = JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch {}
+
+  const existing = cart.find(i => i.id === courseId);
+  if (!existing) {
+    cart.push({ id: courseId, name: title, price, qty: 1, href: window.location.pathname });
+  } else {
+    existing.qty = 1; // curso digital: no suma cantidades
   }
+
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  window.location.href = '../carrito.html';
 }));
 
 
@@ -963,3 +946,66 @@ bindTicks();
   // primera pintada
   updateGlobalProgress();
 })();
+
+// === ADD TO CART desde página de curso ===
+(function () {
+  const CART_KEY = "espaciopaz_cart_v1";
+
+  function readCart() {
+    try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
+    catch { return []; }
+  }
+
+  function writeCart(cart) {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+  }
+
+  function addCourseToCart({ id, name, price, img }) {
+    const cart = readCart();
+
+    const existing = cart.find((it) => it.id === id);
+    if (existing) {
+      existing.qty = (existing.qty || 1) + 1; // si querés NO sumar qty, decime y lo dejo fijo en 1
+    } else {
+      cart.push({
+        id,
+        name,
+        price: Number(price) || 0,
+        qty: 1,
+        img: img || ""
+      });
+    }
+
+    writeCart(cart);
+    return cart;
+  }
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".js-comprar");
+    if (!btn) return;
+
+    e.preventDefault();
+
+    const id = btn.dataset.courseId;
+    const price = btn.dataset.price;
+
+    const name =
+      document.getElementById("curso-titulo")?.textContent?.trim() ||
+      btn.closest("body")?.dataset?.courseTitle ||
+      "Curso";
+
+    // Si más adelante querés imagen real, la sacamos del JSON o del HTML.
+    const img = "";
+
+    if (!id) {
+      console.warn("[curso] Falta data-course-id en .js-comprar");
+      return;
+    }
+
+    addCourseToCart({ id, name, price, img });
+
+    // Desde /html/cursos/... vuelves a /html/carrito.html
+    window.location.href = "../carrito.html";
+  });
+})();
+
