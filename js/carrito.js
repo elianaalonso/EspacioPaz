@@ -72,7 +72,29 @@ function addToCartFromCard(btn){
     .replace(',','.');     // coma decimal a punto (por si acaso)
 
   const price = parseFloat(priceText) || 0;
-  const img = card.querySelector('.curso-media img, .course-card__media img')?.getAttribute('src') || '';
+  
+  // Buscar imagen: intentar varios selectores
+  let img = '';
+  const imgSelectors = [
+    '.curso-media img',
+    '.course-card__media img',
+    '.course-card img',
+    'img'
+  ];
+  
+  for (let selector of imgSelectors) {
+    const imgEl = card.querySelector(selector);
+    if (imgEl) {
+      img = imgEl.getAttribute('src') || '';
+      if (img) break; // Si encontramos una, salimos
+    }
+  }
+  
+  // Normalizar ruta de imagen: si empieza con /, convertir a ../
+  if (img && img.startsWith('/')) {
+    img = '..' + img;
+  }
+  
   const href = card.dataset.href || card.querySelector('a')?.getAttribute('href') || '';
 
   const cart = readCart();
@@ -121,9 +143,14 @@ function addCourseFromCoursePage(btn){
     'Curso';
 
   // Intentar sacar una imagen (si hay)
-  const img =
+  let img =
     document.querySelector('.profe__foto')?.getAttribute('src') ||
     '';
+  
+  // Normalizar ruta de imagen: si empieza con /, convertir a ../
+  if (img && img.startsWith('/')) {
+    img = '..' + img;
+  }
 
   const href = window.location.pathname;
 
