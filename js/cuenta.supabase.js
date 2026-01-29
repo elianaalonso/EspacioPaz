@@ -13,6 +13,19 @@ function moneyFromCents(cents, currency = "USD") {
   return currency === "USD" ? `USD ${formatted}` : `${formatted} ${currency}`;
 }
 
+async function fetchJson(relPath) {
+  // Carga JSON usando path relativo al archivo JS (seguro en /html/*)
+  const url = new URL(relPath, import.meta.url);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`fetch ${relPath} failed: ${res.status}`);
+  return res.json();
+}
+
+function normalizeLinkForCuenta(href){
+  // cuenta.js ya normaliza, pero dejamos limpio
+  return href || "";
+}
+
 async function loadCuentaSupabase() {
   const { data } = await supabase.auth.getSession();
   const session = data?.session;
@@ -96,9 +109,137 @@ async function loadCuentaSupabase() {
     };
   });
 
+  /* ==========================
+     FAVORITOS (Mi cuenta)
+     Mezclados, último primero
+  ========================== */
+
+  // QUERY: load favorites rows (ordered desc)
+  const { data: favRows, error: fErr } = await supabase
+    .from("favorites")
+    .select("item_type, item_id, created_at")
+    .eq("user_id", session.user.id)
+    .order("created_at", { ascending: false });
+
+  if (fErr) {
+    console.error("favorites error:", fErr);
+    window.state.favorites = [];
+  } else {
+    const rows = favRows || [];
+
+    // 2) Resolver cursos / rituales / meditaciones desde JSON (misma estructura)
+    let courseMapJson = new Map();
+    let ritualMap = new Map();
+    let meditationMap = new Map();
+
+    try {
+      const cursos = await fetchJson("../datos/cursos.json");
+      (cursos || []).forEach(c => courseMapJson.set(c.id, c));
+    } catch (e) {
+      console.warn("cursos.json load error:", e);
+    }
+
+    try {
+      const rituales = await fetchJson("../datos/rituales.json");
+      (rituales || []).forEach(r => ritualMap.set(r.id, r));
+    } catch (e) {
+      console.warn("rituales.json load error:", e);
+    }
+
+    try {
+      const meditaciones = await fetchJson("../datos/meditaciones.json");
+      (meditaciones || []).forEach(m => meditationMap.set(m.id, m));
+    } catch (e) {
+      console.warn("meditaciones.json load error:", e);
+    }
+
+    // 3) Construir state.favorites mezclado, en el orden ya traído (desc, uniform: title, link, image.src)
+    // Función para normalizar rutas de imagen (desde html/cuenta.html, agregar ../)
+    const normImgPath = (imgSrc) => {
+      if (!imgSrc) return "";
+      // Si ya tiene ../, retornar as-is
+      if (imgSrc.startsWith("../")) return imgSrc;
+      // Si comienza con /, quitar el slash y agregar ../
+      if (imgSrc.startsWith("/")) return "../" + imgSrc.slice(1);
+      // En otro caso (img/...), agregar ../
+      return "../" + imgSrc;
+    };
+
+    window.state.favorites = rows.map(r => {
+      const type = r.item_type;
+      const id = r.item_id;
+
+      if (type === "course") {
+        const it = courseMapJson.get(id);
+        return {
+          type: "course",
+          id,
+          title: it?.title || id,
+          img: normImgPath(it?.image?.src || ""),
+          href: it?.link || ""
+        };
+      }
+
+      if (type === "ritual") {
+        const it = ritualMap.get(id);
+        return {
+          type: "ritual",
+          id,
+          title: it?.title || id,
+          img: normImgPath(it?.image?.src || ""),
+          href: it?.link || ""
+        };
+      }
+
+      if (type === "meditation") {
+        const it = meditationMap.get(id);
+        return {
+          type: "meditation",
+          id,
+          title: it?.title || id,
+          img: normImgPath(it?.image?.src || ""),
+          href: it?.link || ""
+        };
+      }
+
+      return { type, id, title: id, img: "", href: "" };
+    });
+  }
+
   if (typeof window.renderAll === "function") window.renderAll();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   loadCuentaSupabase().catch(console.error);
+});
+
+// Quitar favorito desde "Mi cuenta" (evento emitido por cuenta.js)
+document.addEventListener("favorites:remove", async (e) => {
+  try {
+    const { type, id } = e.detail || {};
+    if (!type || !id) return;
+
+    const { data } = await supabase.auth.getSession();
+    const session = data?.session;
+    if (!session) return;
+
+    // QUERY: delete favorite from account
+    const { error } = await supabase
+      .from("favorites")
+      .delete()
+      .eq("user_id", session.user.id)
+      .eq("item_type", type)
+      .eq("item_id", id);
+
+    if (error) {
+      console.warn("favorites delete error:", error);
+      return;
+    }
+
+    // Recargar la cuenta para refrescar favoritos (simple y seguro)
+    // (si querés después lo optimizamos a "quitar del array y rerender")
+    window.location.reload();
+  } catch (err) {
+    console.error(err);
+  }
 });

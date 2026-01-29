@@ -130,3 +130,48 @@ function hookAuthModalSupabase() {
 // Esperar DOM (si no, a veces no engancha el modal)
 document.addEventListener("DOMContentLoaded", hookAuthModalSupabase);
 
+// ===== Exponer función global para abrir el modal desde cualquier script =====
+window.openAuthModal = window.openAuthModal || function(tab = 'login') {
+  // Intentar usar la función global de script.js si existe
+  if (typeof window.openAuth === 'function') {
+    window.openAuth(tab);
+    return;
+  }
+
+  // Fallback: manipular el DOM directamente
+  const modal = document.getElementById('authModal');
+  const backdrop = document.getElementById('authBackdrop');
+  
+  if (!modal) {
+    console.warn('[authModal] No se encontró #authModal en la página');
+    return;
+  }
+
+  // Abrir modal
+  document.body.classList.add('modal-open');
+  if (backdrop) backdrop.classList.add('show');
+  modal.hidden = false;
+
+  // Cambiar tab si es necesario
+  const panelLogin = document.getElementById('panelLogin');
+  const panelRegister = document.getElementById('panelRegister');
+  const tabLogin = document.getElementById('tabLogin');
+  const tabRegister = document.getElementById('tabRegister');
+
+  if (panelLogin && panelRegister) {
+    const isLogin = tab === 'login';
+    panelLogin.hidden = !isLogin;
+    panelRegister.hidden = isLogin;
+    if (tabLogin) tabLogin.setAttribute('aria-selected', isLogin);
+    if (tabRegister) tabRegister.setAttribute('aria-selected', !isLogin);
+  }
+
+  // Focus en el primer campo
+  setTimeout(() => {
+    const focusEl = tab === 'login' 
+      ? document.getElementById('loginEmail')
+      : document.getElementById('regName');
+    focusEl?.focus();
+  }, 50);
+};
+

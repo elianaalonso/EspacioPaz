@@ -32,7 +32,7 @@
     "tags": ["transgeneracional","lealtades"]
   },
   {
-    "id": "curso-reiki-n1",
+    "id": "curso-reiki-usui-n1",
     "slug": "reiki-usui-nivel-1",
     "title": "Reiki Usui — Nivel I",
     "short_desc": "Activá tus manos y aprendé a canalizar energía vital.",
@@ -48,7 +48,7 @@
     "tags": ["energia","iniciacion"]
   },
   {
-    "id": "curso-reiki-n2",
+    "id": "curso-reiki-usui-n2",
     "slug": "reiki-usui-nivel-2",
     "title": "Reiki Usui — Nivel II",
     "short_desc": "Profundizá con símbolos y sanación a distancia.",
@@ -64,7 +64,7 @@
     "tags": ["simbolos","distancia"]
   },
   {
-    "id": "curso-reiki-n3",
+    "id": "curso-reiki-usui-n3",
     "slug": "reiki-usui-nivel-3",
     "title": "Reiki Usui — Nivel III",
     "short_desc": "Integrá cuerpo, mente y espíritu desde la maestría interior.",
@@ -88,7 +88,7 @@
     "area": "mentoria",
     "level": "Para todos",
     "price": { "amount": 240, "currency": "USD" },
-  "image": { "src": "img/reiki3.png", "alt": "Mentoría — proceso de transformación" },
+  "image": { "src": "img/mentoria-de-la-herida-al-alma.jpg", "alt": "Mentoría — De la herida al alma" },
   "includes": ["vivo", "grabaciones", "pdf"],
     "status": "publicado",
     "order": 6,

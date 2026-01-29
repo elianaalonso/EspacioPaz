@@ -189,8 +189,6 @@
 .course-card__media img{
   width:100%;
   height:100%;
-  object-fit:cover; /* recorta manteniendo proporción */
-  object-position:center; 
   display:block;
 }
 

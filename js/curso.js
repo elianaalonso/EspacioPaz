@@ -454,82 +454,156 @@ window.addEventListener('logout', () => {
     }, 400);
   }, 1200);
 });
-const FAV_KEY = 'espaciopaz_favs_v1';
-function readFavs(){
-  try { return JSON.parse(localStorage.getItem(FAV_KEY)) || []; }
-  catch { return []; }
+
+/* ================== FAVORITOS (Supabase) ==================
+  En esta página: favoritos SOLO de tipo "course"
+  - item_type: 'course'
+  - item_id: courseId (slug)
+=========================================================== */
+
+const FAV_TYPE = 'course';
+let favSet = new Set(); // cache en memoria: guarda item_id (courseId)
+
+async function getUser(){
+  // QUERY: get current user
+  const { data, error } = await supabase.auth.getUser();
+  if (error) return null;
+  return data?.user ?? null;
 }
-function writeFavs(items){
-  localStorage.setItem(FAV_KEY, JSON.stringify(items));
-}
-function isFav(id){
-  return readFavs().includes(id);
-}
-function toggleFav(id){
-  let favs = readFavs();
-  if (favs.includes(id)) {
-    favs = favs.filter(f => f !== id);
-  } else {
-    favs.push(id);
+
+async function loadFavs(){
+  const user = await getUser();
+  if (!user) {
+    favSet = new Set();
+    return favSet;
   }
-  writeFavs(favs);
+
+  // QUERY: load favorites for user (course only)
+  const { data, error } = await supabase
+    .from('favorites')
+    .select('item_id')
+    .eq('user_id', user.id)
+    .eq('item_type', FAV_TYPE);
+
+  if (error) {
+    console.warn('[favorites] load error', error);
+    favSet = new Set();
+    return favSet;
+  }
+
+  favSet = new Set((data || []).map(r => r.item_id));
+  return favSet;
+}
+
+function isFav(id){
+  return favSet.has(id);
+}
+
+async function addFav(id){
+  const user = await getUser();
+  if (!user) return { ok:false, reason:'NO_SESSION' };
+
+  // QUERY: insert favorite
+  const { error } = await supabase
+    .from('favorites')
+    .insert({ user_id: user.id, item_type: FAV_TYPE, item_id: id });
+
+  if (error) return { ok:false, reason:'DB_ERROR', error };
+
+  favSet.add(id);
+  return { ok:true };
+}
+
+async function removeFav(id){
+  const user = await getUser();
+  if (!user) return { ok:false, reason:'NO_SESSION' };
+
+  // QUERY: delete favorite
+  const { error } = await supabase
+    .from('favorites')
+    .delete()
+    .eq('user_id', user.id)
+    .eq('item_type', FAV_TYPE)
+    .eq('item_id', id);
+
+  if (error) return { ok:false, reason:'DB_ERROR', error };
+
+  favSet.delete(id);
+  return { ok:true };
+}
+
+async function toggleFav(id){
+  if (isFav(id)) return removeFav(id);
+  return addFav(id);
+}
+
+function renderFavBtn(btn, courseId){
+  const on = isFav(courseId);
+  btn.classList.toggle('is-fav', on);
+  btn.innerHTML = (on
+    ? 'Favorito <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>'
+    : 'Agregar a favoritos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>'
+  );
 }
 
 // Botón Agregar a favoritos con animación
 const favBtn = document.querySelector('.btn-fav');
-if(favBtn){
+
+if (favBtn) {
+  // ⚠️ Vos hoy sacás el ID desde el body:
   const courseId = document.body.getAttribute('data-course-id');
-  // Estado inicial
-  if(isFav(courseId)){
-    favBtn.classList.add('is-fav');
-    favBtn.innerHTML = 'Favorito <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>';
-  }
-  favBtn.addEventListener('click', function(){
-    const user = readUser();
-    if (!user) {
-      // Abrir modal de login si existe
-      if (typeof openAuth === 'function') openAuth('login');
-      else {
-        // fallback: trigger modal manualmente
-        const evt = new CustomEvent('open-auth-modal');
-        document.dispatchEvent(evt);
+
+  // Si preferís el source-of-truth del HTML que mostraste (js-comprar):
+  // const courseId = document.querySelector('.js-comprar')?.getAttribute('data-course-id');
+
+  if (courseId) {
+    // Cargar favoritos reales y pintar estado inicial
+    await loadFavs();
+    renderFavBtn(favBtn, courseId);
+
+    favBtn.addEventListener('click', async function(){
+      const user = await getUser();
+      if (!user) {
+        window.openAuthModal?.('login');
+        return;
       }
-      return;
-    }
-    toggleFav(courseId);
-    const isNowFav = isFav(courseId);
-    favBtn.classList.toggle('is-fav', isNowFav);
-    favBtn.innerHTML = (isNowFav
-      ? 'Favorito <svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>'
-      : 'Agregar a favoritos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>'
-    );
-    // Animación visual
-    favBtn.classList.add('fav-anim');
-    setTimeout(()=>favBtn.classList.remove('fav-anim'), 600);
-  });
+
+      await toggleFav(courseId);
+      renderFavBtn(favBtn, courseId);
+
+      // Animación visual
+      favBtn.classList.add('fav-anim');
+      setTimeout(()=>favBtn.classList.remove('fav-anim'), 600);
+    });
+  }
 }
 
-// Eliminar OWNED al cerrar sesión
+/* ================== LOGOUT: NO BORRAR FAVORITOS ==================
+  Favoritos quedan en DB. En logout solo limpiamos UI/cache local.
+=========================================================== */
 document.addEventListener('click', (e) => {
   const logoutBtn = e.target.closest('#btnLogout');
   if (!logoutBtn) return;
-  // Limpiar TODO el estado del usuario (usar la función global si existe)
-  if (typeof window.clearAllUserData === 'function') {
-    try { window.clearAllUserData(); } catch(e) { console.error(e); }
-  } else {
-    try { localStorage.removeItem(OWNED_KEY); } catch {}
-    try { localStorage.removeItem('espaciopaz_favs_v1'); } catch {}
-    try { localStorage.removeItem('espaciopaz_user_v1'); } catch {}
-    try { localStorage.removeItem('espaciopaz_cart_v1'); } catch {}
-  }
-  // Actualizar botón de favoritos si existe
+
+  // ⚠️ No llames clearAllUserData() porque hoy borra espaciopaz_favs_v1.
+  // Solo limpiamos data de sesión local (si la usás) y cache en memoria.
+
+  try { localStorage.removeItem(OWNED_KEY); } catch {}
+  try { localStorage.removeItem('espaciopaz_user_v1'); } catch {}
+  try { localStorage.removeItem('espaciopaz_cart_v1'); } catch {}
+  // NO borrar favoritos:
+  // try { localStorage.removeItem('espaciopaz_favs_v1'); } catch {}
+
+  favSet = new Set(); // limpiar cache en memoria
+
   const favBtn = document.querySelector('.btn-fav');
   if (favBtn) {
     favBtn.classList.remove('is-fav');
     favBtn.innerHTML = 'Agregar a favoritos <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 1 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>';
   }
-  body.classList.remove('is-owned');
-  // Disparar evento logout para animación y recarga
+
+  document.body.classList.remove('is-owned');
+
   window.dispatchEvent(new Event('logout'));
 });
 

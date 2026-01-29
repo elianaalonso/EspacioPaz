@@ -507,8 +507,7 @@ function favsToObjects(ids){
 function renderFavorites(){
   const grid = $('#favsGrid');
   if(!grid) return;
-  const ids = readFavIds();
-  const favs = favsToObjects(ids);
+  const favs = window.state.favorites || [];
 
   if(!favs.length){
     grid.innerHTML = `
@@ -521,18 +520,19 @@ function renderFavorites(){
   }
 
   grid.innerHTML = favs.map(f => {
-    // Obtener imagen del fav meta o usar placeholder
+    // Obtener imagen del fav
     const img = f.img ? `background-image: url('${f.img}')` : '';
+    const typeLabel = f.type === 'course' ? 'Curso' : (f.type === 'ritual' ? 'Ritual' : 'Meditación');
     return `
     <article class="favorite">
       <div class="favorite__media" role="img" aria-label="${f.title}" style="${img}"></div>
       <div class="favorite__body">
         <h3 class="favorite__title">${f.title}</h3>
         <div class="favorite__meta">
-          <span>${f.kind==='course' ? 'Curso' : 'Recurso'}</span>
+          <span>${typeLabel}</span>
           <div>
             ${f.href ? `<a class="btn btn--light" href="${f.href}">Abrir</a>` : ''}
-            <button class="btn btn--ghost" data-unfav="${f.id}">Quitar</button>
+            <button class="btn btn--ghost" data-unfav-type="${f.type}" data-unfav-id="${f.id}">Quitar</button>
           </div>
         </div>
       </div>
@@ -543,11 +543,13 @@ function renderFavorites(){
 
 // Quitar desde la pestaña Favoritos
 addEventListener('click', (e)=>{
-  const btn = e.target.closest?.('[data-unfav]');
+  const btn = e.target.closest?.('[data-unfav-id]');
   if(!btn) return;
-  const id = btn.getAttribute('data-unfav');
-  const ids = readFavIds().filter(x => String(x) !== String(id));
-  writeFavIds(ids);
-  renderFavorites();
+  const type = btn.getAttribute('data-unfav-type');
+  const id = btn.getAttribute('data-unfav-id');
+  // Emitir evento que cuenta.supabase.js escucha
+  document.dispatchEvent(new CustomEvent('favorites:remove', {
+    detail: { type, id }
+  }));
 });
 

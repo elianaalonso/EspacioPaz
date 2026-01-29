@@ -102,14 +102,14 @@
 		if (item.image && item.image.src) {
 			let src = item.image.src || '';
 			// Si la ruta no es absoluta ni es una URL, convertirla en absoluta respecto al root
-			if (!/^https?:\/\//i.test(src) && !src.startsWith('/')) src = '/' + src.replace(/^\/.*/,'');
+			if (!/^https?:\/\//i.test(src) && !src.startsWith('/')) src = '/' + src.replace(/^\/.*/,'' );
 			img = `<img src="${src}" alt="${item.image.alt||''}">`;
 		}
 		// Badges
 		let badge = (item.badges && item.badges.length) ? `<span class="badge">${item.badges.join(', ')}</span>` : '';
 		// Link (resolver como absoluto si es relativo)
 		let link = item.link || '#';
-		if (link && !/^https?:\/\//i.test(link) && !link.startsWith('/')) link = '/' + link.replace(/^\/.*/,'');
+		if (link && !/^https?:\/\//i.test(link) && !link.startsWith('/')) link = '/' + link.replace(/^\/.*/,'' );
 		// Card
 		return `<li class="course-card" data-cats="${cat}" data-price="${item.price ? item.price.amount : ''}" data-pop="${item.badges && item.badges.includes('popular') ? 100 : ''}" data-date="" style="">
 			<a class="course-card__link" href="${link}">
