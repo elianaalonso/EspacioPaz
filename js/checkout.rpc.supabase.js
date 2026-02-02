@@ -77,24 +77,17 @@ async function ensureLoggedIn() {
   return !!data?.user;
 }
 
-payNowBtn?.addEventListener("click", async () => {
+// Función para crear orden en Supabase (llamada desde checkout.js)
+async function createOrderInSupabase() {
   const method = getSelectedPayMethod();
-  if (!method) return alert("Elegí un método de pago.");
-
-  const logged = await ensureLoggedIn();
-  if (!logged) {
-    // Si querés, acá abrimos tu modal:
-    // window.openAuthModal?.('login');
-    return alert("Necesitás iniciar sesión para finalizar la compra.");
-  }
+  if (!method) throw new Error("No payment method selected");
 
   const billing = getBilling();
   const invoice = getInvoice();
-
   const cartRaw = readCartItemsRobusto();
   const items = mapToRpcItems(cartRaw);
 
-  if (!items.length) return alert("Tu carrito está vacío.");
+  if (!items.length) throw new Error("Cart is empty");
 
   const total = calcTotal(items);
 
@@ -109,11 +102,11 @@ payNowBtn?.addEventListener("click", async () => {
 
   if (error) {
     console.error("[create_order_with_items]", error);
-    return alert("Error creando la orden. Mirá consola.");
+    throw error;
   }
 
-  setConfirmation(orderId, billing.email);
-  goToStep(3);
+  return orderId;
+}
 
-  // IMPORTANTE: por ahora NO vaciamos carrito hasta que exista pago real (Stripe/MP).
-});
+// Exponer función globalmente para que checkout.js la use
+window.createOrderInSupabase = createOrderInSupabase;

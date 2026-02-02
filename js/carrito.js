@@ -405,18 +405,130 @@ window.addEventListener('storage', (e) => {
     draw();
   });
 
-  // Ir a pagar
-  document.getElementById('checkoutBtn')?.addEventListener('click', () => {
+  // ===== Loader full screen (Carrito -> Checkout) | Espacio Paz =====
+  function showCheckoutLoader(message = 'Preparando tu checkout…') {
+    let overlay = document.getElementById('cartLoaderOverlay');
+
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'cartLoaderOverlay';
+      overlay.setAttribute('role', 'status');
+      overlay.setAttribute('aria-live', 'polite');
+
+      // Si querés que muestre el logo, dejá este true.
+      // Si no querés logo, ponelo en false.
+      const SHOW_LOGO = true;
+
+      overlay.innerHTML = `
+        <div class="ep-loader__wrap" aria-label="Cargando">
+          <div class="ep-loader__card">
+            ${SHOW_LOGO ? `
+              <div class="ep-loader__brand" aria-hidden="true">
+                <img src="../img/logo.png" alt="" class="ep-loader__logo">
+                <span class="ep-loader__name">Espacio Paz</span>
+              </div>
+            ` : ''}
+
+            <div class="ep-loader__row">
+              <div class="ep-loader__spinner" aria-hidden="true"></div>
+              <div class="ep-loader__text">
+                <p class="ep-loader__title"></p>
+                <p class="ep-loader__sub">Un segundo…</p>
+              </div>
+            </div>
+
+            <div class="ep-loader__bar" aria-hidden="true">
+              <span></span>
+            </div>
+
+            <div class="ep-loader__dots" aria-hidden="true">
+              <i></i><i></i><i></i>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(overlay);
+    }
+
+    const title = overlay.querySelector('.ep-loader__title');
+    if (title) title.textContent = message;
+
+    document.documentElement.classList.add('no-scroll');
+    document.body.classList.add('no-scroll');
+  }
+
+  function hideCheckoutLoader() {
+    const overlay = document.getElementById('cartLoaderOverlay');
+    if (overlay) overlay.remove();
+    document.documentElement.classList.remove('no-scroll');
+    document.body.classList.remove('no-scroll');
+  }
+
+  // Ir a pagar (primero login, luego loader)
+  document.getElementById('checkoutBtn')?.addEventListener('click', async () => {
     const cart = readCart();
     if (!cart.length) {
       renderToast('El carrito está vacío');
       return;
     }
 
-    // Acá mantenés tu lógica de login si querés
-    // (si no está logueada => abrís modal, etc.)
-    // Si ya está logueada => checkout.html
-    window.location.href = 'checkout.html';
+    // 1) Validar login ANTES del loader
+    // Checkear localStorage directamente (key correcta)
+    const userStored = localStorage.getItem('espaciopaz_user_v1');
+    const isLogged = userStored ? !!JSON.parse(userStored)?.email : false;
+
+    if (!isLogged) {
+      // Guardar intención (para redirigir post-login)
+      sessionStorage.setItem('postAuthRedirect', 'checkout.html');
+
+      // Mostrar cartel lindo en el medio
+      if (!document.getElementById('cartLoginModal')) {
+        const msgModal = document.createElement('div');
+        msgModal.id = 'cartLoginModal';
+        msgModal.style.position = 'fixed';
+        msgModal.style.top = 0;
+        msgModal.style.left = 0;
+        msgModal.style.width = '100vw';
+        msgModal.style.height = '100vh';
+        msgModal.style.background = 'rgba(255,255,255,0.85)';
+        msgModal.style.backdropFilter = 'blur(8px)';
+        msgModal.style.display = 'flex';
+        msgModal.style.alignItems = 'center';
+        msgModal.style.justifyContent = 'center';
+        msgModal.style.zIndex = 99998;
+        msgModal.innerHTML = `
+          <div style="background:#fff;border-radius:18px;box-shadow:0 8px 32px #e48bb299;padding:2em 2.5em;text-align:center;max-width:340px;">
+            <h3 style="color:#e48bb2;font-size:1.3em;margin-bottom:0.7em;">¡Hola! 🌸</h3>
+            <p style="font-size:1.1em;margin-bottom:1.2em;">Para continuar con tu compra, primero iniciá sesión o creá tu cuenta.<br><br><span style="color:#e48bb2;font-weight:bold">¡Tu carrito está guardado!</span></p>
+            <button id="cartLoginBtn" style="background:#c7a4e7;color:#fff;border:none;border-radius:8px;padding:0.7em 1.5em;font-size:1em;cursor:pointer;">Iniciar sesión</button>
+          </div>
+        `;
+        document.body.appendChild(msgModal);
+        document.getElementById('cartLoginBtn').onclick = function(){
+          msgModal.remove();
+          if (typeof window.openAuth === 'function') {
+            window.openAuth('login');
+          }
+        };
+      }
+
+      return; // IMPORTANTÍSIMO: no loader, no redirect
+    }
+
+    // 2) Si está logueada: loader + redirect
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    if (checkoutBtn) {
+      checkoutBtn.disabled = true;
+      checkoutBtn.textContent = 'Cargando…';
+      checkoutBtn.classList.add('loading');
+    }
+
+    showCheckoutLoader('Preparando tu checkout…');
+
+    setTimeout(() => {
+      window.location.href = 'checkout.html';
+    }, 950);
   });
 
   function renderToast(msg){

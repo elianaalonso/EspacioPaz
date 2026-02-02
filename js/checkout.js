@@ -493,9 +493,17 @@
       }
 
       // DEMO: confirmación inmediata
-      setTimeout(() => {
-        fakeConfirm('ORD-' + Math.floor(Math.random()*999999));
-        payNowBtn.classList.remove('loading');
+      setTimeout(async () => {
+        try {
+          const orderId = await window.createOrderInSupabase();
+          fakeConfirm(orderId);
+        } catch (err) {
+          console.error("Error creating order in Supabase:", err);
+          alert("Error creando la orden. Mirá consola.");
+          payNowBtn.disabled = false;
+          payNowBtn.textContent = 'Pagar ahora';
+          payNowBtn.classList.remove('loading');
+        }
       }, 1200);
     }catch(err){
       alert('Hubo un problema con el pago. Intentá nuevamente.');
@@ -513,7 +521,10 @@
     if (orderEmailEl) orderEmailEl.textContent = state.email || '';
     goTo(3);
     // Limpieza ligera
-    if (payNowBtn) payNowBtn.textContent = 'Pagar ahora';
+    if (payNowBtn) {
+      payNowBtn.textContent = 'Pagar ahora';
+      payNowBtn.classList.remove('loading');
+    }
   }
 
   // --------- Modal de Políticas (igual que antes)
@@ -872,23 +883,8 @@
     try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch {}
   }
 
-  // Simulación de confirmación (placeholder)
-  payNowBtn.addEventListener("click", () => {
-    if (!selected) return;
-
-    // Email en confirmación
-    const email = document.getElementById("email")?.value || "—";
-    const elOrderEmail = document.getElementById("order-email");
-    if (elOrderEmail) elOrderEmail.textContent = email;
-
-    // Order ID simple (placeholder)
-    const orderId = "EP-" + Math.random().toString(16).slice(2, 10).toUpperCase();
-    const elOrderId = document.getElementById("order-id");
-    if (elOrderId) elOrderId.textContent = "#" + orderId;
-
-    // Pasar a confirmación
-    goToStep(3);
-  });
+  // El listener de payNowBtn ya está en la IIFE principal
+  // No agregamos otro aquí para evitar conflictos
 
   // Si al recargar ya había selección (por caché del navegador)
   const already = payRadios.find((r) => r.checked);
