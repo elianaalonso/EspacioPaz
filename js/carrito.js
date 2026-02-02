@@ -247,6 +247,55 @@ window.addEventListener('storage', (e) => {
   const list = document.getElementById('cartList');
   if (!list) return; // no estamos en carrito.html
 
+  let courseCatalogPromise = null;
+  let courseCatalogMap = null;
+
+  function normalizeCatalogLink(link){
+    if (!link) return '';
+    let raw = link;
+    try {
+      if (/^https?:/i.test(raw)) raw = new URL(raw).pathname;
+    } catch {}
+    raw = raw.split('#')[0].split('?')[0];
+    raw = raw.replace(/^\.+\//g, '');
+    raw = raw.replace(/^\//, '');
+    return raw;
+  }
+
+  function ensureCourseCatalog(){
+    if (courseCatalogPromise) return courseCatalogPromise;
+    courseCatalogPromise = fetch('../datos/cursos.json')
+      .then(res => res.ok ? res.json() : [])
+      .then(list => {
+        const byId = new Map();
+        const byLink = new Map();
+        (Array.isArray(list) ? list : []).forEach(item => {
+          if (item?.id) byId.set(item.id, item);
+          const link = normalizeCatalogLink(item?.link);
+          if (link) byLink.set(link, item);
+        });
+        courseCatalogMap = { byId, byLink };
+        return courseCatalogMap;
+      })
+      .catch(() => {
+        courseCatalogMap = { byId: new Map(), byLink: new Map() };
+        return courseCatalogMap;
+      });
+    return courseCatalogPromise;
+  }
+
+  function resolveCartImageUrl(img){
+    const fallback = '../img/usuario-default.jpeg';
+    if (!img) return fallback;
+    const raw = String(img).trim();
+    if (!raw) return fallback;
+    if (/^(https?:|data:|blob:)/i.test(raw)) return raw;
+    if (raw.startsWith('/')) return raw;
+    if (raw.startsWith('../') || raw.startsWith('./')) return raw;
+    if (raw.startsWith('img/')) return `../${raw}`;
+    return raw;
+  }
+
   function draw(){
     const cart = readCart();
     list.innerHTML = '';
@@ -266,6 +315,12 @@ window.addEventListener('storage', (e) => {
     let total = 0;
     let totalQty = 0;
 
+    if (!courseCatalogMap) {
+      ensureCourseCatalog().then(() => draw());
+    }
+
+    let shouldWrite = false;
+
     cart.forEach((it, i) => {
       // seguridad: curso digital qty=1
       it.qty = 1;
@@ -275,8 +330,19 @@ window.addEventListener('storage', (e) => {
       totalQty += it.qty;
       total += (Number(it.price)||0) * it.qty;
 
-      // Normalizar img: si viene vacío, placeholder
-      const imgSrc = it.img ? it.img : '../img/placeholder.png';
+      // Resolver imagen: usar catálogo si falta
+      if (!it.img && courseCatalogMap) {
+        const fromId = courseCatalogMap.byId.get(it.id);
+        const fromLink = courseCatalogMap.byLink.get(normalizeCatalogLink(it.href));
+        const src = fromId?.image?.src || fromLink?.image?.src || '';
+        if (src) {
+          it.img = src;
+          shouldWrite = true;
+        }
+      }
+
+      // Normalizar img: si viene vacío, fallback
+      const imgSrc = resolveCartImageUrl(it.img);
 
       li.innerHTML = `
         <img src="${imgSrc}" alt="" class="cart-thumb">
@@ -317,6 +383,8 @@ window.addEventListener('storage', (e) => {
 
       list.appendChild(li);
     });
+
+    if (shouldWrite) writeCart(cart);
 
     document.getElementById('cartTotal').textContent = formatUSD(total);
     document.getElementById('sumCount').textContent = `${totalQty} producto${totalQty === 1 ? '' : 's'}`;

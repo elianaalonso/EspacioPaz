@@ -128,7 +128,56 @@
     if (tot) tot.textContent = money(state.total);
     if (priceTag) priceTag.textContent = money(state.subtotal);
   }
+
+  let courseCatalogPromise = null;
+  let courseCatalogMap = null;
+
+  function normalizeCatalogLink(link){
+    if (!link) return '';
+    let raw = link;
+    try {
+      if (/^https?:/i.test(raw)) raw = new URL(raw).pathname;
+    } catch {}
+    raw = raw.split('#')[0].split('?')[0];
+    raw = raw.replace(/^\.+\//g, '');
+    raw = raw.replace(/^\//, '');
+    return raw;
+  }
+
+  function ensureCourseCatalog(){
+    if (courseCatalogPromise) return courseCatalogPromise;
+    courseCatalogPromise = fetch('../datos/cursos.json')
+      .then(res => res.ok ? res.json() : [])
+      .then(list => {
+        const byId = new Map();
+        const byLink = new Map();
+        (Array.isArray(list) ? list : []).forEach(item => {
+          if (item?.id) byId.set(item.id, item);
+          const link = normalizeCatalogLink(item?.link);
+          if (link) byLink.set(link, item);
+        });
+        courseCatalogMap = { byId, byLink };
+        return courseCatalogMap;
+      })
+      .catch(() => {
+        courseCatalogMap = { byId: new Map(), byLink: new Map() };
+        return courseCatalogMap;
+      });
+    return courseCatalogPromise;
+  }
   
+  function resolveCheckoutImageUrl(img){
+    const fallback = '../img/usuario-default.jpeg';
+    if (!img) return fallback;
+    const raw = String(img).trim();
+    if (!raw) return fallback;
+    if (/^(https?:|data:|blob:)/i.test(raw)) return raw;
+    if (raw.startsWith('/')) return raw; // absoluto desde la raíz del sitio
+    if (raw.startsWith('../') || raw.startsWith('./')) return raw;
+    if (raw.startsWith('img/')) return `../${raw}`;
+    return raw;
+  }
+
   function renderCartItems(){
     const cartItemsContainer = document.getElementById('cart-items');
     if (!cartItemsContainer) return;
@@ -143,16 +192,38 @@
       return;
     }
     
-    cartItemsContainer.innerHTML = cart.map(item => `
+    if (!courseCatalogMap) {
+      ensureCourseCatalog().then(() => renderCartItems());
+    }
+
+    let shouldWrite = false;
+
+    cartItemsContainer.innerHTML = cart.map(item => {
+      let img = item.img;
+      if (!img && courseCatalogMap) {
+        const fromId = courseCatalogMap.byId.get(item.id);
+        const fromLink = courseCatalogMap.byLink.get(normalizeCatalogLink(item.href));
+        const src = fromId?.image?.src || fromLink?.image?.src || '';
+        if (src) {
+          img = src;
+          item.img = src;
+          shouldWrite = true;
+        }
+      }
+      const imgUrl = resolveCheckoutImageUrl(img);
+      return `
       <div class="course-line">
-        <div class="thumb" style="background-image: url('../${item.img || 'img/placeholder.png'}')" aria-hidden="true"></div>
+        <div class="thumb" style="background-image: url('${imgUrl}')" aria-hidden="true"></div>
         <div class="meta">
           <p class="title">${item.name}</p>
           <p class="muted">Cantidad: ${item.qty}</p>
         </div>
         <strong class="price">${money(item.price * item.qty)}</strong>
       </div>
-    `).join('');
+    `;
+    }).join('');
+
+    if (shouldWrite) writeCart(cart);
   }
   
   // Función para actualizar todo
@@ -390,46 +461,6 @@
     });
   });
 
-  function loadGatewayUI(method){
-    // Limpia contenedor
-    if (!gatewayContainer) return;
-    gatewayContainer.innerHTML = '';
-    if(method === 'card'){
-      gatewayContainer.innerHTML = `
-        <div class="form-grid-2">
-          <div class="form-row">
-            <label>Número de tarjeta</label>
-            <input id="card-number" inputmode="numeric" autocomplete="cc-number" placeholder="1234 5678 9012 3456">
-          </div>
-          <div class="form-row">
-            <label>Vencimiento</label>
-            <input id="card-exp" placeholder="MM/AA" inputmode="numeric" autocomplete="cc-exp">
-          </div>
-          <div class="form-row">
-            <label>Nombre en la tarjeta</label>
-            <input id="card-name" autocomplete="cc-name" placeholder="Como figura en la tarjeta">
-          </div>
-          <div class="form-row">
-            <label>CVV</label>
-            <input id="card-cvv" inputmode="numeric" autocomplete="cc-csc" placeholder="***">
-          </div>
-        </div>
-        <p class="tiny-muted">Demo local. Reemplazá por el widget de tu pasarela.</p>
-      `;
-      // HOOK Stripe/Mercado Pago:
-      // Aquí podrías montar Elements (Stripe) o CardForm (Mercado Pago).
-    } else if(method === 'transfer'){
-      gatewayContainer.innerHTML = `
-        <p>Te mostraremos los datos de transferencia al confirmar. Acreditamos dentro de 24–48 h hábiles.</p>
-      `;
-    } else if(method === 'paypal'){
-      gatewayContainer.innerHTML = `
-        <p>Serás redirigida a PayPal para completar el pago.</p>
-      `;
-    }
-  }
-  if(state.method) loadGatewayUI(state.method);
-
   // --------- Pagar
   if (payNowBtn) payNowBtn.addEventListener('click', async () => {
     payNowBtn.disabled = true;
@@ -521,5 +552,348 @@
       const focusable = modal.querySelector('.modal__close, #modal-title, .modal__footer .btn-primary');
       if (focusable) focusable.focus();
     } 
+  }
+})();
+
+// ================================
+// CHECKOUT — Paso 1: datos + validación + persistencia (CI/RUT)
+// ================================
+(function checkoutStep1() {
+  const form = document.getElementById("co-form");
+  if (!form) return;
+
+  const elName = document.getElementById("name");
+  const elEmail = document.getElementById("email");
+  const elCountry = document.getElementById("country");
+  const elCity = document.getElementById("city");
+
+  const elNeedInvoice = document.getElementById("need-invoice");
+  const invoiceWrap = document.getElementById("invoice-fields");
+
+  const elTaxType = document.getElementById("tax-type");
+  const elTaxId = document.getElementById("tax-id");
+  const elRsWrap = document.getElementById("rs-wrap");
+  const elRazon = document.getElementById("razon-social");
+  const elAddr = document.getElementById("addr"); // opcional
+
+  const elPolicies = document.getElementById("acepto-politicas");
+  const btnNext = document.getElementById("to-step-2");
+
+  const STORAGE_KEY = "espaciopaz_checkout_data_v2";
+
+  // --- Helpers
+  const isEmailOk = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v || "").trim());
+  const trim = (v) => String(v || "").trim();
+  const onlyDigits = (v) => String(v || "").replace(/\D+/g, "");
+
+  function readData() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function writeData() {
+    const data = {
+      name: trim(elName?.value),
+      email: trim(elEmail?.value),
+      country: trim(elCountry?.value),
+      city: trim(elCity?.value),
+
+      needInvoice: !!elNeedInvoice?.checked,
+      taxType: elTaxType?.value || "ci",
+      taxId: onlyDigits(elTaxId?.value),
+      razonSocial: trim(elRazon?.value),
+      addr: trim(elAddr?.value), // opcional
+
+      policies: !!elPolicies?.checked,
+      updatedAt: Date.now(),
+    };
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch {}
+  }
+
+  function loadData() {
+    const data = readData();
+    if (!data) return;
+
+    if (elName && !elName.value) elName.value = data.name || "";
+    if (elEmail && !elEmail.value) elEmail.value = data.email || "";
+    if (elCountry && !elCountry.value) elCountry.value = data.country || "";
+    if (elCity && !elCity.value) elCity.value = data.city || "";
+
+    if (elNeedInvoice) elNeedInvoice.checked = !!data.needInvoice;
+
+    if (elTaxType) elTaxType.value = data.taxType || "ci";
+    if (elTaxId && !elTaxId.value) elTaxId.value = data.taxId || "";
+    if (elRazon && !elRazon.value) elRazon.value = data.razonSocial || "";
+    if (elAddr && !elAddr.value) elAddr.value = data.addr || "";
+
+    if (elPolicies) elPolicies.checked = !!data.policies;
+
+    syncInvoiceUI();
+  }
+
+  function syncInvoiceUI() {
+    const on = !!elNeedInvoice?.checked;
+    if (invoiceWrap) invoiceWrap.hidden = !on;
+
+    const isRUT = (elTaxType?.value || "ci") === "rut";
+
+    // Mostrar razón social SOLO si está on + rut
+    if (elRsWrap) {
+      const shouldShow = on && isRUT;
+      elRsWrap.hidden = !shouldShow;
+      // Force display style update
+      elRsWrap.style.display = shouldShow ? '' : 'none';
+    }
+
+    // required
+    if (elTaxType) elTaxType.required = on;
+    if (elTaxId) elTaxId.required = on;
+    if (elRazon) elRazon.required = on && isRUT;
+
+    // dirección opcional
+    if (elAddr) elAddr.required = false;
+  }
+
+  function validate() {
+    const nameOk = trim(elName?.value).length >= 3;
+    const emailOk = isEmailOk(elEmail?.value);
+    const countryOk = trim(elCountry?.value).length >= 2;
+    const policiesOk = !!elPolicies?.checked;
+
+    let invoiceOk = true;
+    if (elNeedInvoice?.checked) {
+      const taxIdOk = onlyDigits(elTaxId?.value).length >= 6; // CI/RUT mínimo razonable
+      const isRUT = (elTaxType?.value || "ci") === "rut";
+      const razonOk = !isRUT || trim(elRazon?.value).length >= 2;
+      invoiceOk = taxIdOk && razonOk;
+    }
+
+    const ok = nameOk && emailOk && countryOk && policiesOk && invoiceOk;
+    if (btnNext) btnNext.disabled = !ok;
+    return ok;
+  }
+
+  // --- Avanzar a paso 2
+  function goToStep(stepNum) {
+    const indicators = document.querySelectorAll("#steps [data-step-indicator]");
+    indicators.forEach((li) => {
+      const n = Number(li.getAttribute("data-step-indicator"));
+      li.classList.toggle("is-active", n === stepNum);
+    });
+
+    const panels = document.querySelectorAll(".co-step[data-step]");
+    panels.forEach((p) => {
+      const n = Number(p.getAttribute("data-step"));
+      p.hidden = n !== stepNum;
+    });
+
+    try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch {}
+  }
+
+  // --- Eventos
+  loadData();
+  validate();
+
+  // Normalizar a dígitos en tax-id (sin molestar al usuario)
+  if (elTaxId) {
+    elTaxId.addEventListener("input", () => {
+      const cur = elTaxId.value;
+      const clean = onlyDigits(cur);
+      if (cur !== clean) elTaxId.value = clean;
+    });
+  }
+
+  form.addEventListener("input", () => {
+    writeData();
+    validate();
+  });
+
+  form.addEventListener("change", () => {
+    syncInvoiceUI();
+    writeData();
+    validate();
+  });
+
+  if (elNeedInvoice) {
+    elNeedInvoice.addEventListener("change", () => {
+      if (elNeedInvoice.checked && elTaxType) elTaxType.value = "rut";
+      syncInvoiceUI();
+      writeData();
+      validate();
+    });
+  }
+
+  if (elTaxType) {
+    elTaxType.addEventListener("change", () => {
+      syncInvoiceUI();
+      writeData();
+      validate();
+    });
+  }
+
+  if (btnNext) {
+    btnNext.addEventListener("click", () => {
+      writeData();
+      if (!validate()) return;
+      goToStep(2);
+    });
+  }
+
+  // Volver a datos desde paso 2
+  document.querySelectorAll("[data-back]").forEach((btn) => {
+    btn.addEventListener("click", () => goToStep(1));
+  });
+
+  // Modal Políticas (open/close) - usar capture phase para ejecutar antes que el listener global
+  document.querySelectorAll('[data-open="politicas-modal"]').forEach((a) => {
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      const m = document.getElementById("politicas-modal");
+      if (m) m.hidden = false;
+    }, true);
+  });
+  document.querySelectorAll("#politicas-modal [data-close]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const m = document.getElementById("politicas-modal");
+      if (m) m.hidden = true;
+    });
+  });
+})();
+
+// ================================
+// CHECKOUT — Paso 2: método de pago (UX + flujo)
+// ================================
+(function checkoutStep2() {
+  const payNowBtn = document.getElementById("pay-now");
+  const hint = document.getElementById("gateway-hint");
+  const widget = document.getElementById("gateway-widget");
+
+  if (!payNowBtn || !hint || !widget) return;
+
+  const payRadios = Array.from(document.querySelectorAll('input[name="pay"]'));
+  let selected = null;
+
+  const hints = {
+    card: "Podés pagar con tarjeta de crédito o débito. El pago es seguro y encriptado.",
+    mercadopago: "Serás redirigida a MercadoPago para completar el pago de forma segura.",
+    transfer: "",
+  };
+
+  function renderWidget(method) {
+    // LIMPIAMOS TODO SIEMPRE
+    hint.textContent = "";
+    widget.innerHTML = "";
+
+    // Estado 0: nada seleccionado
+    if (!method) {
+      hint.textContent = "Seleccioná un método para cargar el formulario de pago.";
+      payNowBtn.disabled = true;
+      return;
+    }
+
+    // A partir de acá: hay método elegido
+    payNowBtn.disabled = false;
+
+    if (method === "card") {
+      hint.textContent = "Podés pagar con tarjeta de crédito o débito.";
+      widget.innerHTML = `
+        <div class="tiny-muted">
+          El formulario de tarjeta se cargará al integrar la pasarela.
+        </div>
+      `;
+    }
+
+    if (method === "transfer") {
+      widget.innerHTML = `
+        <div class="transfer-info">
+          <p><strong>Transferencia bancaria</strong></p>
+          <p>
+            Al confirmar, te mostraremos los datos bancarios para realizar la transferencia.
+          </p>
+          <p>
+            Luego enviás el comprobante por <strong>WhatsApp</strong> para activar tu acceso.
+          </p>
+          <p class="tiny-muted">
+            Activación dentro de <strong>24–48 h hábiles</strong>.
+          </p>
+
+          <a
+            href="https://wa.me/598092447600?text=Hola%20realic%C3%A9%20una%20transferencia%20y%20env%C3%ADo%20el%20comprobante%20de%20mi%20compra%20en%20Espacio%20Paz."
+            target="_blank"
+            class="btn-ghost btn-small"
+            style="margin-top:.75rem;display:inline-block"
+          >
+            Enviar comprobante por WhatsApp
+          </a>
+        </div>
+      `;
+    }
+
+    if (method === "mercadopago") {
+      hint.textContent = "Serás redirigida a MercadoPago para completar el pago.";
+      widget.innerHTML = `
+        <div class="tiny-muted">
+          En el próximo paso se generará el pago en MercadoPago.
+        </div>
+      `;
+    }
+  }
+
+  // Detectar selección
+  payRadios.forEach((r) => {
+    r.addEventListener("change", () => {
+      selected = r.value;
+      renderWidget(selected);
+    });
+  });
+
+  // Helpers: cambiar de paso
+  function goToStep(stepNum) {
+    const indicators = document.querySelectorAll("#steps [data-step-indicator]");
+    indicators.forEach((li) => {
+      const n = Number(li.getAttribute("data-step-indicator"));
+      li.classList.toggle("is-active", n === stepNum);
+    });
+
+    const panels = document.querySelectorAll(".co-step[data-step]");
+    panels.forEach((p) => {
+      const n = Number(p.getAttribute("data-step"));
+      p.hidden = n !== stepNum;
+    });
+
+    try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch {}
+  }
+
+  // Simulación de confirmación (placeholder)
+  payNowBtn.addEventListener("click", () => {
+    if (!selected) return;
+
+    // Email en confirmación
+    const email = document.getElementById("email")?.value || "—";
+    const elOrderEmail = document.getElementById("order-email");
+    if (elOrderEmail) elOrderEmail.textContent = email;
+
+    // Order ID simple (placeholder)
+    const orderId = "EP-" + Math.random().toString(16).slice(2, 10).toUpperCase();
+    const elOrderId = document.getElementById("order-id");
+    if (elOrderId) elOrderId.textContent = "#" + orderId;
+
+    // Pasar a confirmación
+    goToStep(3);
+  });
+
+  // Si al recargar ya había selección (por caché del navegador)
+  const already = payRadios.find((r) => r.checked);
+  if (already) {
+    selected = already.value;
+    renderWidget(selected);
   }
 })();

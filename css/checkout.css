@@ -322,7 +322,8 @@ input:-webkit-autofill{
 
 /* 9) Quitamos placeholders “duros” (thumbs) */
 .thumb{
-  background: linear-gradient(135deg, rgba(223,209,248,.6), rgba(247,234,242,.6));
+  background-size: cover;
+  background-position: center;
   border:1px solid var(--line);
   border-radius:1rem;
 }
@@ -385,4 +386,59 @@ input:-webkit-autofill{
 
 .btn-small:hover {
   opacity: 1;
+}
+
+/* Select más coqueto (soft + pill) */
+.invoice-fields select {
+  width: 100%;
+  padding: 0.85rem 2.6rem 0.85rem 1rem;
+  border: 1px solid rgba(182,155,214,.45);
+  border-radius: 14px;
+  background: rgba(248,245,240,.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: inherit;
+  outline: none;
+  appearance: none;
+}
+
+/* Flechita */
+.invoice-fields .form-row {
+  position: relative;
+}
+
+.invoice-fields select#tax-type {
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(167,127,199,.9) 50%),
+    linear-gradient(135deg, rgba(167,127,199,.9) 50%, transparent 50%),
+    linear-gradient(to right, transparent, transparent);
+  background-position:
+    calc(100% - 1.2rem) 50%,
+    calc(100% - 0.9rem) 50%,
+    100% 0;
+  background-size: 8px 8px, 8px 8px, 2.8rem 100%;
+  background-repeat: no-repeat;
+}
+
+/* Focus lindo */
+.invoice-fields select:focus {
+  border-color: rgba(167,127,199,.85);
+  box-shadow: 0 0 0 4px rgba(217,201,239,.55);
+}
+
+.transfer-info {
+  background: rgba(248,245,240,.7);
+  border: 1px solid rgba(182,155,214,.35);
+  border-radius: 16px;
+  padding: 1rem 1.1rem;
+  line-height: 1.55;
+}
+
+.transfer-info p {
+  margin: .35rem 0;
+}
+
+.transfer-info .tiny-muted {
+  margin-top: .4rem;
+  color: #8f7aa8;
 }

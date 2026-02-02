@@ -69,6 +69,10 @@ function hookAuthModalSupabase() {
 
         const name = profile?.full_name || email.split("@")[0];
         saveUserCompat(name, email);
+        // Si estoy en checkout, recargo para que checkout.js se inicialice
+        if (location.pathname.includes("checkout.html")) {
+          setTimeout(() => location.reload(), 250);
+        }
 
         setMsg("loginMsg", "¡Sesión iniciada! ✨", true);
         setTimeout(closeAuthModal, 200);
@@ -103,6 +107,10 @@ function hookAuthModalSupabase() {
 
         const name = profile?.full_name || fullName || email.split("@")[0];
         saveUserCompat(name, email);
+        // Si estoy en checkout, recargo para que checkout.js se inicialice
+        if (location.pathname.includes("checkout.html")) {
+          setTimeout(() => location.reload(), 250);
+        }
 
         setMsg("regMsg", "¡Cuenta creada! 🌸", true);
         setTimeout(closeAuthModal, 200);
